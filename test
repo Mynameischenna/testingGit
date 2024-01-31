@@ -1,1 +1,73 @@
 const [loading, setLoading] = useState(true); // Added loading state
+
+
+
+@RestController
+@RequestMapping("/api/files")
+public class FileController {
+
+    private static final String D_DRIVE_PATH = "D:/your/folder/path/";
+
+    @GetMapping("/list")
+    public ResponseEntity<List<String>> getFileList() {
+        File folder = new File(D_DRIVE_PATH);
+        String[] fileList = folder.list();
+        return ResponseEntity.ok(Arrays.asList(fileList));
+    }
+
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) throws IOException {
+        File file = new File(D_DRIVE_PATH + fileName);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(file.length())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
+    }
+}
+
+
+
+
+react:
+
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const FileList = () => {
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    // Fetch the list of files from the backend
+    axios.get('http://your-backend-url/api/files/list')
+      .then(response => setFiles(response.data))
+      .catch(error => console.error('Error fetching file list:', error));
+  }, []);
+
+  const handleFileClick = (fileName) => {
+    // Download the selected file from the backend
+    window.open(`http://your-backend-url/api/files/download?fileName=${fileName}`);
+  };
+
+  return (
+    <div>
+      <h2>File List:</h2>
+      <ul>
+        {files.map((file, index) => (
+          <li key={index} onClick={() => handleFileClick(file)}>
+            {file}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default FileList;
+
