@@ -71,3 +71,46 @@ const FileList = () => {
 
 export default FileList;
 
+
+
+
+
+
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+@RestController
+public class FileController {
+
+    private static final String D_DRIVE_PATH = "D:/your/folder/path/";
+
+    @GetMapping("/api/files/download")
+    public ResponseEntity<InputStreamResource> downloadFile(@RequestParam String fileName) throws IOException {
+        File file = new File(D_DRIVE_PATH + fileName);
+
+        if (file.exists()) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .contentLength(file.length())
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .body(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}
