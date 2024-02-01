@@ -1,4 +1,57 @@
+@GetMapping("/files")
+    public ResponseEntity<List<String>> getFiles() {
+        try {
+            // List all files in the directory
+            List<String> files = Arrays.stream(Paths.get(UPLOAD_DIR).toFile().list())
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(files);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 
+
+@GetMapping("/{filename}")
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String filename) {
+        try {
+            // Load file content as bytes
+            Path filePath = Paths.get(UPLOAD_DIR).resolve(filename).normalize();
+            byte[] fileContent = Files.readAllBytes(filePath);
+
+            // Determine the media type based on the file extension
+            MediaType mediaType = determineMediaType(filename);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(mediaType);
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(fileContent);
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    private MediaType determineMediaType(String filename) {
+        String fileExtension = filename.substring(filename.lastIndexOf('.') + 1).toLowerCase();
+
+        switch (fileExtension) {
+        	case "xml":
+        		return MediaType.APPLICATION_ATOM_XML;
+        	case "json":
+        		return MediaType.APPLICATION_JSON;
+            case "pdf":
+                return MediaType.APPLICATION_PDF;
+            case "jpg":
+            case "jpeg":
+            case "png":
+            case "gif":
+                return MediaType.IMAGE_JPEG; // or MediaType.IMAGE_PNG for PNG files
+            // Add more cases for other file types if needed
+            default:
+                return MediaType.APPLICATION_OCTET_STREAM;
+        }
+    }
 ompx rsvq bfaw zdyv
 
 <dependency>
