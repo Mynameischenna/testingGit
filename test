@@ -1,3 +1,370 @@
+<form>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <input type="text" class="form-control" id="planYearEnds">
+                        <label for="planYearEnds">Plan Year Ends</label>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary" id="servicesAndBilling">Services And Billing</button>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-secondary" id="pyeTesting1">PYE Testing</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label>YEAR END INFO</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label>COUNTS</label>
+                    </div>
+                    <div class="form-group col-md-8">
+                        <label>5500 INFO</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="yearEnd">
+                        <label for="yearEnd">Year End</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="eligibleEmployees">
+                        <label for="eligibleEmployees">Eligible Employees</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="button" class="btn btn-primary" id="xml5500">5500 XML</button>
+                        <button type="button" class="btn btn-primary" id="email5500">5500 Email</button>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" id="type5500">
+                        <label for="type5500">5500 Type</label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" id="filingStatus">
+                        <label for="filingStatus">Filing Status</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="yearStart">
+                        <label for="yearStart">Year Start</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="totalEmployees">
+                        <label for="totalEmployees">Total Employees</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="button" class="btn btn-primary" id="yeq">YEQ</button>
+                        <button type="button" class="btn btn-primary" id="dfvcEmail">DFVC Email</button>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <input type="text" class="form-control" id="signer5500">
+                        <label for="signer5500">5500 Signer</label>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="partial5500" type="checkbox"> 5500 Partial
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="taxYear">
+                        <label for="taxYear">Tax Year</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="button" class="btn btn-primary" id="resetPortalUser">Reset Portal User</button>
+                        <button type="button" class="btn btn-primary" id="addCompanyToFTW">Add Company to FTW</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="pointsValue">
+                        <label for="pointsValue">Points Value</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="button" class="btn btn-primary" id="contributionSources">Contribution Sources</button>
+                        <button type="button" class="btn btn-primary" id="moveItemsToPSC">Move Items To PSC</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>SERVICES</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>FORFEITURE INFO</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="planDocument"> Plan Document
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="yearEndComplianceTesting"> Year End
+                                Compliance Testing
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="matchForfType">
+                        <label for="matchForfType">Match Forf Type</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="matchForfAmt">
+                        <label for="matchForfAmt">Match Forf Amt</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <button type="button" class="btn btn-primary" id="folder">Folder</button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="midYrComplianceTesting"> Mid Yr
+                                Compliance Testing
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="preparation5500"> 5500 Preparation
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="psForfType">
+                        <label for="psForfType">P/S Forf Type</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <input type="text" class="form-control" id="psForfAmt">
+                        <label for="psForfAmt">P/S Forf Amt</label>
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="employerAllocations"> Employer
+                                Allocations
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="matchingAllocations"> Matching
+                                Allocations
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="unusedForfeitures"> Unused
+                                Forfeitures
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="shMatchCalc"> SH Match - Calc
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="shNonElectiveCalc"> SH Non Elective
+                                - Calc
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                    <div class="form-group col-md-2">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label>SCRIPTING</label>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>PLAN FEATURES</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="mmlContribution"> MML Contribution
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="stopAutomation"> Stop Automation
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="easyEligibility"> EASY Eligibility
+                            </label>
+                        </div>
+                        <input type="text" class="form-control" id="ascNumber">
+                        <label for="ascNumber">ASC Number</label>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="safeHarborPlan"> Safe Harbor Plan
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="safeHarborAdpAcp"> Safe Harbor
+                                ADP/ACP
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="simplePlan"> Simple Plan
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="newComp"> New Comp
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="ageWeighted"> Age Weighted
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="afterTax"> After Tax
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="nonErisaPlan"> Non Erisa Plan
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="matchOnlyPlan"> Match Only Plan
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="qaca"> QACA
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="eaca"> EACA (6 month correction)
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="svcMatch"> Svc Match
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="nav"> NAV
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="pdiData"> PDI Data
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="lifeInsurance"> Life Insurance
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="churchCertiInsert"> Church Certi
+                                Insert
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="noCatchup"> No Catch-up
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="multipleEr"> Multiple ER
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="controlledGroup"> Controlled Group
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="controlledGroupButton">Controlled Group</button>
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="testByLocation"> Test By Location
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <input type="text" class="form-control" id="installationNote">
+                        <label for="installationNote">Comments</label>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-primary" id="planSpecs">Plan Specs</button>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-primary" id="pyeTesting2">PYE Testing</button>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-primary" id="pyeQa">PYE QA</button>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <button type="button" class="btn btn-primary" id="teamChecklist">Team Checklist</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
 package com.empower.email;
 
 import java.io.IOException;
