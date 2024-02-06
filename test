@@ -1,3 +1,57 @@
+// DataTable.js
+
+import React, { useState, useEffect } from 'react';
+
+const DataTable = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from API when the component mounts
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      // Replace 'your-api-endpoint' with the actual API endpoint
+      const response = await fetch('http://localhost:8085/');
+      const result = await response.json();
+      setData(result); // Set the fetched data to the state
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  return (
+    <div>
+      <h1>Data Table</h1>
+      <table>
+        <thead>
+          <tr>
+            {/* Map column headers based on the structure of your data */}
+            {Object.keys(data[0] || {}).map((header, index) => (
+              <th key={index}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {/* Map data rows */}
+          {data.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {/* Map row values based on the structure of your data */}
+              {Object.values(row).map((value, columnIndex) => (
+                <td key={columnIndex}>{value}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+export default DataTable;
+
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
