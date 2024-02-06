@@ -1,4 +1,10 @@
-export const Foo = () => (
+NodeList nodeList = document.getElementsByTagName("yourElement");
+String data = nodeList.item(0).getTextContent();
+
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = factory.newDocumentBuilder();
+Document document = builder.parse(new File("yourXMLfile.xml"));
+  export const Foo = () => (
   <form>
     <div className="form-row">
       <div className="form-group col-md-4">
