@@ -1,3 +1,8 @@
+Fatal Error] :3:1: Content is not allowed in prolog.
+org.xml.sax.SAXParseException; lineNumber: 3; columnNumber: 1; Content is not allowed in prolog.
+	at java.xml/com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:262)
+
+
 planInfo.setEvId(getChildElementValue(planInfoElement, "ev_id"));
             planInfo.setPlanName(getChildElementValue(planInfoElement, "plan_name"));
             planInfo.setIrsrlCode(getChildElementValue(planInfoElement, "irsrl_code"));
