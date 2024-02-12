@@ -1,4 +1,232 @@
+024-02-11T23:17:36.301-07:00  INFO 9500 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "db_key" (class newxml.PlanInfo), not marked as ignorable (24 known properties: "subsetCashCode", "estNumberOfParticipants", "dpDateTime", "clientEntityType", "city", "evId", "rolloverInd", "irsrlCode", "prodId", "planAnnivDate", "planName", "gaId", "clientName", "stateCode", "statusCode", "firstLineMailing", "zipCode", "scndLineMailing", "estPlanAssets", "provCompany", "country", "tpaFirmId", "internalComplianceInd", "estImplementationDate"])
+ at [Source: (StringReader); line: 3, column: 93] (through reference chain: newxml.PlanInfo["db_key"])
+	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61)
+	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1138)
+	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2224)
+	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1709)
+	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownVanilla(BeanDeserializerBase.java:1687)
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.vanillaDeserialize(BeanDeserializer.java:320)
+	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177)
+	at com.fasterxml.jackson.dataformat.xml.deser.XmlDeserializationContext.readRootValue(XmlDeserializationContext.java:91)
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4825)
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3772)
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3740)
+	at newxml.PlanInfoController.createPlanInfoFromXml(PlanInfoController.java:51)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:261)
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:189)
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917)
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829)
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089)
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979)
+	at org.springframework.web.s
 
+
+package newxml;
+
+import java.time.LocalDate;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
+public class PlanInfo {
+
+    @Id
+    private String evId;
+    private String planName;
+    private String irsrlCode;
+    private String provCompany;
+    private String prodId;
+    private String statusCode;
+    private String dpDateTime;
+    private String rolloverInd;
+    private String gaId;
+    private String clientName;
+    private String firstLineMailing;
+    private String scndLineMailing;
+    private String city;
+    private String stateCode;
+    private String zipCode;
+    private String country;
+    private String internalComplianceInd;
+    private String planAnnivDate;
+    private int estNumberOfParticipants;
+    private long estPlanAssets;
+    private LocalDate estImplementationDate;
+    private String subsetCashCode;
+    private String clientEntityType;
+    private String tpaFirmId;
+	
+    
+    
+    public String getEvId() {
+        return evId;
+    }
+
+    public void setEvId(String evId) {
+        this.evId = evId;
+    }
+	public String getPlanName() {
+		return planName;
+	}
+	public void setPlanName(String planName) {
+		this.planName = planName;
+	}
+	public String getIrsrlCode() {
+		return irsrlCode;
+	}
+	public void setIrsrlCode(String irsrlCode) {
+		this.irsrlCode = irsrlCode;
+	}
+	public String getProvCompany() {
+		return provCompany;
+	}
+	public void setProvCompany(String provCompany) {
+		this.provCompany = provCompany;
+	}
+	public String getProdId() {
+		return prodId;
+	}
+	public void setProdId(String prodId) {
+		this.prodId = prodId;
+	}
+	public String getStatusCode() {
+		return statusCode;
+	}
+	public void setStatusCode(String statusCode) {
+		this.statusCode = statusCode;
+	}
+	public String getDpDateTime() {
+		return dpDateTime;
+	}
+	public void setDpDateTime(String dpDateTime) {
+		this.dpDateTime = dpDateTime;
+	}
+	public String getRolloverInd() {
+		return rolloverInd;
+	}
+	public void setRolloverInd(String rolloverInd) {
+		this.rolloverInd = rolloverInd;
+	}
+	public String getGaId() {
+		return gaId;
+	}
+	public void setGaId(String gaId) {
+		this.gaId = gaId;
+	}
+	public String getClientName() {
+		return clientName;
+	}
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
+	public String getFirstLineMailing() {
+		return firstLineMailing;
+	}
+	public void setFirstLineMailing(String firstLineMailing) {
+		this.firstLineMailing = firstLineMailing;
+	}
+	public String getScndLineMailing() {
+		return scndLineMailing;
+	}
+	public void setScndLineMailing(String scndLineMailing) {
+		this.scndLineMailing = scndLineMailing;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getStateCode() {
+		return stateCode;
+	}
+	public void setStateCode(String stateCode) {
+		this.stateCode = stateCode;
+	}
+	public String getZipCode() {
+		return zipCode;
+	}
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
+	public String getInternalComplianceInd() {
+		return internalComplianceInd;
+	}
+	public void setInternalComplianceInd(String internalComplianceInd) {
+		this.internalComplianceInd = internalComplianceInd;
+	}
+	public String getPlanAnnivDate() {
+		return planAnnivDate;
+	}
+	public void setPlanAnnivDate(String planAnnivDate) {
+		this.planAnnivDate = planAnnivDate;
+	}
+	public int getEstNumberOfParticipants() {
+		return estNumberOfParticipants;
+	}
+	public void setEstNumberOfParticipants(int estNumberOfParticipants) {
+		this.estNumberOfParticipants = estNumberOfParticipants;
+	}
+	public long getEstPlanAssets() {
+		return estPlanAssets;
+	}
+	public void setEstPlanAssets(long estPlanAssets) {
+		this.estPlanAssets = estPlanAssets;
+	}
+	public LocalDate getEstImplementationDate() {
+		return estImplementationDate;
+	}
+	public void setEstImplementationDate(LocalDate estImplementationDate) {
+		this.estImplementationDate = estImplementationDate;
+	}
+	public String getSubsetCashCode() {
+		return subsetCashCode;
+	}
+	public void setSubsetCashCode(String subsetCashCode) {
+		this.subsetCashCode = subsetCashCode;
+	}
+	public String getClientEntityType() {
+		return clientEntityType;
+	}
+	public void setClientEntityType(String clientEntityType) {
+		this.clientEntityType = clientEntityType;
+	}
+	public String getTpaFirmId() {
+		return tpaFirmId;
+	}
+	public void setTpaFirmId(String tpaFirmId) {
+		this.tpaFirmId = tpaFirmId;
+	}
+	@Override
+	public String toString() {
+		return "PlanInfo [ evId=" + evId + ", planName=" + planName + ", irsrlCode=" + irsrlCode
+				+ ", provCompany=" + provCompany + ", prodId=" + prodId + ", statusCode=" + statusCode + ", dpDateTime="
+				+ dpDateTime + ", rolloverInd=" + rolloverInd + ", gaId=" + gaId + ", clientName=" + clientName
+				+ ", firstLineMailing=" + firstLineMailing + ", scndLineMailing=" + scndLineMailing + ", city=" + city
+				+ ", stateCode=" + stateCode + ", zipCode=" + zipCode + ", country=" + country
+				+ ", internalComplianceInd=" + internalComplianceInd + ", planAnnivDate=" + planAnnivDate
+				+ ", estNumberOfParticipants=" + estNumberOfParticipants + ", estPlanAssets=" + estPlanAssets
+				+ ", estImplementationDate=" + estImplementationDate + ", subsetCashCode=" + subsetCashCode
+				+ ", clientEntityType=" + clientEntityType + ", tpaFirmId=" + tpaFirmId + "]";
+	}
+
+    // Constructors, getters, setters...
+    
+}
 <build>
     <plugins>
         <plugin>
