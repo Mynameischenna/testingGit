@@ -1,3 +1,32 @@
+planInfo.setEvId(getChildElementValue(planInfoElement, "ev_id"));
+            planInfo.setPlanName(getChildElementValue(planInfoElement, "plan_name"));
+            planInfo.setIrsrlCode(getChildElementValue(planInfoElement, "irsrl_code"));
+            planInfo.setProvCompany(getChildElementValue(planInfoElement, "prov_company"));
+            planInfo.setProdId(getChildElementValue(planInfoElement, "prod_id"));
+            planInfo.setStatusCode(getChildElementValue(planInfoElement, "status_code"));
+            planInfo.setDpDateTime(getChildElementValue(planInfoElement, "dpdate_time"));
+            planInfo.setRolloverInd(getChildElementValue(planInfoElement, "rollover_ind"));
+            planInfo.setGaId(getChildElementValue(planInfoElement, "ga_id"));
+            planInfo.setClientName(getChildElementValue(planInfoElement, "client_name"));
+            planInfo.setFirstLineMailing(getChildElementValue(planInfoElement, "first_line_mailing"));
+            planInfo.setScndLineMailing(getChildElementValue(planInfoElement, "scnd_line_mailing"));
+            planInfo.setCity(getChildElementValue(planInfoElement, "city"));
+            planInfo.setStateCode(getChildElementValue(planInfoElement, "state_code"));
+            planInfo.setZipCode(getChildElementValue(planInfoElement, "zip_code"));
+            planInfo.setCountry(getChildElementValue(planInfoElement, "country"));
+            planInfo.setInternalComplianceInd(getChildElementValue(planInfoElement, "internal_compliance_ind"));
+            planInfo.setPlanAnnivDate(getChildElementValue(planInfoElement, "plan_anniv_date"));
+            planInfo.setEstNumberOfParticipants(Integer.parseInt(getChildElementValue(planInfoElement, "est_number_of_participants")));
+            planInfo.setEstPlanAssets(Long.parseLong(getChildElementValue(planInfoElement, "est_plan_assets")));
+            planInfo.setEstImplementationDate(LocalDate.parse(getChildElementValue(planInfoElement, "est_implementation_date")));
+            planInfo.setSubsetCashCode(getChildElementValue(planInfoElement, "subset_cash_code"));
+            planInfo.setClientEntityType(getChildElementValue(planInfoElement, "client_entity_type"));
+            planInfo.setTpaFirmId(getChildElementValue(planInfoElement, "tpa_firm_id"));
+
+            planInfoRepository.save(planInfo)
+;
+
+
 024-02-11T23:17:36.301-07:00  INFO 9500 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
 com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "db_key" (class newxml.PlanInfo), not marked as ignorable (24 known properties: "subsetCashCode", "estNumberOfParticipants", "dpDateTime", "clientEntityType", "city", "evId", "rolloverInd", "irsrlCode", "prodId", "planAnnivDate", "planName", "gaId", "clientName", "stateCode", "statusCode", "firstLineMailing", "zipCode", "scndLineMailing", "estPlanAssets", "provCompany", "country", "tpaFirmId", "internalComplianceInd", "estImplementationDate"])
  at [Source: (StringReader); line: 3, column: 93] (through reference chain: newxml.PlanInfo["db_key"])
