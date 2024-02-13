@@ -1,3 +1,17 @@
+<dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi</artifactId>
+    <version>5.1.0</version>
+</dependency>
+
+    <dependency>
+    <groupId>org.apache.poi</groupId>
+    <artifactId>poi-ooxml</artifactId>
+    <version>5.1.0</version>
+</dependency>
+
+
+
 package com.example.firstt;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
