@@ -1,3 +1,417 @@
+
+ 
+
+	
+
+
+
+    PlanPremier®-TPA
+Plan Provision Summary for:
+<ssmPlanName> <ssmPlanNumber>
+
+ 
+
+
+ 	
+Plan Provision Summary
+<ssmPlanName>
+<ssmPlanNumber>
+		
+
+The purpose of this Plan Provision Summary is to confirm existing plan specifications transferred 
+
+
+
+	
+
+
+
+TPA General Plan Information
+	                                                                             
+Is this an ERISA Plan?                                               
+	<ssmblner~Y> Yes
+<ssmblner~N> No  
+
+Is this a Union plan? 	  <ssmblnUnionPlan> Yes
+  <ssmblnUnionPlan> No
+<ssmPlanName> Original Plan effective Date:                        
+	<ssmOrigPlanEffDate>
+
+
+
+
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬Rollovers
+Indicate the rollover types allowed by the plan:    
+
+Are 401 rollovers allowed by the plan?
+	<ssmbln401Roll~Y> Yes	
+<ssmbln401Roll~N> No  
+Are IRA rollovers allowed by the plan?
+ 	<ssmblnIRARoll~Y> Yes	
+<ssmblnIRARoll~N> No  
+Are Roth rollovers allowed by the plan?
+ 	<ssmblnRothRoll~Y> Yes	
+<ssmblnRothRoll~N> No  
+Are 403b rollovers allowed by the plan?
+ 	<ssmbln403bRoll~Y> Yes	
+<ssmbln403bRoll~N> No  
+Are 457 rollovers allowed by the plan?
+ 	<ssmbln457Roll~Y> Yes	
+<ssmbln457Roll~N> No  
+Are after-tax rollovers allowed by the plan?
+ 	<ssmblnATKRoll~Y> Yes	
+<ssmblnATKRoll~N> No 
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬ 401(k) Contributions
+
+ Employee elective deferrals allowed by the Plan?                                                       	<ssmblnBEF~Y> Yes	
+<ssmblnBEF~N> No 	
+
+Is the plan a Safe Harbor 401(k)?                                                                                            	<ssmblnSHPlan~Y> Yes	
+<ssmblnSHPlan~N> No  	
+
+Will American Funds be tracking deferrals?                                                                                       	  <ssmblnAFDefTrack> Yes
+  <ssmblnAFDefTrack> No
+How do you want the deferrals tracked?
+ 
+Percentage                                                                                                                                                                          
+ 
+Minimum deferral percentage
+<ssmMinDefPerBTK> %
+Maximum deferral percentage
+<ssmMaxDefPerBTK>%
+Dollars                                                                                                                                                                                 
+ 
+Minimum annual deferral amount
+$<ssmMinDefDolBTK>
+Maximum annual deferral amount
+<ssmMaxDefDolBTK>
+Dollars and Percentage                                                                                                                                                               
+Minimum annual deferral amount 
+$<ssmMinDefDolBTK>	Minimum deferral percentage
+<ssmMinDefPerBTK>%
+Maximum annual deferral amount 
+<ssmMaxDefDolBTK>	Maximum deferral percentage
+<ssmMaxDefPerBTK> %
+
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬ 401(k) Catch-up Contributions
+
+Are Catch-up elections allowed?                                                                       	<ssmblnCatchUp~Y> Yes  	
+<ssmblnCatchUp~N> No	
+
+Does your payroll software require catch-ups to be tracked separately?                                                                                        	<ssmblnCatchUptrack~Y> Yes  	
+<ssmblnCatchUptrack~N> No	
+
+How should be tracked?
+ 	  <ssmCatchUpDefTrackMethod>
+
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬Auto-Enrollment Feature
+
+Does the Plan utilize an automatic enrollment feature?   	<ssmblnautoenroll~Y>  Yes	
+<ssmblnautoenroll~N>  No  	
+
+Will American Funds track automatic enrollment?   	<ssmblnAFautoenrolltrack~Y> Yes 	
+<ssmblnAFautoenrolltrack~N> No
+	
+
+Is this an existing Automatic Enrollment feature?  	<ssmblnexistautoenroll~Y> Yes   	
+<ssmblnexistautoenroll~N> No	
+
+Do you want to have American Funds mail annual Automatic Enrollment notices to participants?	<ssmblnAFannNotification~Y> Yes   	
+<ssmblnAFannNotification~N> No	
+
+Type of Automatic Enrollment Arrangement used	<ssmblnQACAType~Y> QACA 
+<ssmblnEACA~Y>  EACA
+<ssmblnACA~Y> ACA
+
+
+
+ 
+
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬QACA Provisions
+
+What is the beginning default auto-enroll percentage (3% - 10%)	  <ssmQACAdefautoenrollPer> %   
+Will the plan increase the default deferral percentage?
+Note: Scheduled deferral increase are required if the beginning default auto enroll is less than 6%.	<ssmblnQACAdefinc~Y> Yes	
+<ssmblnQACAdefinc~N> No	
+
+What percentage will the automatic deferral increase annually?   
+Note: Increases will be applied at the beginning of each plan year.  For the first increase, this will occur at the beginning of the plan year once the participant is at the initial default rate for a minimum of 12 months.	  <ssmQACAannualDefInc> %  
+Maximum automatic deferral percentage:	  <ssmQACAmaxAutoDef>%  
+Safe Harbor election method:   	  <ssmQACASHelection>
+QACA Vesting schedule:	  <ssmQACAVestingSch>
+Please describe your Vesting Schedule:	  <ssmQACAVestingSchDesc>
+Can forfeitures be used to pay plan expenses?	<ssmblnQACAForfPayExp~Y> Yes    
+<ssmblnQACAForfPayExp~N> No  
+
+Can forfeitures be used to reallocate?	<ssmblnQACAForfRealloc~Y> Yes 
+<ssmblnQACAForfRealloc~N> No  
+
+Can forfeitures be used to reduce employer contributions?	<ssmblnQACARedERCont~Y> Yes    
+<ssmblnQACARedERCont~N> No  
+
+Can forfeitures be used for the same money type as the QACA or all employer monies?	  <ssmQACAForfRedMethod>  
+Will the plan allow the permissible withdrawal election?  
+Note: QDIA election applies to QACA if the 90 day permissible withdrawals is permitted.	<ssmblnPermWD~Y> Yes	
+<ssmblnPermWD~N> No	
+
+How will the QACA provision be applied? – Not applicable if Automatic Enrollment feature was previously existing
+<ssmblnQACAapply~Option A>	Option A: applies to all participants regardless of any prior salary reduction agreement unless and until they make a contrary election after the Automatic Deferral Effective Date.
+<ssmblnQACAapply~Option B>	Option B: only to participants whose current salary reduction agreement is less than the automatic deferral percentage. 
+<ssmblnQACAapply~Option C>	Option C: applies only to participants who do not have an existing salary reduction agreement in effect.
+
+
+  
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬EACA Provisions
+
+What is the beginning default auto-enroll percentage (3% - 10%)	  <ssmEACAdefautoenroll>%   
+Will the plan increase the default deferral percentage?	<ssmblnEACAdefinc~Y> Yes	
+<ssmblnEACAdefinc~N> No	
+
+What percentage will the automatic deferral increase annually?   
+Note: Increases will applied at the beginning of each plan year.	  <ssmEACAannualDefInc>%
+Maximum automatic deferral percentage:	  <ssmEACAmaxAutoDef>%        
+How will the EACA provision be applied? – Not applicable if Automatic Enrollment Feature was previously existing
+Note: To take advantage of the 6 month extension for discrimination testing, the EACA provision must apply to all existing participants within the plan (defined as Covered Employees by the IRS).
+<ssmblnEACAapply~Option A>	Option A: applies to all participants regardless of any prior salary reduction agreement unless and until they make a contrary election after the Automatic Deferral Effective Date.
+<ssmblnEACAapply~Option B>	Option B - only to participants whose current salary reduction agreement is less than the automatic deferral percentage.     
+<ssmblnEACAapply~Option C>	Option C - only to those participants who do not have an existing salary reduction agreement in effect     
+<ssmblnEACAapply~Option D>	Option D: applies only to those employees who become eligible on or after the following date:  <ssmEACAapplydate> (Note: option D is only available if you have a record of all affirmative elections from all eligible employees prior to the automatic deferral effective date.  The 6 month extension for discrimination testing will not apply if this provision D is selected. 
+ 
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬ACA Provisions
+
+What is the beginning default auto-enroll percentage (1% - 10%)	  <ssmACAdefAutoEnroll>%   
+Will the plan increase the default deferral percentage?	<ssmblnACAdefinc~Y> Yes	
+<ssmblnACAdefinc~N> No  	
+
+What percentage will the automatic deferral increase annually?   	  <ssmACAannualDefinc>%  
+Maximum automatic deferral percentage:	  <ssmACAmaxAutoDefPer>%        
+How will the ACA provision be applied? – Not applicable if the Automatic Enrollment feature was previously existing.
+The Permissible withdrawal election is not allowed under ACA.
+<ssmblnACAapply~Option A>	Option A: applies to all participants regardless of any prior salary reduction agreement unless and until they make a contrary election after the Automatic Deferral Effective Date.
+<ssmblnACAapply~Option B>	Option B: only to participants whose current salary reduction agreement is less than the automatic deferral percentage.
+<ssmblnACAapply~Option C>	Option C: applies only to participants who do not have an existing salary reduction agreement in effect.
+<ssmblnACAapply~Option D>	Option D: apply only to those employees who become eligible on or after the following date:  <ssmACAapplydate>  (NoteL option D is only available if you have a record of all affirmative elections from all eligible employees prior to the automatic deferral effective date.
+
+Please note:  Automatic Enrollment requires an initial notice be provided to participants prior to their participation in the plan.  American Funds can provide you with a sample notice that you can customize and provide to your participants. 
+
+
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬Match Contributions
+
+Will the plan make matching contributions?                                          	<ssmblnMatch~Y> Yes
+<ssmblnMatch~N> No
+
+Is the matching formula a fixed or discretionary contribution? 
+ 	  <ssmebmatchformula> 
+Will the participants be restricted from directing how the match is invested?                                                                                                         	<ssmblnMatchERDirected~Y> Yes    
+<ssmblnMatchERDirected~N> No  
+
+Vesting Schedule?                                                                                      	<ssmMatchVestingSch>
+Please describe your Vesting Schedule:                                               	<ssmMatchVestingSchDesc> 
+
+Can forfeitures be used to pay Plan expenses?                         
+ 	<ssmblnMatchForfPayExp~Y> Yes    
+<ssmblnMatchForfPayExp~N> No  
+
+Can forfeitures be reallocated to participants in excess of existing Match contribution?                                                                               
+ 	<ssmblnMatchForfRealloc~Y> Yes 
+<ssmblnMatchForfRealloc~N> No  
+
+Can forfeiture money be used to reduce the employers contributions?                                                                                                   	<ssmblnMatchRedERCont~Y> Yes    
+<ssmblnMatchRedERCont~N> No  
+
+Can forfeitures be used for match only or all employer monies?                                                                                    	  <ssmMatchForfRedMethod>  
+Allocation conditions of Employer Matching contributions?	  <ssmblnMatchAllocCond~Y> Yes
+  <ssmblnMatchAllocCond~N> No 
+Must be employed on the last day of the plan year OR have more than 500 hours of service for the plan year?	  <ssmblnMatchLDor500~Y> Yes
+  <ssmblnMatchLDor500~N> No
+Must be employed on the last day of the plan year?	  <ssmblnMatchLastDay~Y> Yes
+  <ssmblnMatchLastDay~N> No
+Must be credited with hours of service?	  <ssmblnMatchHourServ~Y> Yes
+  <ssmblnMatchHourServ~N> No
+What are the minimum credit hours of service?	  <ssmMatchMinServ>
+The Match allocation conditions will not apply if the participant:	  <ssmMatchDeathExclude>
+  <ssmMatchNRAExclude>
+  <ssmMatchDisabledExclude>
+
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬Profit Sharing Contributions
+
+Does the Plan allow for profit sharing contributions?                  
+ 	<ssmblnPS~Y> Yes  	
+<ssmblnPS~N> No	
+
+Will the participants be restricted from directing how the profit sharing is invested?                                                                           
+ 	<ssmblnPSERDirected~Y> Yes  	
+<ssmblnPSERDirected~N> No	
+
+Vesting schedule?                                                                                	<ssmPSVestingSch>
+Please describe your Vesting Schedule:                                          
+ 	<ssmPSVestingSchDesc> 
+Can forfeitures be used to pay plan expenses?                                                   	<ssmblnPSForfPayExp~Y> Yes	
+<ssmblnPSForfPayExp~N>No  	
+
+Can forfeitures be used to reallocate?                                            
+ 	<ssmblnPSForfRealloc~Y> Yes 	
+<ssmblnPSForfRealloc~N> No  	
+
+Can forfeiture money be used to reduce the employers contributions?                                                                           
+ 	<ssmblnPSRedERCont~Y> Yes    	
+<ssmblnPSRedERCont~N> No  	
+
+Can forfeitures be used for profit sharing only or all employer monies?                                                                
+ 	  <ssmPSForfRedMethod>  
+
+Allocation conditions of Profit Sharing contributions?	  <ssmblnPSAllocCond~Y> Yes
+  <ssmblnPSAllocCond~N> No
+Must be employed on the last day of the plan year OR have more than 500 hours of service for the plan year?	  <ssmblnPSAllocCondLD500~Y> Yes
+  <ssmblnPSAllocCondLD500~N> No
+Must be employed on the last day of the plan year?	  <ssmblnPSAllocCondLD~Y> Yes
+  <ssmblnPSAllocCondLD~N> No
+Must be credited with hours of service?	  <ssmblnPSAllocCondHrsServ~Y> Yes
+  <ssmblnPSAllocCondHrsServ~N> No
+What are the minimum credit hours of service?	  <ssmPSAllocCondMinHrsServ>
+The Profit Sharing allocation conditions will not apply if the participant:	  <ssmPSDeathExclude>
+  <ssmPSNRAExclude>
+  <ssmPSDisabledExclude>
+
+
+
+
+¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬¬Money Purchase Contributions
+
+Does the Plan allow for money purchase contributions?          
+ 	<ssmblnMP~Y> Yes
+<ssmblnMP~N> No  
+
+What is the Money Purchase contribution formula that should be displayed in the enrollment guide? 
+ 	<ssmebmoneypurchase>
+Will the participants be restricted from directing how the money purchase is invested:
+ 	<ssmblnMPERDirected~Y> Yes
+<ssmblnMPERDirected~N> No
+
+Vesting schedule?  
+ 	<ssmMPVestingSch>
+Please describe your Vesting Schedule  
+ 	<ssmMPVestingSchDesc> 
+Can forfeitures be used to pay plan expenses?    
+ 	<ssmblnMPForfPayExp~Y> Yes  
+<ssmblnMPForfPayExp~N> No  
+
+Can forfeitures be used to reallocate?    
+ 	<ssmblnMPForfRealloc~Y> Yes   
+<ssmblnMPForfRealloc~N> No  
+
+Can forfeiture money be used to reduce the employers contributions?    
+ 	<ssmblnMPRedERCont~Y> Yes  
+<ssmblnMPRedERCont~N> No  
+
+Allocation conditions of Money Purchase contributions?	  <ssmblnMPAllocCond~Y> Yes
+  <ssmblnMPAllocCond~N> No 
+Must be employed on the last day of the plan year OR have more than 500 hours of service for the plan year?	  <ssmblnMPAllocCondLD500~Y> Yes
+  <ssmblnMPAllocCondLD500~N> No
+Must be employed on the last day of the plan year?	  <ssmblnMPAllocCondLD~Y> Yes
+  <ssmblnMPAllocCondLD~N> No
+Must be credited with hours of service?	  <ssmblnMPAllocCondHrsServ~Y> Yes
+  <ssmblnMPAllocCondHrsServ~N> No
+What are the minimum credit hours of service?	  <ssmMPAllocCondMinHrsServ>
+The Money Purchase allocation conditions will not apply if the participant:	  <ssmMPDeathExclude>
+  <ssmMPNRAExclude>
+  <ssmMPDisabledExclude>
+
+
+
+
+After-Tax Contributions
+
+Are after-tax contributions allowed by the Plan?                         
+ 	<ssmblnATK~Y> Yes
+<ssmblnATK~N> No  
+
+How do you want after-tax contributions tracked?                         
+ 	  <ssmAftTaxDef>
+Is there a minimum after-tax percentage allowed by the Plan? 
+ 	  <ssmATKMinPer>%
+Is there a maximum after-tax percentage allowed by the Plan? 
+ 	  <ssmATKMaxPer>%
+
+Is there a minimum after-tax amount allowed by the Plan? 
+Page 3	  $<ssmATKMinDol>
+ 
+Is there a maximum after-tax amount allowed by the Plan? 
+Page 3	  $<ssmATKMaxDol>
+
+
+
+
+
+Roth Contributions
+
+Are Roth contributions allowed by the plan?                      
+ 	<ssmblnRoth~Y> Yes
+<ssmblnRoth~N> No  
+
+Does the plan allow Roth Corrective distributions?       
+ 	<ssmblnRothCorrDist~Y> Yes
+<ssmblnRothCorrDist~N> No   
+
+Does the plan allow In Plan Roth Rollovers?                   
+ 	<ssmblnInPlanRothRollover~Y> Yes
+<ssmblnInPlanRothRollover~N> No  
+
+Does the plan allow In Plan Roth Transfers?                     
+ 	<ssmblnInPlanRothTransfer~Y> Yes
+<ssmblnInPlanRothTransfer~N> No
+
+Are there any other distributable events applicable to In Plan Roth Rollovers that are not otherwise allowable in-service distributions?                                                                  
+ 	<ssmblnInPlanRothOtherDist~Y> Yes
+<ssmblnInPlanRothOtherDist~N> No
+
+Please describe if you have any restrictions on In Plan Roth Rollovers/Transfers (e.g., 100% vesting requirements, money source limitations, etc.), or input "None" in following text box:
+ 	<ssmebInPlanRothRestDesc>
+Confirm the money type order for corrective distributions: 
+ 	<ssmRothCorrDistWDOrder>
+
+
+
+
+Additional Money Types
+
+
+Does the plan allow for a non-QACA Safe Harbor Match?         
+ 	  <ssmblnNon_QACA_Safe_Harbor_Match~Y> Yes
+  <ssmblnNon_QACA_Safe_Harbor_Match~N> No
+Does the plan allow for a non-QACA Safe Harbor Profit Sharing?                                                                               	  <ssmblnNon_QACA_Safe_Harbor_Profit_Sharing~Y> Yes
+  <ssmblnNon_QACA_Safe_Harbor_Profit_Sharing~N> No
+Does the plan allow for a Qualified Matching Contribution (QMAC)? 
+ 	  <ssmblnQMAC~Y> Yes
+  <ssmblnQMAC~N> No
+Does the plan allow for a Qualified Non-Elective Contribution (QNEC)?                                                                                    	  <ssmblnQNEC~Y> Yes
+  <ssmblnQNEC~N> No
+
+
+
 Fatal Error] :3:1: Content is not allowed in prolog.
 org.xml.sax.SAXParseException; lineNumber: 3; columnNumber: 1; Content is not allowed in prolog.
 	at java.xml/com.sun.org.apache.xerces.internal.parsers.DOMParser.parse(DOMParser.java:262)
