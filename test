@@ -1,3 +1,28 @@
+ ContactInfoEntity contactInfoEntity = new ContactInfoEntity();
+
+            contactInfoEntity.setContactId(Long.parseLong(getElementValue(root, "contact_id")));
+            contactInfoEntity.setFirstName(getElementValue(root, "first_name"));
+            contactInfoEntity.setLastName(getElementValue(root, "last_name"));
+            contactInfoEntity.setJobTitle(getElementValue(root, "job_title"));
+            contactInfoEntity.setCompanyName(getElementValue(root, "company_name"));
+            contactInfoEntity.setFirstLineMailing(getElementValue(root, "first_line_mailing"));
+            contactInfoEntity.setSecondLineMailing(getElementValue(root, "scnd_line_mailing"));
+            contactInfoEntity.setCity(getElementValue(root, "city"));
+            contactInfoEntity.setStateCode(getElementValue(root, "state_code"));
+            contactInfoEntity.setZipCode(getElementValue(root, "zip_code"));
+            contactInfoEntity.setCountry(getElementValue(root, "country"));
+            contactInfoEntity.setPhoneNbr(getElementValue(root, "phone_nbr"));
+            contactInfoEntity.setFaxNbr(getElementValue(root, "fax_nbr"));
+            contactInfoEntity.setEmailAddress(getElementValue(root, "email_address"));
+
+            // Assuming contact_roles is a list of strings
+            NodeList contactRoleNodes = root.getElementsByTagName("contact_role");
+            for (int i = 0; i < contactRoleNodes.getLength(); i++) {
+                contactInfoEntity.getContactRoles().add(contactRoleNodes.item(i).getTextContent());
+            }
+
+            contactInfoRepository.save(contactInfoEntity);
+
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
