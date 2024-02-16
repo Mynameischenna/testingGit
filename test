@@ -1,3 +1,167 @@
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.List;
+
+@Entity
+public class ContactInfoEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private Long contactId;
+    private String firstName;
+    private String lastName;
+    private String jobTitle;
+    private String companyName;
+    private String firstLineMailing;
+    private String secondLineMailing;
+    private String city;
+    private String stateCode;
+    private String zipCode;
+    private String country;
+    private String phoneNbr;
+    private String faxNbr;
+    private String emailAddress;
+
+    @ElementCollection
+    private List<String> contactRoles;
+
+    // Getters and setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(Long contactId) {
+        this.contactId = contactId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getFirstLineMailing() {
+        return firstLineMailing;
+    }
+
+    public void setFirstLineMailing(String firstLineMailing) {
+        this.firstLineMailing = firstLineMailing;
+    }
+
+    public String getSecondLineMailing() {
+        return secondLineMailing;
+    }
+
+    public void setSecondLineMailing(String secondLineMailing) {
+        this.secondLineMailing = secondLineMailing;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhoneNbr() {
+        return phoneNbr;
+    }
+
+    public void setPhoneNbr(String phoneNbr) {
+        this.phoneNbr = phoneNbr;
+    }
+
+    public String getFaxNbr() {
+        return faxNbr;
+    }
+
+    public void setFaxNbr(String faxNbr) {
+        this.faxNbr = faxNbr;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public List<String> getContactRoles() {
+        return contactRoles;
+    }
+
+    public void setContactRoles(List<String> contactRoles) {
+        this.contactRoles = contactRoles;
+    }
+}
+
+
 @PostMapping("/process-xml")
 public ResponseEntity<String> processXmlData(@RequestBody String xmlData) {
     try {
