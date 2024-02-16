@@ -1,3 +1,59 @@
+@PostMapping("/process-xml")
+public ResponseEntity<String> processXmlData(@RequestBody String xmlData) {
+    try {
+        DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+        Document document = dbuilder.parse(new InputSource(new StringReader(xmlData)));
+
+        NodeList parentNodes = document.getElementsByTagName("*"); // Get all parent nodes
+
+        for (int i = 0; i < parentNodes.getLength(); i++) {
+            Element parent = (Element) parentNodes.item(i);
+
+            switch (parent.getTagName()) {
+                case "user_info":
+                    saveUserInfo(parent);
+                    break;
+                // Add cases for other parent tags as needed
+                // case "another_parent_tag":
+                //     saveAnotherParentTagData(parent);
+                //     break;
+            }
+        }
+
+        return new ResponseEntity<>("Data saved successfully", HttpStatus.OK);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new ResponseEntity<>("Failed to process XML data", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
+
+private void saveUserInfo(Element parent) {
+    xmlEntity xmlEntity = new xmlEntity();
+
+    xmlEntity.setLogonId(getElementValue(parent, "logon_id"));
+    xmlEntity.setLastName(getElementValue(parent, "last_name"));
+    xmlEntity.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+    xmlEntity.setJobTitle(getElementValue(parent, "job_title"));
+    xmlEntity.setMiddleName(getElementValue(parent, "middle_name"));
+    xmlEntity.setAreaCode(getElementValue(parent, "area_code"));
+    xmlEntity.setFirstName(getElementValue(parent, "first_name"));
+    xmlEntity.setEmailAddress(getElementValue(parent, "email_address"));
+
+    repo.save(xmlEntity);
+}
+
+// Add similar methods for other parent tags as needed
+
+private String getElementValue(Element parseElement, String childTagName) {
+    NodeList childNodes = parseElement.getElementsByTagName(childTagName);
+    if (childNodes.getLength() > 0) {
+        return childNodes.item(0).getTextContent();
+    }
+    return null;
+}
+
+
 private final xmlRepo repo;
 
 @Autowired
