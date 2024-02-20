@@ -1,3 +1,120 @@
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Range;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+public class DocxReplaceController {
+
+    @Autowired
+    private XmlEntityRepository xmlEntityRepository;
+
+    @Autowired
+    private PlanInfoService planInfoService;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+    @Autowired
+    private ContactInfoService contactInfoService;
+
+    @PostMapping("/generate-docx-files")
+    public ResponseEntity<List<String>> generateDocxFiles() {
+        try {
+            // Fetch all data from the database
+            List<XmlEntity> allXmlEntities = xmlEntityRepository.findAll();
+
+            // Create a list to store the file paths of the generated DOCX files
+            List<String> filePaths = generateDocxFiles(allXmlEntities);
+
+            return ResponseEntity.ok().body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private List<String> generateDocxFiles(List<XmlEntity> xmlEntityList) throws IOException {
+        // Create a list to store the file paths of the generated DOCX files
+        List<String> filePaths = new ArrayList<>();
+
+        // Iterate over the data fetched from the database
+        for (XmlEntity xmlEntity : xmlEntityList) {
+            try {
+                // Read the DOCX template file content
+                byte[] dotTemplateContent = Files.readAllBytes(Paths.get("C:\\TestXML\\af_plan_provision_summary_document_section_1_09.2020.dot"));
+
+                // Replace XML tags in the DOCX file for PlanInfo, UserInfo, and ContactInfo
+                byte[] modifiedDocument = replacePlanInfoTagsInDocx(dotTemplateContent, xmlEntity.getPlanInfo());
+                modifiedDocument = replaceUserInfoTagsInDocx(modifiedDocument, xmlEntity.getUserInfo());
+                modifiedDocument = replaceContactInfoTagsInDocx(modifiedDocument, xmlEntity.getContactInfo());
+
+                // Save the modified DOCX file
+                String filePath = saveModifiedDocxFile(modifiedDocument, xmlEntity.getEvId());
+
+                // Add the file path to the list
+                filePaths.add(filePath);
+            } catch (IOException e) {
+                // Handle exceptions for the current xmlEntity if needed
+                e.printStackTrace();
+            }
+        }
+
+        return filePaths;
+    }
+
+    private byte[] replacePlanInfoTagsInDocx(byte[] docContent, PlanInfo planInfo) throws IOException {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(docContent);
+             HWPFDocument document = new HWPFDocument(inputStream);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            replaceTags(document, planInfo);
+            document.write(outputStream);
+
+            return outputStream.toByteArray();
+        }
+    }
+
+    private byte[] replaceUserInfoTagsInDocx(byte[] docContent, UserInfo userInfo) throws IOException {
+        // Implement this method similar to replacePlanInfoTagsInDocx
+    }
+
+    private byte[] replaceContactInfoTagsInDocx(byte[] docContent, ContactInfo contactInfo) throws IOException {
+        // Implement this method similar to replacePlanInfoTagsInDocx
+    }
+
+    private void replaceTags(HWPFDocument document, PlanInfo planInfo) {
+        // Implement this method to replace tags in the document for PlanInfo
+    }
+
+    private String saveModifiedDocxFile(byte[] modifiedDocxContent, Long evId) throws IOException {
+        String filePath = "C:\\dummy xml\\" + evId + "_modified.doc";
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+            fileOutputStream.write(modifiedDocxContent);
+        }
+        return filePath;
+    }
+}
+
+
+
+
+
+
+
+
+
 package com.example.plan.xmlEntityControlller;
 
 import org.apache.poi.hwpf.HWPFDocument;
