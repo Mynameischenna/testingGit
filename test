@@ -1,3 +1,102 @@
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+public class DocxReplaceController {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepository;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+    @Autowired
+    private ContactInfoRepository contactInfoRepository;
+
+    @PostMapping("/generate-docx-files")
+    public ResponseEntity<List<String>> generateDocxFiles() {
+        try {
+            List<String> filePaths = new ArrayList<>();
+
+            List<PlanInfo> planInfos = planInfoRepository.findAll();
+            List<UserInfo> userInfos = userInfoRepository.findAll();
+            List<ContactInfo> contactInfos = contactInfoRepository.findAll();
+
+            filePaths.addAll(generateDocxFiles(planInfos, "C:\\SingleTemplate.dot"));
+            filePaths.addAll(generateDocxFiles(userInfos, "C:\\SingleTemplate.dot"));
+            filePaths.addAll(generateDocxFiles(contactInfos, "C:\\SingleTemplate.dot"));
+
+            return ResponseEntity.ok().body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private <T extends BaseEntity> List<String> generateDocxFiles(List<T> entities, String templatePath) throws IOException {
+        List<String> filePaths = new ArrayList<>();
+
+        byte[] templateContent = Files.readAllBytes(Paths.get(templatePath));
+
+        for (T entity : entities) {
+            try {
+                byte[] modifiedDocument = replaceTagsInDocx(templateContent, entity);
+
+                String filePath = saveModifiedDocxFile(modifiedDocument, entity.getEvId());
+
+                filePaths.add(filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return filePaths;
+    }
+
+    private <T extends BaseEntity> byte[] replaceTagsInDocx(byte[] docxContent, T entity) throws IOException {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(docxContent);
+             XWPFDocument document = new XWPFDocument(inputStream);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            replaceTags(document, entity);
+            document.write(outputStream);
+
+            return outputStream.toByteArray();
+        }
+    }
+
+    private <T extends BaseEntity> void replaceTags(XWPFDocument document, T entity) {
+        for (XWPFParagraph paragraph : document.getParagraphs()) {
+            for (XWPFRun run : paragraph.getRuns()) {
+                String text = run.getText(0);
+                if (text != null) {
+                    for (Map.Entry<String, String> entry : entity.getAttributes().entrySet()) {
+                        text = text.replace(entry.getKey(), entry.getValue());
+                    }
+                    run.setText(text, 0);
+                }
+            }
+        }
+    }
+
+    private <T extends BaseEntity> String saveModifiedDocxFile(byte[] modifiedDocxContent, String evId) throws IOException {
+        String filePath = "C:\\dummy xml\\" + evId + "_modified.docx";
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+            fileOutputStream.write(modifiedDocxContent);
+        }
+        return filePath;
+    }
+}
+
+
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Range;
 import org.springframework.beans.factory.annotation.Autowired;
