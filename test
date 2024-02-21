@@ -1,3 +1,81 @@
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+@RestController
+public class XmlToDocxController {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepository;
+
+    @PostMapping("/generate-docx-file")
+    public ResponseEntity<String> generateDocxFile() {
+        try {
+            Optional<PlanInfo> planInfoOptional = planInfoRepository.findById(1L);
+
+            if (planInfoOptional.isPresent()) {
+                PlanInfo planInfo = planInfoOptional.get();
+
+                // Read the DOCX template file content
+                byte[] dotTemplateContent = Files.readAllBytes(Paths.get("C:\\Template.docx"));
+
+                // Replace tags in the DOCX file
+                byte[] modifiedDocument = replaceTagsInDocx(dotTemplateContent, planInfo);
+
+                // Save the modified DOCX file
+                String filePath = saveModifiedDocxFile(modifiedDocument, planInfo.getEvId());
+
+                return ResponseEntity.ok().body("Generated DOCX file at: " + filePath);
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("PlanInfo entity not found");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error generating DOCX file");
+        }
+    }
+
+    private byte[] replaceTagsInDocx(byte[] docxContent, PlanInfo planInfo) throws IOException {
+        String docxText = new String(docxContent, StandardCharsets.UTF_8);
+
+        // Define your tag replacements
+        Map<String, String> tagReplacements = Map.of(
+                "<evId>", planInfo.getEvId(),
+                "<planName>", planInfo.getPlanName()
+                // Add more tag replacements as needed
+        );
+
+        // Iterate through the tag replacements
+        for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+            String tag = entry.getKey();
+            String replacement = entry.getValue();
+
+            // Replace the tag in the document
+            docxText = docxText.replace(tag, replacement);
+        }
+
+        return docxText.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private String saveModifiedDocxFile(byte[] modifiedDocxContent, String evId) throws IOException {
+        String filePath = "C:\\dummy xml\\" + evId + "_modified.docx";
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+            fileOutputStream.write(modifiedDocxContent);
+        }
+        return filePath;
+    }
+}
+
+
 The method generateDocxFiles(List<T>, String) in the type ReplaceDocxTags is not applicable for the arguments (List<ContactInfo>, String)
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
