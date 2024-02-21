@@ -1,3 +1,4 @@
+The method generateDocxFiles(List<T>, String) in the type ReplaceDocxTags is not applicable for the arguments (List<ContactInfo>, String)
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
