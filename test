@@ -1,3 +1,55 @@
+const onClickOkSConfirmModel= async (row:BatchSource)=>{
+            setShowBATSConfirmModel(false);
+            let response:any=null;
+           
+                response= removeBatchSource({id: row.id, bkaCode: row.bkaCode, bkaTypeCode: row.bkaTypeCode, db: selectedDb});
+           
+            if(response?.data===200){
+                setShowBATSConfirmModelSuccess(true);
+              }else if(response==null||response.error?.data?.error?.message===null){
+                setShowBATSConfirmModel(false);
+                setAPIErrorMessage("Unknown error occurred");
+            }else if(response?.error?.status===500){
+                setShowBATSConfirmModel(false);
+                setAPIErrorMessage(response.error?.data?.error?.message);
+            }
+        }
+ <InprogressComponent inProgress={isFetchin... by JS, Shravani
+JS, Shravani
+9:28 PM
+ <InprogressComponent inProgress={isFetching}/>
+ 
+        <ConfirmModal
+                show={showBATSConfirmModel}
+                onClickOk={onClickOkSConfirmModel}
+                onClickClose={() => setShowBATSConfirmModel(false)}
+                confirmModelBtnName={"ok"}
+                cancelModelBtnName={"Cancel"}>
+                <b>Are you sure to delete the Batch Source?</b>
+            </ConfirmModal>
+         
+<td>                         <Button varian... by JS, Shravani
+JS, Shravani
+9:28 PM
+<td>
+                        <Button variant="secondary" size="sm"
+                        onClick={() => setShowBATSConfirmModel(true)}
+                        >Delete </Button>
+                    </td>
+const [errorMessage,setErrorMessage]=React.... by JS, Shravani
+JS, Shravani
+9:29 PM
+const [errorMessage,setErrorMessage]=React.useState("");
+ 
+    const [showBATSConfirmModel,setShowBATSConfirmModel]=React.useState(false);
+ 
+    const [removeBatchSource]=useDeleteBatchSourceMutation();
+   
+    const [showBATSConfirmModelSuccess,setShowBATSConfirmModelSuccess]=React.useState<boolean>(false);
+ 
+    const [apiErrorResMessage, setAPIErrorMessage] = React.useState("");
+has context menu
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
