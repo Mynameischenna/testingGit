@@ -1,3 +1,130 @@
+// Import statements...
+
+@RestController
+public class ReplaceDocxTags {
+
+    @Autowired
+    private Map<String, JpaRepository<?, String>> entityRepositories; // Autowire repositories for multiple entities
+
+    @PostMapping("/generate-docx-files")
+    public ResponseEntity<List<String>> generateDocxFiles() {
+        try {
+            // List of entity classes you want to process
+            List<Class<?>> entityClasses = Arrays.asList(UserInfo.class, ContactInfo.class);
+
+            // Create a list to store the file paths of the generated DOCX files
+            List<String> filePaths = generateDocxFiles(entityClasses);
+
+            return ResponseEntity.ok().body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private List<String> generateDocxFiles(List<Class<?>> entityClasses) throws IOException {
+        // Create a list to store the file paths of the generated DOCX files
+        List<String> filePaths = new ArrayList<>();
+
+        // Iterate over the specified entity classes
+        for (Class<?> entityClass : entityClasses) {
+            // Fetch all data from the database for the current entity class
+            JpaRepository<?, String> entityRepository = entityRepositories.get(entityClass.getSimpleName());
+            List<?> allEntities = entityRepository.findAll();
+
+            // Create a list to store the file paths for the current entity class
+            List<String> entityFilePaths = generateDocxFiles(allEntities);
+
+            // Add the file paths to the main list
+            filePaths.addAll(entityFilePaths);
+        }
+
+        return filePaths;
+    }
+
+    private List<String> generateDocxFiles(List<?> entities) throws IOException {
+        // Create a list to store the file paths of the generated DOCX files
+        List<String> filePaths = new ArrayList<>();
+
+        // Iterate over the entities
+        for (Object entity : entities) {
+            try {
+                // Read the DOCX template file content
+                byte[] dotTemplateContent = Files.readAllBytes(Paths.get("C:\\TestXML\\Plan Express Specifications2.doc"));
+
+                // Replace XML tags in the DOCX file
+                byte[] modifiedDocument = replaceXmlTagsInDocx(dotTemplateContent, entity);
+
+                // Save the modified DOCX file
+                String filePath = saveModifiedDocxFile(modifiedDocument, entity.getClass().getSimpleName());
+
+                // Add the file path to the list
+                filePaths.add(filePath);
+            } catch (IOException e) {
+                // Handle exceptions for the current entity if needed
+                e.printStackTrace();
+            }
+        }
+
+        return filePaths;
+    }
+
+    private byte[] replaceXmlTagsInDocx(byte[] dotContent, Object entity) throws IOException {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(dotContent);
+             HWPFDocument document = new HWPFDocument(inputStream);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+            replaceTags(document, entity);
+            document.write(outputStream);
+
+            return outputStream.toByteArray();
+        }
+    }
+
+    private void replaceTags(HWPFDocument document, Object entity) {
+        Range range = document.getRange();
+
+        // Define your tag replacements based on the entity class
+        if (entity instanceof UserInfo) {
+            UserInfo userInfo = (UserInfo) entity;
+            Map<String, String> tagReplacements = Map.of(
+                    "<userName>", userInfo.getUserName(),
+                    "<userEmail>", userInfo.getUserEmail()
+                    // Add more tag replacements as needed
+            );
+
+            // Iterate through the tag replacements
+            for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+                String tag = entry.getKey();
+                String replacement = entry.getValue();
+
+                // Debugging: Print the tag and replacement value
+                System.out.println("Replacing tag: " + tag);
+                System.out.println("With value: " + replacement);
+
+                // Replace the tag in the document
+                range.replaceText(tag, replacement);
+            }
+        } else if (entity instanceof ContactInfo) {
+            ContactInfo contactInfo = (ContactInfo) entity;
+            // Define tag replacements for ContactInfo entity
+            // ...
+        }
+
+        // Add more conditions for other entity classes as needed
+    }
+
+    private String saveModifiedDocxFile(byte[] modifiedDocxContent, String className) throws IOException {
+        String filePath = "C:\\dummy xml\\" + className + "_modified.doc";
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+            fileOutputStream.write(modifiedDocxContent);
+        }
+        return filePath;
+    }
+}
+
+
+
+
 package com.hrlc.compliance.controller;
 
 import org.apache.poi.hwpf.HWPFDocument;
