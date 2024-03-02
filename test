@@ -1,3 +1,32 @@
+private void replaceTagsInDot(String dotFilePath, PlanInfo planInfo, UserInfo userInfo, ContactInfo contactInfo) throws IOException {
+    try {
+        // Read the .dot file content using ISO-8859-1 encoding
+        List<String> lines = Files.readAllLines(Paths.get(dotFilePath), StandardCharsets.ISO_8859_1);
+
+        // Replace placeholders in each line
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            line = line.replace("${EV_ID}", planInfo.getEvId())
+                       .replace("${PLAN_NAME}", planInfo.getPlanName())
+                       .replace("${LOGON_ID}", userInfo.getLogonId())
+                       .replace("${CONTACT_ID}", contactInfo.getContactId());
+            lines.set(i, line);
+        }
+
+        // Write the modified content back to the .dot file
+        Files.write(Paths.get(dotFilePath), lines, StandardCharsets.ISO_8859_1);
+    } catch (MalformedInputException e) {
+        // Handle encoding errors gracefully (e.g., skip problematic characters)
+        System.err.println("Encoding error occurred: " + e.getMessage());
+    } catch (IOException e) {
+        // Handle other I/O errors
+        e.printStackTrace();
+    }
+}
+
+
+
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
