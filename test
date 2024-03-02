@@ -1,6 +1,96 @@
 // Import statements and annotations
 
 @RestController
+public class ReplaceDotTags {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private ContactInfoRepository contactInfoRepository;
+
+    @PostMapping("/generate-doc-files")
+    public ResponseEntity<List<String>> generateDocFiles() {
+        try {
+            // Fetch all data from the database
+            List<PlanInfo> allPlanInfos = planInfoRepository.findAll();
+            List<UserInfo> allUserInfos = userInfoRepository.findAll();
+            List<ContactInfo> allContactInfos = contactInfoRepository.findAll();
+
+            // Create a list to store the file paths of the generated DOC files
+            List<String> filePaths = generateDocFiles(allPlanInfos, allUserInfos, allContactInfos);
+
+            return ResponseEntity
+                    .ok()
+                    .body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private List<String> generateDocFiles(List<PlanInfo> planInfos, List<UserInfo> userInfos, List<ContactInfo> contactInfos) throws IOException {
+        // Create a list to store the file paths of the generated DOC files
+        List<String> filePaths = new ArrayList<>();
+
+        // Read the .dot template file content
+        byte[] dotTemplateContent = Files.readAllBytes(Paths.get("C:\\TestXML\\Plan Express Specifications2.dot"));
+
+        // Iterate over each row of data from the tables simultaneously
+        for (int i = 0; i < Math.min(planInfos.size(), Math.min(userInfos.size(), contactInfos.size())); i++) {
+            PlanInfo planInfo = planInfos.get(i);
+            UserInfo userInfo = userInfos.get(i);
+            ContactInfo contactInfo = contactInfos.get(i);
+
+            try {
+                // Replace placeholders in the .dot template and create a new .docx file
+                byte[] modifiedDocument = replaceTagsInDot(dotTemplateContent, planInfo, userInfo, contactInfo);
+
+                // Save the modified DOCX file
+                String filePath = saveModifiedDocFile(modifiedDocument, planInfo.getEvId() + "_" + userInfo.getLogonId() + "_" + contactInfo.getContactId());
+
+                // Add the file path to the list
+                filePaths.add(filePath);
+            } catch (IOException e) {
+                // Handle exceptions for the current entities if needed
+                e.printStackTrace();
+            }
+        }
+
+        return filePaths;
+    }
+
+    private byte[] replaceTagsInDot(byte[] dotTemplateContent, PlanInfo planInfo, UserInfo userInfo, ContactInfo contactInfo) throws IOException {
+        // Replace placeholders in the .dot template with data from PlanInfo, UserInfo, and ContactInfo entities
+        String templateText = new String(dotTemplateContent, StandardCharsets.UTF_8);
+        templateText = templateText.replace("${EV_ID}", planInfo.getEvId())
+                                   .replace("${PLAN_NAME}", planInfo.getPlanName())
+                                   .replace("${LOGON_ID}", userInfo.getLogonId())
+                                   .replace("${CONTACT_ID}", contactInfo.getContactId());
+
+        // Convert the modified text back to byte array
+        return templateText.getBytes(StandardCharsets.UTF_8);
+    }
+
+    private String saveModifiedDocFile(byte[] modifiedDocContent, String fileName) throws IOException {
+        String filePath = "C:\\dummy xml\\" + fileName + "_modified.doc";
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+            fileOutputStream.write(modifiedDocContent);
+        }
+        return filePath;
+    }
+}
+
+
+
+
+
+// Import statements and annotations
+
+@RestController
 public class ReplaceDocxTags {
 
     @Autowired
