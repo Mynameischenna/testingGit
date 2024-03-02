@@ -1,3 +1,110 @@
+// Import statements and annotations
+
+@RestController
+public class ReplaceDocxTags {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private ContactInfoRepository contactInfoRepository;
+
+    @PostMapping("/generate-docx-files")
+    public ResponseEntity<List<String>> generateDocxFiles() {
+        try {
+            // Fetch all data from the database
+            List<PlanInfo> allPlanInfos = planInfoRepository.findAll();
+            List<UserInfo> allUserInfos = userInfoRepository.findAll();
+            List<ContactInfo> allContactInfos = contactInfoRepository.findAll();
+
+            // Create a list to store the file paths of the generated DOCX files
+            List<String> filePaths = generateDocxFiles(allPlanInfos, allUserInfos, allContactInfos);
+
+            return ResponseEntity
+                    .ok()
+                    .body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private List<String> generateDocxFiles(List<PlanInfo> planInfos, List<UserInfo> userInfos, List<ContactInfo> contactInfos) throws IOException {
+        // Create a list to store the file paths of the generated DOCX files
+        List<String> filePaths = new ArrayList<>();
+
+        // Iterate over each row of data from the tables simultaneously
+        for (int i = 0; i < Math.min(planInfos.size(), Math.min(userInfos.size(), contactInfos.size())); i++) {
+            PlanInfo planInfo = planInfos.get(i);
+            UserInfo userInfo = userInfos.get(i);
+            ContactInfo contactInfo = contactInfos.get(i);
+
+            try {
+                // Read the DOCX template file content
+                byte[] templateContent = Files.readAllBytes(Paths.get("C:\\TestXML\\Plan Express Specifications2.docx"));
+
+                // Replace placeholders in the DOCX file
+                byte[] modifiedDocument = replaceTagsInDocx(templateContent, planInfo, userInfo, contactInfo);
+
+                // Save the modified DOCX file
+                String filePath = saveModifiedDocxFile(modifiedDocument, planInfo.getEvId() + "_" + userInfo.getLogonId() + "_" + contactInfo.getContactId());
+
+                // Add the file path to the list
+                filePaths.add(filePath);
+            } catch (IOException e) {
+                // Handle exceptions for the current entities if needed
+                e.printStackTrace();
+            }
+        }
+
+        return filePaths;
+    }
+
+    private byte[] replaceTagsInDocx(byte[] templateContent, PlanInfo planInfo, UserInfo userInfo, ContactInfo contactInfo) throws IOException {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(templateContent);
+             XWPFDocument document = new XWPFDocument(inputStream);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+            // Replace placeholders in the document with data from PlanInfo, UserInfo, and ContactInfo entities
+            replaceTags(document, planInfo, userInfo, contactInfo);
+
+            // Write the modified content to the output stream
+            document.write(outputStream);
+
+            return outputStream.toByteArray();
+        }
+    }
+
+    private void replaceTags(XWPFDocument document, PlanInfo planInfo, UserInfo userInfo, ContactInfo contactInfo) {
+        // Iterate over paragraphs, runs, tables, etc., and replace placeholders accordingly with data from all entities
+        for (XWPFParagraph paragraph : document.getParagraphs()) {
+            for (XWPFRun run : paragraph.getRuns()) {
+                String text = run.getText(0);
+                if (text != null) {
+                    text = text.replace("${EV_ID}", planInfo.getEvId())
+                               .replace("${PLAN_NAME}", planInfo.getPlanName())
+                               .replace("${LOGON_ID}", userInfo.getLogonId())
+                               .replace("${CONTACT_ID}", contactInfo.getContactId());
+                    run.setText(text, 0);
+                }
+            }
+        }
+    }
+
+    private String saveModifiedDocxFile(byte[] modifiedDocxContent, String fileName) throws IOException {
+        String filePath = "C:\\dummy xml\\" + fileName + "_modified.docx";
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+            fileOutputStream.write(modifiedDocxContent);
+        }
+        return filePath;
+    }
+}
+
+
+
 package com.hrlc.compliance.controller;
 
 import org.apache.poi.hwpf.HWPFDocument;
