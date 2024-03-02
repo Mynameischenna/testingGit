@@ -1,3 +1,78 @@
+CREATE TABLE Plans(
+	planID int IDENTITY(1,1) NOT NULL,
+	planNumber varchar(50) NOT NULL,
+	planName varchar(255) NOT NULL,
+    PRIMARY KEY (planID)
+);
+
+CREATE TABLE PlanInfo(
+	planInfoID int IDENTITY(1,1) NOT NULL,
+	planID int NOT NULL,
+	ev_id varchar(255) NOT NULL,
+	city varchar(255) DEFAULT NULL,
+	client_entity_type varchar(255) DEFAULT NULL,
+	client_name varchar(255) DEFAULT NULL,
+	country varchar(255) DEFAULT NULL,
+	dp_date_time varchar(255) DEFAULT NULL,
+	est_implementation_date date DEFAULT NULL,
+	est_number_of_participants varchar(255) DEFAULT NULL,
+	est_plan_assets varchar(255) DEFAULT NULL,
+	first_line_mailing varchar(255) DEFAULT NULL,
+	ga_id varchar(255) DEFAULT NULL,
+	internal_compliance_ind varchar(255) DEFAULT NULL,
+	irsrl_code varchar(255) DEFAULT NULL,
+	plan_anniv_date varchar(255) DEFAULT NULL,
+	plan_name varchar(255) DEFAULT NULL,
+	prod_id varchar(255) DEFAULT NULL,
+	prov_company varchar(255) DEFAULT NULL,
+	rollover_ind varchar(255) DEFAULT NULL,
+	scnd_line_mailing varchar(255) DEFAULT NULL,
+	state_code varchar(255) DEFAULT NULL,
+	status_code varchar(255) DEFAULT NULL,
+	subset_cash_code varchar(255) DEFAULT NULL,
+	tpa_firm_id varchar(255) DEFAULT NULL,
+	zip_code varchar(255) DEFAULT NULL,
+    PRIMARY KEY (planInfoID),
+	FOREIGN KEY (planID) REFERENCES Plans(planID) 
+);
+
+CREATE TABLE UserInfo(
+	userInfoID int IDENTITY(1,1) NOT NULL,
+	planID int NOT NULL,
+	logon_id varchar(255) NOT NULL,
+	area_code varchar(255) DEFAULT NULL,
+	email_address varchar(255) DEFAULT NULL,
+	first_name varchar(255) DEFAULT NULL,
+	job_title varchar(255) DEFAULT NULL,
+	last_name varchar(255) DEFAULT NULL,
+	middle_name varchar(255) DEFAULT NULL,
+	phone_nbr varchar(255) DEFAULT NULL,
+    PRIMARY KEY (userInfoID),
+	FOREIGN KEY (planID) REFERENCES Plans(planID) 
+);
+
+CREATE TABLE ContactInfo(
+	contactInfoID int IDENTITY(1,1) NOT NULL,
+	planID int NOT NULL,
+	contact_id varchar(255) NOT NULL,
+	city varchar(255) DEFAULT NULL,
+	company_name varchar(255) DEFAULT NULL,
+	country varchar(255) DEFAULT NULL,
+	email_address varchar(255) DEFAULT NULL,
+	fax_nbr varchar(255) DEFAULT NULL,
+	first_line_mailing varchar(255) DEFAULT NULL,
+	first_name varchar(255) DEFAULT NULL,
+	job_title varchar(255) DEFAULT NULL,
+	last_name varchar(255) DEFAULT NULL,
+	phone_nbr varchar(255) DEFAULT NULL,
+	second_line_mailing varchar(255) DEFAULT NULL,
+	state_code varchar(255) DEFAULT NULL,
+	zip_code varchar(255) DEFAULT NULL,
+    PRIMARY KEY (contactInfoID),
+	FOREIGN KEY (planID) REFERENCES Plans(planID) 
+);
+
+
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
