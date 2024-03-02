@@ -1,3 +1,84 @@
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.hrlc.compliance.entity.PlanInfo;
+import com.hrlc.compliance.entity.UserInfo;
+import com.hrlc.compliance.entity.ContactInfo;
+import com.hrlc.compliance.repository.PlanInfoRepository;
+import com.hrlc.compliance.repository.UserInfoRepository;
+import com.hrlc.compliance.repository.ContactInfoRepository;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+@RestController
+public class ReplaceDotTags {
+
+    private final PlanInfoRepository planInfoRepository;
+    private final UserInfoRepository userInfoRepository;
+    private final ContactInfoRepository contactInfoRepository;
+
+    public ReplaceDotTags(PlanInfoRepository planInfoRepository, UserInfoRepository userInfoRepository, ContactInfoRepository contactInfoRepository) {
+        this.planInfoRepository = planInfoRepository;
+        this.userInfoRepository = userInfoRepository;
+        this.contactInfoRepository = contactInfoRepository;
+    }
+
+    @PostMapping("/generate-dot-files")
+    public ResponseEntity<List<String>> generateDotFiles() {
+        try {
+            List<PlanInfo> allPlanInfos = planInfoRepository.findAll();
+            List<UserInfo> allUserInfos = userInfoRepository.findAll();
+            List<ContactInfo> allContactInfos = contactInfoRepository.findAll();
+            List<String> filePaths = generateDotFiles(allPlanInfos, allUserInfos, allContactInfos);
+            return ResponseEntity.ok().body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private List<String> generateDotFiles(List<PlanInfo> planInfos, List<UserInfo> userInfos, List<ContactInfo> contactInfos) throws IOException {
+        List<String> filePaths = new ArrayList<>();
+        for (int i = 0; i < Math.min(planInfos.size(), Math.min(userInfos.size(), contactInfos.size())); i++) {
+            PlanInfo planInfo = planInfos.get(i);
+            UserInfo userInfo = userInfos.get(i);
+            ContactInfo contactInfo = contactInfos.get(i);
+            String originalDotFilePath = "C:\\TestXML\\Plan Express Specifications2.dot";
+            String copiedDotFilePath = copyDotFile(originalDotFilePath, planInfo.getEvId() + "_" + userInfo.getLogonId() + "_" + contactInfo.getContactId());
+            replaceTagsInDot(copiedDotFilePath, planInfo, userInfo, contactInfo);
+            filePaths.add(copiedDotFilePath);
+        }
+        return filePaths;
+    }
+
+    private String copyDotFile(String originalDotFilePath, String fileName) throws IOException {
+        String copiedDotFilePath = "C:\\dummy xml\\" + fileName + "_modified.dot";
+        Files.copy(Paths.get(originalDotFilePath), Paths.get(copiedDotFilePath), StandardCopyOption.REPLACE_EXISTING);
+        return copiedDotFilePath;
+    }
+
+    private void replaceTagsInDot(String dotFilePath, PlanInfo planInfo, UserInfo userInfo, ContactInfo contactInfo) throws IOException {
+        List<String> lines = Files.readAllLines(Paths.get(dotFilePath), StandardCharsets.UTF_8);
+        List<String> modifiedLines = lines.stream()
+                .map(line -> line.replace("${EV_ID}", planInfo.getEvId())
+                                 .replace("${PLAN_NAME}", planInfo.getPlanName())
+                                 .replace("${LOGON_ID}", userInfo.getLogonId())
+                                 .replace("${CONTACT_ID}", contactInfo.getContactId()))
+                .collect(Collectors.toList());
+        Files.write(Paths.get(dotFilePath), modifiedLines, StandardCharsets.UTF_8);
+    }
+}
+
+
+
 // Import statements and annotations
 
 @RestController
