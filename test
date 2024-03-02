@@ -1,3 +1,98 @@
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import javax.transaction.Transactional;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+
+@Service
+@Transactional
+public class DocumentProcessorService {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private ContactInfoRepository contactInfoRepository;
+
+    public void processDocument(String sourceFilePath, String destinationFolder) {
+        try (FileInputStream fis = new FileInputStream(sourceFilePath);
+             XWPFDocument document = new XWPFDocument(fis)) {
+
+            // Fetch data from PlanInfo table
+            List<PlanInfo> planInfos = planInfoRepository.findAll();
+            // Iterate over each PlanInfo entity
+            for (PlanInfo planInfo : planInfos) {
+                // Iterate over paragraphs in the document
+                for (XWPFParagraph paragraph : document.getParagraphs()) {
+                    // Replace placeholders with data
+                    replacePlaceholder(paragraph, "EV_ID", planInfo.getEvId());
+                    replacePlaceholder(paragraph, "CITY", planInfo.getCity());
+                    replacePlaceholder(paragraph, "CLIENT_ENTITY_TYPE", planInfo.getClientEntityType());
+                    // You can add more placeholders and replace them with data from PlanInfo entity
+                }
+            }
+
+            // Fetch data from UserInfo table
+            List<UserInfo> userInfos = userInfoRepository.findAll();
+            // Iterate over each UserInfo entity
+            for (UserInfo userInfo : userInfos) {
+                // Iterate over paragraphs in the document
+                for (XWPFParagraph paragraph : document.getParagraphs()) {
+                    // Replace placeholders with data
+                    replacePlaceholder(paragraph, "LOGON_ID", userInfo.getLogonId());
+                    replacePlaceholder(paragraph, "EMAIL_ADDRESS", userInfo.getEmailAddress());
+                    // You can add more placeholders and replace them with data from UserInfo entity
+                }
+            }
+
+            // Fetch data from ContactInfo table
+            List<ContactInfo> contactInfos = contactInfoRepository.findAll();
+            // Iterate over each ContactInfo entity
+            for (ContactInfo contactInfo : contactInfos) {
+                // Iterate over paragraphs in the document
+                for (XWPFParagraph paragraph : document.getParagraphs()) {
+                    // Replace placeholders with data
+                    replacePlaceholder(paragraph, "CONTACT_ID", contactInfo.getContactId());
+                    replacePlaceholder(paragraph, "COMPANY_NAME", contactInfo.getCompanyName());
+                    // You can add more placeholders and replace them with data from ContactInfo entity
+                }
+            }
+
+            // Write modified content back to a temporary file
+            Path tempFilePath = Files.createTempFile("temp", ".docx");
+            try (FileOutputStream fos = new FileOutputStream(tempFilePath.toFile())) {
+                document.write(fos);
+            }
+
+            // Move the temporary file to the destination folder
+            Path destinationPath = Paths.get(destinationFolder);
+            Files.move(tempFilePath, destinationPath.resolve(tempFilePath.getFileName()), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void replacePlaceholder(XWPFParagraph paragraph, String placeholder, String replacement) {
+        String text = paragraph.getText();
+        if (text.contains(placeholder)) {
+            text = text.replace(placeholder, replacement);
+            paragraph.setText(text);
+        }
+    }
+}
+
+
+
+
+
 CREATE TABLE Plans(
 	planID int IDENTITY(1,1) NOT NULL,
 	planNumber varchar(50) NOT NULL,
