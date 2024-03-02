@@ -12,6 +12,91 @@ public class ReplaceDotTags {
     @Autowired
     private ContactInfoRepository contactInfoRepository;
 
+    @PostMapping("/generate-dot-files")
+    public ResponseEntity<List<String>> generateDotFiles() {
+        try {
+            // Fetch all data from the database
+            List<PlanInfo> allPlanInfos = planInfoRepository.findAll();
+            List<UserInfo> allUserInfos = userInfoRepository.findAll();
+            List<ContactInfo> allContactInfos = contactInfoRepository.findAll();
+
+            // Create a list to store the file paths of the generated DOT files
+            List<String> filePaths = generateDotFiles(allPlanInfos, allUserInfos, allContactInfos);
+
+            return ResponseEntity
+                    .ok()
+                    .body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private List<String> generateDotFiles(List<PlanInfo> planInfos, List<UserInfo> userInfos, List<ContactInfo> contactInfos) throws IOException {
+        // Create a list to store the file paths of the generated DOT files
+        List<String> filePaths = new ArrayList<>();
+
+        // Iterate over each row of data from the tables simultaneously
+        for (int i = 0; i < Math.min(planInfos.size(), Math.min(userInfos.size(), contactInfos.size())); i++) {
+            PlanInfo planInfo = planInfos.get(i);
+            UserInfo userInfo = userInfos.get(i);
+            ContactInfo contactInfo = contactInfos.get(i);
+
+            try {
+                // Copy the original .dot template file
+                String originalDotFilePath = "C:\\TestXML\\Plan Express Specifications2.dot";
+                String copiedDotFilePath = copyDotFile(originalDotFilePath, planInfo.getEvId() + "_" + userInfo.getLogonId() + "_" + contactInfo.getContactId());
+
+                // Replace placeholders in the copied .dot file
+                replaceTagsInDot(copiedDotFilePath, planInfo, userInfo, contactInfo);
+
+                // Add the file path to the list
+                filePaths.add(copiedDotFilePath);
+            } catch (IOException e) {
+                // Handle exceptions for the current entities if needed
+                e.printStackTrace();
+            }
+        }
+
+        return filePaths;
+    }
+
+    private void replaceTagsInDot(String dotFilePath, PlanInfo planInfo, UserInfo userInfo, ContactInfo contactInfo) throws IOException {
+        // Replace placeholders in the .dot file with data from PlanInfo, UserInfo, and ContactInfo entities
+        String templateText = Files.readString(Paths.get(dotFilePath), StandardCharsets.UTF_8);
+        templateText = templateText.replace("${EV_ID}", planInfo.getEvId())
+                                   .replace("${PLAN_NAME}", planInfo.getPlanName())
+                                   .replace("${LOGON_ID}", userInfo.getLogonId())
+                                   .replace("${CONTACT_ID}", contactInfo.getContactId());
+
+        // Write the modified text back to the .dot file
+        Files.write(Paths.get(dotFilePath), templateText.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private String copyDotFile(String originalDotFilePath, String fileName) throws IOException {
+        String copiedDotFilePath = "C:\\dummy xml\\" + fileName + "_modified.dot";
+        Files.copy(Paths.get(originalDotFilePath), Paths.get(copiedDotFilePath), StandardCopyOption.REPLACE_EXISTING);
+        return copiedDotFilePath;
+    }
+}
+
+
+
+
+// Import statements and annotations
+
+@RestController
+public class ReplaceDotTags {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private ContactInfoRepository contactInfoRepository;
+
     @PostMapping("/generate-doc-files")
     public ResponseEntity<List<String>> generateDocFiles() {
         try {
