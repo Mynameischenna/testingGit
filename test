@@ -1,3 +1,179 @@
+package com.hrlc.compliance.service;
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import com.hrlc.compliance.entity.ContactInfo;
+import com.hrlc.compliance.entity.PlanInfo;
+import com.hrlc.compliance.entity.UserInfo;
+
+import com.hrlc.compliance.repository.ContactInfoRepository;
+import com.hrlc.compliance.repository.PlanInfoRepository;
+import com.hrlc.compliance.repository.UserInfoRepository;
+
+
+
+
+
+@Service
+public class xmlService {
+	@Autowired
+	private UserInfoRepository userInfoRepo;
+	
+	@Autowired
+	private	PlanInfoRepository planInfoRepo;
+	
+	@Autowired
+	private ContactInfoRepository contactInfoRepo;
+	
+	public List<PlanInfo> getPlanInfo()
+	{
+		return planInfoRepo.findAll();
+	}
+	
+	public List<ContactInfo> getContactInfo()
+	{
+		return contactInfoRepo.findAll();
+	}
+	public List<UserInfo> getUserInfo()
+	{
+		return userInfoRepo.findAll();
+	}
+	public ResponseEntity<String> processXmlData(String xmlData) {
+		try {
+	        DocumentBuilderFactory dbfactory = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder dbuilder = dbfactory.newDocumentBuilder();
+	        Document document = dbuilder.parse(new InputSource(new StringReader(xmlData)));
+
+	        NodeList parentNodes = document.getElementsByTagName("*"); // Get all parent nodes
+
+	        for (int i = 0; i < parentNodes.getLength(); i++) {
+	            Element parent = (Element) parentNodes.item(i);
+
+	            switch (parent.getTagName()) {
+	                case "user_info":
+	                    saveUserInfo(parent);
+	                    break;
+	                case "plan_info":
+	                    savePlanInfo(parent);
+	                    break;
+	                case "contact_info":
+	                    saveContactInfo(parent);
+	                    break;
+	                
+	            }
+	        }
+
+	        return new ResponseEntity<>("Data saved successfully ", HttpStatus.OK);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new ResponseEntity<>("Failed to process XML data", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+
+	private void saveUserInfo(Element parent) {
+	    UserInfo userInfo = new UserInfo();
+
+	    userInfo.setLogonId(getElementValue(parent, "logon_id"));
+	    userInfo.setLastName(getElementValue(parent, "last_name"));
+	    userInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+	    userInfo.setJobTitle(getElementValue(parent, "job_title"));
+	    userInfo.setMiddleName(getElementValue(parent, "middle_name"));
+	    userInfo.setAreaCode(getElementValue(parent, "area_code"));
+	    userInfo.setFirstName(getElementValue(parent, "first_name"));
+	    userInfo.setEmailAddress(getElementValue(parent, "email_address"));
+	    userInfoRepo.save(userInfo);
+	    
+	}
+	
+	private void savePlanInfo(Element parent) {
+		PlanInfo planInfo = new PlanInfo();
+		
+		planInfo.setEvId(getElementValue(parent,"ev_id"));
+	 	planInfo.setPlanName(getElementValue(parent, "plan_name"));
+        planInfo.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        planInfo.setProvCompany(getElementValue(parent, "prov_company"));
+        planInfo.setProdId(getElementValue(parent, "prod_id"));
+        planInfo.setStatusCode(getElementValue(parent, "status_code"));
+        planInfo.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        planInfo.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        planInfo.setGaId(getElementValue(parent, "ga_id"));
+        planInfo.setClientName(getElementValue(parent, "client_name"));
+        planInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        planInfo.setScndLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        planInfo.setCity(getElementValue(parent, "city"));
+        planInfo.setStateCode(getElementValue(parent, "state_code"));
+        planInfo.setZipCode(getElementValue(parent, "zip_code"));
+        planInfo.setCountry(getElementValue(parent, "country"));
+        planInfo.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        planInfo.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        planInfo.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        planInfo.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        planInfo.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        planInfo.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        planInfo.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        planInfo.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+        planInfoRepo.save(planInfo);
+	}
+
+	private void saveContactInfo(Element parent)
+	{
+		 ContactInfo contactInfo = new ContactInfo();
+
+         contactInfo.setContactId(getElementValue(parent, "contact_id"));
+         contactInfo.setFirstName(getElementValue(parent, "first_name"));
+         contactInfo.setLastName(getElementValue(parent, "last_name"));
+         contactInfo.setJobTitle(getElementValue(parent, "job_title"));
+         contactInfo.setCompanyName(getElementValue(parent, "company_name"));
+         contactInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+         contactInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+         contactInfo.setCity(getElementValue(parent, "city"));
+         contactInfo.setStateCode(getElementValue(parent, "state_code"));
+         contactInfo.setZipCode(getElementValue(parent, "zip_code"));
+         contactInfo.setCountry(getElementValue(parent, "country"));
+         contactInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+         contactInfo.setFaxNbr(getElementValue(parent, "fax_nbr"));
+         contactInfo.setEmailAddress(getElementValue(parent, "email_address"));
+
+//          Assuming contact_roles is a list of strings
+         NodeList contactRoleNodes = parent.getElementsByTagName("contact_role");
+//         for (int i = 0; i < contactRoleNodes.getLength(); i++) {
+//             contactInfo.getContactRoles().add(contactRoleNodes.item(i).getTextContent());
+//         }
+
+         contactInfoRepo.save(contactInfo);
+	}
+
+	private String getElementValue(Element parseElement, String childTagName) {
+	    NodeList childNodes = parseElement.getElementsByTagName(childTagName);
+	    if (childNodes.getLength() > 0) {
+	        return childNodes.item(0).getTextContent();
+	    }
+	    return null;
+	}
+	
+	
+}
+	
+
+
+
+
+
+
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
