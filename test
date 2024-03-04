@@ -1,3 +1,72 @@
+package com.hrlc.compliance.controller;
+
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hrlc.compliance.service.xmlService;
+
+@RestController
+@RequestMapping("/file-processor")
+public class Fileprocess {
+
+    private static final String SOURCE_FOLDER = "C:\\file processor\\new files";
+    private static final String DESTINATION_FOLDER = "C:\\file processor\\done";
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
+    @Autowired
+    private xmlService yourService; // Replace YourService with your actual service class
+
+    @PostMapping("/start")
+    public ResponseEntity<String> startFileProcessing() {
+        // Schedule a task to process files every minute
+        scheduler.scheduleAtFixedRate(this::processFiles, 0, 20, TimeUnit.SECONDS);
+        return ResponseEntity.ok("File processing started.");
+    }
+
+    private void processFiles() {
+        try {
+            Path sourceFolder = Paths.get(SOURCE_FOLDER);
+            Path destinationFolder = Paths.get(DESTINATION_FOLDER);
+
+            Files.walkFileTree(sourceFolder, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    // Process each file
+                    System.out.println("Processing file: " + file.getFileName());
+
+                    // Read file content as a string
+                    String fileContent = new String(Files.readAllBytes(file));
+
+                    // Call the method with file content as string parameter
+                    yourService.processXmlData(fileContent);
+
+                    // Move the file to the destination folder
+                    Path destinationFile = destinationFolder.resolve(file.getFileName());
+                    Files.move(file, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+                    System.out.println("File processed and moved: " + file.getFileName());
+
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+
 package com.hrlc.compliance.entity;
 
 import jakarta.persistence.Entity;
