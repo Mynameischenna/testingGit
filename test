@@ -1,3 +1,5 @@
+ Error executing DDL "create table test1 (id integer not null, age integer not null, primary key (id)) engine=InnoDB" via JDBC [Incorrect syntax near 'engine'.]
+
 <dependency>
     <groupId>com.microsoft.sqlserver</groupId>
     <artifactId>mssql-jdbc</artifactId>
