@@ -1,3 +1,15 @@
+<dependency>
+    <groupId>com.microsoft.sqlserver</groupId>
+    <artifactId>mssql-jdbc</artifactId>
+    <version>your_driver_version</version>
+</dependency>
+# application.properties
+
+# Database connection properties for SQL Server with Windows Authentication
+spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=test_db;SelectMethod=cursor;integratedSecurity=true;encrypt=true;trustServerCertificate=true
+spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+
 spring.datasource.url="jdbc:sqlserver://localhost:1433;" +
 						"databaseName=test_db;" +
 						"SelectMethod=cursor;" +
