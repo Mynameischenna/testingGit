@@ -1,3 +1,143 @@
+.nav{
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo{
+    display: flex;
+    align-items: center;
+    width: 30%;
+    /* border: 1px solid red; */
+}
+
+.logo img{
+    margin-right: 10px;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    width: 50%;
+    margin-right: 30px;
+    /* border: 1px solid green; */
+}
+
+.btn1{
+    cursor: pointer;
+    border: none;
+    background-color: rgb(240, 183, 110);
+    color: white;
+    padding:6px ;
+    width: 90px;
+}
+
+.left {
+   
+    min-width: 15;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 100%; /* Make the left div occupy full height of its container */
+    position: fixed; /* Fixed positioning to ensure full height */
+    top: 60px; /* Position it at the top of the viewport */
+    left: 0; /* Position it at the left of the viewport */
+}
+
+.leftup {
+    border: 1px solid red;
+    margin: 0px;
+    width: 100%; /* Occupy full width of the .left container */
+    height: 50%; /* Take 50% of the height of .left container */
+    position: absolute;
+    top: 0; /* Align at the top of .left container */
+    left: 0;
+    background-color: yellow;
+    overflow: auto;
+    
+}
+.qq{
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.leftdown {
+    border: 1px solid rgb(27, 35, 10);
+    width: 100%; /* Occupy full width of the .left container */
+    height: 50%; /* Take 50% of the height of .left container */
+    position: absolute;
+    top: 50%; /* Align at the bottom half of .left container */
+    left: 0;
+}
+
+@media(max-width:800px){
+    .btn1{
+        cursor: pointer;
+    border: none;
+    background-color: rgb(240, 183, 110);
+    color: white;
+    padding:2px ;
+    width: 60px;
+    }
+}
+
+@media(max-width:550px){
+    .btn1{
+        cursor: pointer;
+    border: none;
+    background-color: rgb(240, 183, 110);
+    color: rgb(65, 58, 58);
+    padding:1px ;
+    width: 35px;
+    font-size: 10px;
+    
+    }
+}
+=-----------------------------
+import React from 'react'
+import img from '../assets/react.svg'
+import './Home.css'
+const Home = () => {
+  return (
+    <div>
+        <div className="nav">
+            <div className="logo">
+            <img src={img} alt="" />  
+            <p>empower</p>
+            </div>
+
+            <div className="buttons">
+                <button className='btn1' >Home</button>
+                <button className='btn1'>About</button>
+                <button className='btn1'> Service</button>
+                <button className='btn1'>Logout</button>
+            </div>
+        </div>
+
+        <div className="left">
+            <div className="leftup">
+               <ul className='qq'>
+                <li>name</li>
+                <li>age</li>
+                </ul> 
+            </div>
+
+            <div className="leftdown">
+            hello
+            </div>
+        </div>
+    </div>
+  )
+}
+
+export default Home
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import './AddPlan.css';
 import myimage from'./logo-new.png';
