@@ -1,3 +1,159 @@
+<div className='rightmenu'>
+            
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.CurrentPLanInfo?.clientName}/>
+                        <br/>Client Name
+                    </div>
+                    <div className='row11'>
+                    <input value={props.CurrentPLanInfo?.estNumberOfParticipants}/>
+                        <br/>Propective Plan Number
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                    <input value={props.CurrentPLanInfo?.estPlanAssets}/>
+                        <br/>EIN #
+                    </div>
+                    
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.CurrentPLanInfo?.provCompany}/>
+                        <br/>Institution
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.groupOffice}/>
+                        <br/>Group Office
+                    </div>
+                    <div className='row11'>
+                    <input value={props.CurrentPLanInfo?.irsrlCode}/><br/>
+                        Plan Type 
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.trustEin}/><br/>
+                        Trust Ein
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>Sub Institution
+                    </div>
+                    
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.complianceAnalyst}/>
+                        <br/>Compliance Analyst
+                    </div>
+                    <div className='row11'><button onClick={activatePlanDocument} className='planbtn'>Plan Document</button></div> 
+                     <div className='row11'><button className='planbtn'>Plan Folder</button></div>
+                    <div className='row11'><button className='planbtn'>Scan Sheets</button></div>
+                    <div className='row11'><button className='planbtn'>Update FTW</button></div> 
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.secondaryCaseload} type='checkbox'/>Secondary Caseload
+                    </div>   
+                </div> 
+
+                 <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.gwg} type='checkbox'/>GWG
+                    </div> 
+                    <div className='row11' style={{marginLeft:"120px"}}>
+                        <input value={props.currentPlanInfo?.gwgServices}/>
+                        <br/>GWG Services
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.gwgWorkTracking}/>
+                        <br/>GWG Work Tracking
+                    </div> 
+                    <div className='row11'><button className='planbtn'>GWG Follow Up</button> </div>
+                    
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.planYearEnd} type='date'/>
+                        <br/>Plan Year End
+                    </div>
+                    <div className='row11' style={{marginLeft:"63px"}}>
+                        <input value={props.currentPlanInfo?.planTier}/>
+                        <br/>Plan Teir
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.irsPlanType}/><br/>
+                        IRS Plan Type
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.marketSegment}/><br/>
+                        Market Segment
+                    </div>
+                </div> 
+                
+                 <div className='row1'>
+                    <div className='row11' style={{marginRight:"21px"}}>
+                        <input value={props.currentPlanInfo?.institution}/>
+                        <br/>Institution
+                    </div> 
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.groupOffice}/>
+                        <br/>Group Office
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.planType}/><br/>
+                        Plan Type
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.trustEin}/><br/>
+                        Trust Ein
+                    </div> 
+                </div> 
+                <div className='row1'>
+                    <div className='row11'>
+                        Plan Characteristics
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='checkbox'/>Jumbo 401(k)
+                    </div>
+                </div> 
+
+                <div className='row1'>
+                    <div className='row11' style={{marginRight:"55px"}}>
+                    <input checked={props.currentPlanInfo?.ppsExternal} type='checkbox'/>PPSExternal 
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>PEAK Pilot Plan
+                    </div>
+                </div> 
+                <Modal
+                    isOpen={!!planDocumentBtn}
+                    onRequestClose={closePlanDocument}
+                    contentLabel="modal"
+                    className={"modal1"}>
+                    {
+                        planDocumentBtn &&(<>
+                        <div>
+                            <h2>File List:</h2>
+      
+                            <ul>
+                                {fileList?.map((file, index) => (
+                                <li key={index} onClick={() => openFile(file)}>
+                                    {file}
+                                </li>
+                                ))}
+                            </ul>
+                            <button className='modalbtn' onClick={closePlanDocument}>close </button> 
+                        </div>
+                        </>)
+                    }
+                </Modal> 
+                <button className='planbtn'>Submit</button>
+
+
+----
+
 .nav{
     border: 1px solid;
     display: flex;
