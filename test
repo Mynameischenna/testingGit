@@ -1,3 +1,158 @@
+import React, { useState } from 'react';
+import './AddPlan.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
+import './SetUp.css';
+
+function SetUp(props)
+{
+    const navigate=useNavigate()
+    function Home1()
+    {
+        return navigate("/Home")
+    }
+    return (
+    <div className='body'>
+        
+        <div className='rightmenuSU'>
+            
+                <div className='subright'>
+                    <input className='setupinput'/> Implement Mgr
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Transfer Asset Amt
+                </div>
+                
+                <div className='subright'>
+                    <input className='setupinput'/> Doc Type
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput' type='checkbox'/> Internal Loan Admin
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput' type='checkbox'/> Outside Funds
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Service Effective
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Expected First Payroll
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Implementation Type
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput' type='checkbox'/> SDA
+                </div>
+
+                <div className='subright'>
+                    <input  className='setupinput'type='checkbox'/> Modefied SPD
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Compliance Effective
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Deposite Amount
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Conversion Form
+                </div>
+                <div className='subright'>
+                    <input  className='setupinput'type='checkbox'/> GWTC/EMJAY Trustee
+                </div>
+                <div className='subright'>
+                    <input  className='setupinput'type='checkbox'/> Reliance Trust Company
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Plan Effecctive
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> # Companies (Merger)
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Employee  Count
+                </div>
+
+                <div className='subright'>
+                    <div className='subbtn'>
+                        <button className='planbtn'> Document Packer Email</button>
+                        <button className='planbtn'> Move Electric Files To Imaging</button>
+                        <button className='planbtn'> Move Docs To PSC</button>
+                    </div>
+                    
+
+                </div>
+                <div className='subright'>
+                    <div className='subbtn'>
+                            <button className='planbtn'> Generic  E-Mail</button>
+                            <button className='planbtn'> Termination CheckList</button>
+                        </div>
+                </div>
+                <div className='subright'>
+                    <div className='subbtn'>
+                            <button className='planbtn'> America Funds Forms </button>    
+                    </div>
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Installition Note (Double Click to Zoom)
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Edited By
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> On
+                </div>
+                <div className='subright'>
+                    <button className='planbtn'>Submit</button>
+                </div>
+        </div>
+    </div>
+    )
+}
+export default SetUp
+--------
+.rightmenuSU{
+    border: 1px solid;
+    /* border-top: none; */
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    position: relative;
+    left: 20%;
+    /* height: 100vh; */
+    padding: 10px;
+    gap: 2px;
+    
+}
+.subright{
+    display: flex;
+    justify-content: left;
+
+}
+.setupinput{
+    margin-right: 5px;
+}
+.subbtn{
+    display: flex;
+    justify-content: space-around;
+    width: 600px;
+    padding: 5px 5px;
+    
+}
+
+
+------
+
+
 <div className='rightmenu'>
             
                 <div className='row1'>
