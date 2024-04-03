@@ -1,3 +1,81 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { FaFolder } from "react-icons/fa";
+
+const NewHome = () => {
+    const [newPlan, setNewPlan] = useState([
+        { planId: 1, planNumber: 'Plan 1' },
+        { planId: 2, planNumber: 'Plan 2' },
+        { planId: 3, planNumber: 'Plan 3' },
+    ]);
+    const [currentPlan, setCurrentPlan] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchBy, setSearchBy] = useState('planId'); // Default search by plan ID
+    const navigate = useNavigate();
+
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value);
+    };
+
+    const handleSearchByChange = (value) => {
+        setSearchBy(value);
+    };
+
+    const filterPlans = () => {
+        return newPlan.filter(plan => {
+            const searchValue = searchQuery.toLowerCase();
+            return plan[searchBy].toString().toLowerCase().includes(searchValue);
+        });
+    };
+
+    const handlePlanClick = (plan) => {
+        setCurrentPlan(plan);
+        // Implement logic to fetch plan info based on plan
+    };
+
+    const navigateToPage = (page) => {
+        // Implement navigation logic
+    };
+
+    return (
+        <div className='he'>
+            {/* Your Navigation Component */}
+            <div className="nav">
+                {/* Your navigation elements */}
+            </div>
+
+            <div className="left">
+                <div className="leftup">
+                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
+                    <select value={searchBy} onChange={(e) => handleSearchByChange(e.target.value)}>
+                        <option value="planId">Search by Plan ID</option>
+                        <option value="planNumber">Search by Plan Number</option>
+                    </select>
+                    {filterPlans().map((plan) => (
+                        <div key={plan.planId} className='side1style'>
+                            <FaFolder />
+                            <button style={{ border: "none", background: "none" }} onClick={() => handlePlanClick(plan)}>
+                                {plan.planId} {plan.planNumber}
+                            </button>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="leftdown">
+                    <button onClick={() => console.log('Sort clicked')}>Sort</button>
+                </div>
+            </div>
+
+            {/* Render plan info here */}
+        </div>
+    );
+};
+
+export default NewHome;
+
+
+-----------
 import React, { useEffect, useState } from 'react';
 import myimage from'./logo-new.png';
 import axios from 'axios';
