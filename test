@@ -1,3 +1,62 @@
+import React, { useState } from 'react';
+
+const YourComponent = () => {
+    // Sample initial state
+    const [newPlan, setNewPlan] = useState([
+        { planId: 1, planNumber: 'P001' },
+        { planId: 2, planNumber: 'P002' },
+        { planId: 3, planNumber: 'P003' },
+        // Add more objects as needed
+    ]);
+
+    // State variable to track current sorting order
+    const [sortOrder, setSortOrder] = useState('asc');
+
+    // Function to toggle sorting order
+    const toggleSortOrder = () => {
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    };
+
+    // Function to handle sorting
+    const handleSort = (property) => {
+        const sortedPlan = [...newPlan].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[property] > b[property] ? 1 : -1;
+            } else {
+                return a[property] < b[property] ? 1 : -1;
+            }
+        });
+        setNewPlan(sortedPlan);
+        toggleSortOrder(); // Toggle sorting order after sorting
+    };
+
+    return (
+        <div>
+            {/* Button to sort by planId */}
+            <button onClick={() => handleSort('planId')}>
+                Sort by Plan ID ({sortOrder === 'asc' ? 'Asc' : 'Desc'})
+            </button>
+
+            {/* Button to sort by planNumber */}
+            <button onClick={() => handleSort('planNumber')}>
+                Sort by Plan Number ({sortOrder === 'asc' ? 'Asc' : 'Desc'})
+            </button>
+
+            {/* Display sorted data */}
+            <ul>
+                {newPlan.map(plan => (
+                    <li key={plan.planId}>
+                        Plan ID: {plan.planId}, Plan Number: {plan.planNumber}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default YourComponent;
+
+
 .setup{
     border: 1px solid;
     display: flex;
