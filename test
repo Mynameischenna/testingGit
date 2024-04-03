@@ -1,3 +1,289 @@
+import React, { useEffect, useState } from 'react';
+import myimage from'./logo-new.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
+
+import {  FaFolder } from "react-icons/fa";
+import Testing from './Testing';
+import SetUp from './SetUp';
+import PYE from './PYE';
+import EventLog from './EventLog';
+import './NewHome.css'
+import NewSetup from './NewSetup';
+const NewHome = () => {
+    const [currentPlan,setCurrentPlan]= useState();
+    const [currentPlanInfo,setCurrentPlanInfo] = useState();
+    const [newPlan,setNewPlan]=useState();
+    const [newPlanInfo,setNewPlanInfo]=useState();
+    const [clickedPage,setClickedPage]=useState();
+    const navigate=useNavigate();
+    const [sortOrder,setSortOrder]=useState("asc");
+    
+  useEffect(()=>{
+    
+    async function getdata(){
+    await axios.get("http://localhost:8082/getplans")
+    .then(res=>{
+        // console.log("plan is"+newPlan);
+        setNewPlan(res.data)
+       
+        
+        })
+    .catch(err =>{console.log(err)
+    })
+    }
+    getdata();
+     console.log("plan is"+newPlan);
+  async function getPlanInfodata(){
+    await axios.get("http://localhost:8082/getPlanInfo")
+    .then(res=>{
+       
+        setNewPlanInfo(res.data)
+        })
+    .catch(err =>{console.log(err)
+    })
+    }
+    getPlanInfodata();
+},[])
+
+    function inputfield(obj){
+        setCurrentPlan(obj);
+        
+        var output= newPlanInfo?.filter((plan)=>{
+            
+            return obj.planNumber===plan.gaId;
+           
+        })
+        console.log("clicked plan is ",output[0]);
+        setCurrentPlanInfo(output[0]);
+        
+    }
+    console.log("plans is "+newPlan);
+    console.log("total plans info  ",newPlanInfo);
+    function planInfo()
+    {
+        navigate('/planInfo')
+    }
+    function setUp()
+    {
+        navigate("/SetUp")
+    }
+    // const sorting1=(col)=>
+    // {
+    //     const sorted=[...newPlan].sort((a,b)=>
+    //     a[col]>b[col]?1 :-1);
+    //     setNewPlan(sorted)
+    // }
+    const sorting=(col)=>
+    {
+            const sorted=[...newPlan].sort((a,b)=>
+            a[col]>b[col] ?1 :-1);
+            setNewPlan(sorted)
+    }
+    const toggleSortOrder=()=>{
+        setSortOrder(sortOrder==="asc"?'desc':'asc');
+    }
+    const handleSort=(property)=>{
+        const sortedPlan = [...newPlan].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[property] > b[property] ? 1 : -1;
+            } else {
+                return a[property] < b[property] ? 1 : -1;
+            }
+        });
+        setNewPlan(sortedPlan);
+        toggleSortOrder(); // Toggle sorting order after sorting
+    }
+    function tohome()
+    {
+        console.log("going home");
+        setClickedPage(null);
+        navigate("/Home")
+    }
+    
+  return (
+    <div className='he'> 
+        <div className="nav">
+            <div className="logo">
+            
+                <img className="image" src={myimage} alt="not found"></img>
+                <h3 className='testing'>Compliance</h3>
+            </div>
+
+            <div className="buttons">
+                <button className='btn1' onClick={tohome}>Home</button>
+                    <button className='btn1' onClick={()=>setClickedPage("planinfo")}>Plan Info</button>
+                    <button className='btn1' onClick={()=>setClickedPage("setup")}>SetUp</button>
+                    <button className='btn1' onClick={()=>setClickedPage("pye")}>PYE</button>
+                    <button className='btn1' onClick={()=>setClickedPage("eventlog")}>Event Log</button>
+                    <button className='btn1'>Contacts</button>
+                    <button className='btn1'>Amendments</button>
+                    <button className='btn1'>Test</button>  
+            </div>
+        </div>
+
+        <div className="left">
+            <div className="leftup">
+            {/* <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." /> */}
+                {
+                    newPlan?.map((obj)=>(
+                        <div className='side1style'>
+                            <span style={{paddingRight:"10px"}}><FaFolder/></span><button style={{border:"none",background:"none"}} onClick={()=>inputfield(obj)} ><span> {obj.planId} {obj.planNumber}</span></button>
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div className="leftdown">
+            <div>
+                    <i class="jstree-icon jstree-ocl" role="presentation"></i>
+                    {/* Button to sort by planId */}
+            <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={() => handleSort('planId')}>
+                Sort by Plan ID 
+            </button>
+
+            {/* Button to sort by planNumber */}
+            <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={() => handleSort('planNumber')}>
+                Sort by Plan Number 
+            </button>
+                    {/* <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planId")}}>Plans by Number</button><br/>
+                    <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planName")} }>Plans By Name</button><br/> */}
+                    <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planName")} }>Plans By Client</button><br/>
+                    <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planName")} }>Plans In StartUp</button><br/>
+                    <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planName")} }>BY Institution</button><br/>
+                    <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planName")} }>Contacts</button><br/>
+                    <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planName")} }>By Analyst</button><br/>
+                    <button style={{background:"none",border:"none",cursor:"pointer"}} onClick={()=>{sorting("planName")} }>Termed Plans</button><br/>
+                    <button onClick={()=>{sorting("planName")} }>Plans w/o Primary Contacts</button><br/>
+                    <button onClick={()=>{sorting("planName")} }>Deleted Plans</button><br/>
+                
+                </div>
+            </div>
+        </div>
+
+         {clickedPage==="planinfo" && <Testing CurrentPLanInfo={currentPlanInfo}/>} 
+        {/* <Testing CurrentPLanInfo={currentPlanInfo}/> */}
+    {/* {console.log("test1 "+currentPlanInfo?.evId) */}
+        {clickedPage==="setup" && <NewSetup />}
+       {clickedPage==="pye" && <PYE/>}
+        {clickedPage==="eventlog" && <EventLog/>}
+    </div>
+  )
+}
+
+export default NewHome;
+
+--------css
+.he{
+    margin: 0px;
+}
+.nav{
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin:-8px;
+}
+.image{
+    height: 20px;
+    padding-left: 20px;
+}
+.logo{
+    display: flex;
+    align-items: center;
+    width: 30%;
+    max-height: 50px;
+    /* border: 1px solid red; */
+}
+
+.logo img{
+    margin-right: 10px;
+}
+
+.buttons{
+    display: flex;
+    justify-content: space-evenly;
+    width: 70%;
+    margin-right: 30px;
+    /* border: 1px solid green; */
+}
+
+.btn1{
+    cursor: pointer;
+    border: none;
+    background-color: rgb(240, 183, 110);
+    color: white;
+    padding:6px ;
+    width: 90px;
+}
+
+.left {
+   
+    min-width: 15;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 100%; /* Make the left div occupy full height of its container */
+    position: absolute; /* Fixed positioning to ensure full height */
+    top: 56px; /* Position it at the top of the viewport */
+    left: 0; /* Position it at the left of the viewport */
+}
+
+.leftup {
+    border: 1px solid red;
+    margin: 0px;
+    width: 100%; /* Occupy full width of the .left container */
+    height: 50%; /* Take 50% of the height of .left container */
+    position: absolute;
+    top: 0; /* Align at the top of .left container */
+    left: 0;
+    /* background-color: yellow; */
+    overflow: auto;
+    
+}
+.qq{
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.leftdown {
+    border: 1px solid rgb(27, 35, 10);
+    width: 100%; /* Occupy full width of the .left container */
+    height: 50%; /* Take 50% of the height of .left container */
+    position: absolute;
+    top: 50%; /* Align at the bottom half of .left container */
+    left: 0;
+}
+
+@media(max-width:800px){
+    .btn1{
+        cursor: pointer;
+    border: none;
+    background-color: rgb(240, 183, 110);
+    color: white;
+    padding:2px ;
+    width: 60px;
+    }
+}
+
+@media(max-width:550px){
+    .btn1{
+        cursor: pointer;
+    border: none;
+    background-color: rgb(240, 183, 110);
+    color: rgb(65, 58, 58);
+    padding:1px ;
+    width: 35px;
+    font-size: 10px;
+    
+    }
+}
+
+---
 import React, { useState, useRef, useEffect } from 'react';
 
 const Test = () => {
