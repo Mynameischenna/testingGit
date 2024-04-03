@@ -1,3 +1,83 @@
+import React, { useState, useRef, useEffect } from 'react';
+
+const Test = () => {
+    const [newPlan, setNewPlan] = useState([
+        { planId: 1, planNumber: 'P001' },
+        { planId: 2, planNumber: 'P002' },
+        { planId: 3, planNumber: 'P003' },
+        // Add more objects as needed
+    ]);
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchBy, setSearchBy] = useState('planId'); // Default search by plan ID
+    const [filteredPlans, setFilteredPlans] = useState(newPlan);
+    const modalRef = useRef(null);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        filterPlans(value, searchBy);
+    };
+
+    const handleSearchByChange = (value) => {
+        setSearchBy(value);
+        filterPlans(searchQuery, value);
+    };
+
+    const filterPlans = (query, searchBy) => {
+        const filtered = newPlan.filter(plan => {
+            const searchValue = query.toLowerCase();
+            if (searchBy === 'planId') {
+                return plan.planId.toString().includes(searchValue);
+            } else {
+                return plan.planNumber.toLowerCase().includes(searchValue);
+            }
+        });
+        setFilteredPlans(filtered);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setSearchQuery('');
+                setFilteredPlans(newPlan);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [newPlan]);
+
+    return (
+        <div>
+            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
+
+            {/* Modal */}
+            {filteredPlans.length > 0 && (
+                <div className="modal" ref={modalRef}>
+                    <select value={searchBy} onChange={(e) => handleSearchByChange(e.target.value)}>
+                        <option value="planId">Search by Plan ID</option>
+                        <option value="planNumber">Search by Plan Number</option>
+                    </select>
+                    <ul>
+                        {filteredPlans.map(plan => (
+                            <li key={plan.planId}>
+                                Plan ID: {plan.planId}, Plan Number: {plan.planNumber}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default Test;
+
+
+
 import React, { useState } from 'react';
 
 const YourComponent = () => {
