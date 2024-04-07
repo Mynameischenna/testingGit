@@ -1,3 +1,49 @@
+import React, { useState } from 'react';
+
+const Searching = ({ plan, onSearch }) => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchBy, setSearchBy] = useState('planId'); // Default search by plan ID
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        onSearch(value, searchBy); // Call the onSearch function passed from the parent component
+    };
+
+    const handleSearchByChange = (value) => {
+        setSearchBy(value);
+        onSearch(searchQuery, value); // Call the onSearch function passed from the parent component
+    };
+
+    return (
+        <div>
+            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
+
+            {/* Dropdown to select search by criteria */}
+            <select value={searchBy} onChange={(e) => handleSearchByChange(e.target.value)}>
+                <option value="planId">Search by Plan ID</option>
+                <option value="planNumber">Search by Plan Number</option>
+            </select>
+            
+            {/* Display the filtered plans */}
+            <ul>
+                {plan.map(plan => (
+                    <li key={plan.planId}>
+                        Plan ID: {plan.planId}, Plan Number: {plan.planNumber}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default Searching;
+
+
+
+
+
+
 import React, { useState, useEffect } from 'react';
 import myimage from './logo-new.png';
 import axios from 'axios';
