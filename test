@@ -1,3 +1,116 @@
+import React from 'react'
+import './NewHome.css'
+const NewHome = () => {
+  return (
+    <div className='main'>
+        <div className="navbar">
+            <div className="logo">
+                <img src="https://www.empower.com/themes/custom/wealth_management_v2/images/branding/logo-new-alt.svg" alt="Empower" />
+                <h1>Compliance</h1>
+            </div>
+            <div className="right-btns">
+                <button className="btn01">Home</button>
+                <button className="btn01">Home</button>
+                <button className="btn01">Home</button>
+                <button className="btn01">Home</button>
+                <button className="btn01">Home</button>
+                <button className="btn01">Home</button>
+                <button className="btn01">Home</button>
+                <button className="btn01">Home</button>
+            </div>
+        </div>
+        <div className="bottom">
+            <div className="btm-left">
+                <div className="left-up">left up content</div>
+                <div className="left-down">left down content</div>
+            </div>
+            <div className="btm-right">
+                right content
+            </div>
+        </div>
+    </div>
+  )
+}
+
+export default NewHome
+-------------------------------
+*{
+    margin: 0;
+    padding: 0;
+}
+/* main container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    width: 100%;
+    margin: auto;
+    height: 10vh;
+    border-bottom: 1px solid;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    color: black;
+    position: fixed;
+    top: 0;
+    z-index: 1000; /* Ensure the navbar appears above other content */
+}
+/* left container */
+.logo{ 
+    width:25% ;
+    align-items: center;
+    margin-left: 20px;
+}
+.logo img{
+    width: 130px;
+}
+/* right container */
+.right-btns{
+    /* border: 1px solid; */
+    display: flex;
+    gap: 6px;
+    margin-right: 160px;
+
+}
+.btn01{
+    padding: 5px 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.btn01:hover{
+    text-decoration: underline;
+}
+/* ---------------------bottom------------------ */
+
+.bottom {
+    display: flex;
+    width: 95%;
+    height: 88.5%; /* Adjust as needed */
+    margin: auto;
+    border: 1px solid;
+    position: absolute;
+    top: 11%; /* Adjust as needed */
+    left: 2.5%; /* Adjust as needed */
+    overflow: hidden; /* Hide content that overflows the bottom div */
+}
+
+.btm-left{
+    width: 25%;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    /* height: 89.5vh; */
+
+}
+.left-up{
+    width: 100%;
+    border: 1px solid;
+    height: 50%;
+}
+
+
+
+
 .setup{
     border: 1px solid;
     display: flex;
