@@ -1,4 +1,138 @@
+import React, { useState, useEffect } from 'react';
+import myimage from './logo-new.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
+import { FaFolder } from "react-icons/fa";
+import Searching from './Searching'; // Importing the Searching component
+import './Home1.css';
 
+const Home1 = () => {
+    const [currentPlan, setCurrentPlan] = useState();
+    const [currentPlanInfo, setCurrentPlanInfo] = useState();
+    const [newPlan, setNewPlan] = useState();
+    const [newPlanInfo, setNewPlanInfo] = useState();
+    const [clickedPage, setClickedPage] = useState();
+    const navigate = useNavigate();
+    const [sortOrder, setSortOrder] = useState("desc");
+    const [isSearchingVisible, setIsSearchingVisible] = useState(false);
+
+    useEffect(() => {
+        async function getData() {
+            await axios.get("http://localhost:8082/getplans")
+                .then(res => {
+                    setNewPlan(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+        getData();
+
+        async function getPlanInfoData() {
+            await axios.get("http://localhost:8082/getPlanInfo")
+                .then(res => {
+                    setNewPlanInfo(res.data);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        }
+        getPlanInfoData();
+    }, []);
+
+    const handleButtonClick = () => {
+        setIsSearchingVisible(!isSearchingVisible);
+    }
+
+    function inputfield(obj) {
+        setCurrentPlan(obj);
+        var output = newPlanInfo?.filter((plan) => {
+            return obj.planNumber === plan.gaId;
+        });
+        setCurrentPlanInfo(output[0]);
+    }
+
+    const toggleSortOrder = () => {
+        setSortOrder(sortOrder === "asc" ? 'desc' : 'asc');
+    }
+
+    const handleSort = (property) => {
+        const sortedPlan = [...newPlan].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[property] > b[property] ? 1 : -1;
+            } else {
+                return a[property] < b[property] ? 1 : -1;
+            }
+        });
+        setNewPlan(sortedPlan);
+        toggleSortOrder();
+    }
+
+    function toHome() {
+        setClickedPage(null);
+        navigate("/Home");
+    }
+
+    return (
+        <div className='main'>
+            <div className="navbar">
+                <div className="logo">
+                    <img src={myimage} alt="Empower" />
+                    <h1>Compliance</h1>
+                </div>
+                <div className="right-btns">
+                    <button className='btn01' onClick={toHome}>Home</button>
+                    <button className='btn01' onClick={() => setClickedPage("planinfo")}>Plan Info</button>
+                    <button className='btn01' onClick={() => setClickedPage("setup")}>SetUp</button>
+                    <button className='btn01' onClick={() => setClickedPage("pye")}>PYE</button>
+                    <button className='btn01' onClick={() => setClickedPage("eventlog")}>Event Log</button>
+                    <button className='btn01'>Contacts</button>
+                    <button className='btn01'>Amendments</button>
+                    <button className='btn01'>Search</button>
+                </div>
+            </div>
+            <div className="bottom">
+                <div className="btm-left">
+                    <div className="left-up">
+                        <input type="text" placeholder="Search..." />
+                        {newPlan?.map((obj) => (
+                            <div className='side1style'>
+                                <FaFolder />
+                                <button style={{ border: "none", background: "none" }} onClick={() => inputfield(obj)}>
+                                    <span> {obj.planId} {obj.planNumber}</span>
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="left-down">
+                        <button className='btn01' onClick={() => handleSort('planId')}>Sort by Plan ID</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Sort by Plan Number</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Plans By Client</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Plans In StartUp</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>BY Institution</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Contacts</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>By Analyst</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Termed Plans</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Plans w/o Primary Contacts</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Deleted Plans</button>
+                        <button className='btn01' onClick={handleButtonClick}>Search {isSearchingVisible ? 'Visible' : 'Hidden'}</button>
+                    </div>
+                </div>
+                <div className="btm-right">
+                    {isSearchingVisible && <Searching plan={newPlan} />}
+                    {clickedPage === "planinfo" && <div>Plan Info Component</div>}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Home1;
+
+
+
+-------------
 
 import React, { useState, useRef, useEffect } from 'react';
 import './Searching.css'
