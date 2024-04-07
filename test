@@ -1,4 +1,329 @@
+
+
+import React, { useState, useRef, useEffect } from 'react';
+import './Searching.css'
+const Searching = (props) => {
+    const [newPlan, setNewPlan] = useState(props.plan);
+
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchBy, setSearchBy] = useState('planId'); // Default search by plan ID
+    const [filteredPlans, setFilteredPlans] = useState(newPlan);
+    const modalRef = useRef(null);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        filterPlans(value, searchBy);
+    };
+
+    const handleSearchByChange = (value) => {
+        setSearchBy(value);
+        filterPlans(searchQuery, value);
+    };
+
+    const filterPlans = (query, searchBy) => {
+        const filtered = newPlan.filter(plan => {
+            const searchValue = query.toLowerCase();
+            if (searchBy === 'planId') {
+                return plan.planId.toString().includes(searchValue);
+            } else {
+                return plan.planNumber.toLowerCase().includes(searchValue);
+            }
+        });
+        setFilteredPlans(filtered);
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (modalRef.current && !modalRef.current.contains(event.target)) {
+                setSearchQuery('');
+                setFilteredPlans(newPlan);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [newPlan]);
+console.log("searchinf plans is "+props.plan)
+    return (
+        
+        <div className='search'>
+            <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
+
+            {/* Modal */}
+            {filteredPlans.length > 0 && (
+                <div className="modal" ref={modalRef}>
+                    <select value={searchBy} onChange={(e) => handleSearchByChange(e.target.value)}>
+                        <option value="planId">Search by Plan ID</option>
+                        <option value="planNumber">Search by Plan Number</option>
+                    </select>
+                    <ul>
+                        {filteredPlans.map(plan => (
+                            <li key={plan.planId}>
+                                Plan ID: {plan.planId}, Plan Number: {plan.planNumber}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default Searching;
+---------home.jsx----
+import React, { useEffect, useState } from 'react';
+import myimage from'./logo-new.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Modal from 'react-modal';
+
+import {  FaFolder } from "react-icons/fa";
+import Testing from './Testing';
+import SetUp from './SetUp';
+import PYE from './PYE';
+import EventLog from './EventLog';
+import NewSetup from './NewSetup';
+import Searching from './Searching';
+import './Home1.css'
+const Home1 = () => {
+    const [currentPlan,setCurrentPlan]= useState();
+    const [currentPlanInfo,setCurrentPlanInfo] = useState();
+    const [newPlan,setNewPlan]=useState();
+    const [newPlanInfo,setNewPlanInfo]=useState();
+    const [clickedPage,setClickedPage]=useState();
+    const navigate=useNavigate();
+    const [sortOrder,setSortOrder]=useState("desc");
+    const [isTestVisible,setIsTestVisible]= useState(false);
+    
+  useEffect(()=>{
+    
+    async function getdata(){
+    await axios.get("http://localhost:8082/getplans")
+    .then(res=>{
+        // console.log("plan is"+newPlan);
+        setNewPlan(res.data)
+       
+        
+        })
+    .catch(err =>{console.log(err)
+    })
+    }
+    getdata();
+     console.log("plan is"+newPlan);
+  async function getPlanInfodata(){
+    await axios.get("http://localhost:8082/getPlanInfo")
+    .then(res=>{
+       
+        setNewPlanInfo(res.data)
+        })
+    .catch(err =>{console.log(err)
+    })
+    }
+    getPlanInfodata();
+},[])
+    const handleButtonClick= ()=>{
+    setIsTestVisible(!isTestVisible);
+
+    }
+    function inputfield(obj){
+        setCurrentPlan(obj);
+        
+        var output= newPlanInfo?.filter((plan)=>{
+            
+            return obj.planNumber===plan.gaId;
+           
+        })
+        console.log("clicked plan is ",output[0]);
+        setCurrentPlanInfo(output[0]);
+        
+    }
+   
+    
+    const toggleSortOrder=()=>{
+        setSortOrder(sortOrder==="asc"?'desc':'asc');
+    }
+    const handleSort=(property)=>{
+        const sortedPlan = [...newPlan].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[property] > b[property] ? 1 : -1;
+            } else {
+                return a[property] < b[property] ? 1 : -1;
+            }
+        });
+        setNewPlan(sortedPlan);
+        toggleSortOrder(); // Toggle sorting order after sorting
+    }
+    function tohome()
+    {
+        console.log("going home");
+        setClickedPage(null);
+        navigate("/Home")
+    }
+  return (
+    <div className='main'>
+        <div className="navbar">
+            <div className="logo">
+                <img  src={myimage} alt="Empower"></img>
+                <h1>Compliance</h1>
+            </div>
+            <div className="right-btns">
+                <button className='btn01' onClick={tohome}>Home</button>
+                    <button className='btn01' onClick={()=>setClickedPage("planinfo")}>Plan Info</button>
+                    <button className='btn01' onClick={()=>setClickedPage("setup")}>SetUp</button>
+                    <button className='btn01' onClick={()=>setClickedPage("pye")}>PYE</button>
+                    <button className='btn01' onClick={()=>setClickedPage("eventlog")}>Event Log</button>
+                    <button className='btn01'>Contacts</button>
+                    <button className='btn01'>Amendments</button>
+                    <button className='btn01'>Test</button>  
+            </div>
+        </div>
+        <div className="bottom">
+            <div className="btm-left">
+                <div className="left-up">
+                    <input type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
+                    {
+                        newPlan?.map((obj)=>(
+                            <div className='side1style'>
+                                <span style={{paddingRight:"10px"}}><FaFolder/></span><button style={{border:"none",background:"none"}} onClick={()=>inputfield(obj)} ><span> {obj.planId} {obj.planNumber}</span></button>
+                            </div>
+                        ))
+                    }
+                </div>
+                {/* -----left down---- */}
+                
+                <div className="left-down">
+                    
+                    {/* Button to sort by planId */}
+                    <button className='btn01'  onClick={() => handleSort('planId')}>Sort by Plan ID </button>
+                    {/* Button to sort by planNumber */}
+                    <button className='btn01'  onClick={() => handleSort('planNumber')}>Sort by Plan Number </button>
+                    <button className='btn01'  onClick={() => handleSort('planNumber') }>Plans By Client</button>
+                    <button className='btn01' onClick={() => handleSort('planNumber') }>Plans In StartUp</button>
+                    <button className='btn01'  onClick={() => handleSort('planNumber') }>BY Institution</button>
+                    <button className='btn01'  onClick={() => handleSort('planNumber') }>Contacts</button>
+                    <button className='btn01' onClick={() => handleSort('planNumber')}>By Analyst</button>
+                    <button className='btn01'  onClick={() => handleSort('planNumber') }>Termed Plans</button>
+                    <button className='btn01' onClick={() => handleSort('planNumber') }>Plans w/o Primary Contacts</button>
+                    <button className='btn01' onClick={() => handleSort('planNumber') }>Deleted Plans</button>
+                    <button className='btn01' onClick={handleButtonClick}>Search{isTestVisible?true:false}</button></div>
+            </div>
+            <div className="btm-right">
+                
+                    {isTestVisible && <Searching plan={newPlan}/>}
+                            {/* {true && <Searching/>} */}
+                    {clickedPage==="planinfo" && <Testing CurrentPLanInfo={currentPlanInfo}/>} 
+                    {clickedPage==="setup" && <NewSetup />}
+                    {clickedPage==="pye" && <PYE/>}
+                    {clickedPage==="eventlog" && <EventLog/>}
+
+            </div>
+        </div>
+    </div>
+  )
+}
+
+export default Home1;
+-----css--
 *{
+    margin: 0;
+    padding: 0;
+    font-size: 2.5vmin;
+}
+/* main container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+    width: 100%;
+    margin: auto;
+    height: 10vh;
+    border-bottom: 1px solid;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
+    background-color: white;
+    color: black;
+    position: fixed;
+    top: 0;
+    z-index: 1000; /* Ensure the navbar appears above other content */
+}
+/* left container */
+.logo{ 
+    /* border: 1px solid; */
+    width:25% ;
+    align-items: center;
+    margin-left: 3%;
+    font-size: 2.5vmin;
+}
+.logo img{
+    width: 30%;
+    /* height: auto;  */
+}
+/* right container */
+.right-btns{
+    /* border: 1px solid; */
+    display: flex;
+    width:50%;
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.btn01{
+    padding: 5px 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.btn01:hover{
+    text-decoration: underline;
+}
+@media screen and (max-width: 1165px) {
+    .right-btns{
+        gap: 1px;
+    }
+    
+}
+/* ---------------------bottom------------------ */
+
+.bottom {
+    display: flex;
+    width: 95%;
+    height: 88.5%; /* Adjust as needed */
+    margin: auto;
+    /* border: 1px solid; */
+    position: absolute;
+    top: 11%; /* Adjust as needed */
+    left: 2.5%; /* Adjust as needed */
+    overflow: hidden; /* Hide content that overflows the bottom div */
+}
+
+.btm-left{
+    width: 25%;
+    border: 1px solid;
+    display: flex;
+    flex-direction: column;
+    /* height: 89.5vh; */
+
+}
+.left-up{
+    width: auto;
+    border-bottom: 1px solid;
+    height: 50%;
+    padding: 10px;
+}
+.left-down{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+.btm-right{
+    position: relative;
+    border: 1px solid red;
+}
+
+
+--------------*{
     margin: 0;
     padding: 0;
 }
