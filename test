@@ -1,4 +1,115 @@
-import React, { useState } from 'react';
+
+
+
+
+import './NewSetup.css'
+
+function NewSetup(props){
+    return(
+        <div className="setup"> 
+            
+            <div className='subright'>
+                    <input className='setupinput'/> Implement Mgr
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Transfer Asset Amt
+                </div>
+                
+                <div className='subright'>
+                    <input className='setupinput'/> Doc Type
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput' type='checkbox'/> Internal Loan Admin
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput' type='checkbox'/> Outside Funds
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Service Effective
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Expected First Payroll
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Implementation Type
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput' type='checkbox'/> SDA
+                </div>
+
+                <div className='subright'>
+                    <input  className='setupinput'type='checkbox'/> Modefied SPD
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Compliance Effective
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Deposite Amount
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Conversion Form
+                </div>
+                <div className='subright'>
+                    <input  className='setupinput'type='checkbox'/> GWTC/EMJAY Trustee
+                </div>
+                <div className='subright'>
+                    <input  className='setupinput'type='checkbox'/> Reliance Trust Company
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Plan Effecctive
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> # Companies (Merger)
+                </div>
+
+                <div className='subright'>
+                    <input className='setupinput'/> Employee  Count
+                </div>
+
+                <div className='subright'>
+                    <div className='subbtn'>
+                        <button className='planbtn'> Document Packer Email</button>
+                        <button className='planbtn'> Move Electric Files To Imaging</button>
+                        <button className='planbtn'> Move Docs To PSC</button>
+                    </div>
+                    
+
+                </div>
+                <div className='subright'>
+                    <div className='subbtn'>
+                            <button className='planbtn'> Generic  E-Mail</button>
+                            <button className='planbtn'> Termination CheckList</button>
+                        </div>
+                </div>
+                <div className='subright'>
+                    <div className='subbtn'>
+                            <button className='planbtn'> America Funds Forms </button>    
+                    </div>
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Installition Note (Double Click to Zoom)
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> Edited By
+                </div>
+                <div className='subright'>
+                    <input className='setupinput'/> On
+                </div>
+                <div className='subright'>
+                    <button className='planbtn'>Submit</button>
+                </div>
+        </div>
+    )
+}
+export default NewSetup;
+---------------------------import React, { useState } from 'react';
 
 const Searching = ({ plan, onSearch }) => {
     const [searchQuery, setSearchQuery] = useState('');
