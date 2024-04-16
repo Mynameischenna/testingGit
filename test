@@ -1,3 +1,5 @@
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'fileprocess': Unsatisfied dependency expressed through field 'yourService': Error creating bean with name 'xmlService': Unsatisfied dependency expressed through field 'contactInfoRepo': Error creating bean with name 'contactInfoRepository' defined in com.hrlc.compliance.repository.ContactInfoRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract java.util.List com.hrlc.compliance.repository.ContactInfoRepository.findByPlanId(int); Reason: Validation failed for query for method public abstract java.util.List com.hrlc.compliance.repository.ContactInfoRepository.findByPlanId(int)
+
 public class ContactInfo {
 	@Id
  	@GeneratedValue(strategy = GenerationType.IDENTITY)
