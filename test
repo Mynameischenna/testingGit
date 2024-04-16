@@ -1,3 +1,261 @@
+package com.hrlc.compliance.entity;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+
+@Entity
+public class ContactInfo {
+	@Id
+ 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+ 	private int contactInfoID;
+	
+	@ManyToOne
+	@JoinColumn(name = "planId")
+	private Plans plans;
+	
+ 	
+    public int getContactInfoID() {
+		return contactInfoID;
+	}
+
+	public void setContactInfoID(int contactInfoID) {
+		this.contactInfoID = contactInfoID;
+	}
+
+	public Plans getPlans() {
+		return plans;
+	}
+
+	public void setPlans(Plans plans) {
+		this.plans = plans;
+	}
+
+	private String contactId;
+    private String firstName;
+    private String lastName;
+    private String jobTitle;
+    private String companyName;
+    private String firstLineMailing;
+    private String secondLineMailing;
+    private String city;
+    private String stateCode;
+    private String zipCode;
+    private String country;
+    private String phoneNbr;
+    private String faxNbr;
+    private String emailAddress;
+    
+    @OneToMany(mappedBy = "contactInfo")
+    private List<ContactRole> contactRoles = new ArrayList<>();
+    
+    
+    public List<ContactRole> getContactRoles() {
+		return contactRoles;
+	}
+
+	public void setContactRoles(List<ContactRole> contactRoles) {
+		this.contactRoles = contactRoles;
+	}
+
+	public String getContactId() {
+        return contactId;
+    }
+
+    public void setContactId(String contactId) {
+        this.contactId = contactId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getFirstLineMailing() {
+        return firstLineMailing;
+    }
+
+    public void setFirstLineMailing(String firstLineMailing) {
+        this.firstLineMailing = firstLineMailing;
+    }
+
+    public String getSecondLineMailing() {
+        return secondLineMailing;
+    }
+
+    public void setSecondLineMailing(String secondLineMailing) {
+        this.secondLineMailing = secondLineMailing;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getPhoneNbr() {
+        return phoneNbr;
+    }
+
+    public void setPhoneNbr(String phoneNbr) {
+        this.phoneNbr = phoneNbr;
+    }
+
+    public String getFaxNbr() {
+        return faxNbr;
+    }
+
+    public void setFaxNbr(String faxNbr) {
+        this.faxNbr = faxNbr;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+//    public List<String> getContactRoles() {
+//        return contactRoles;
+//    }
+//
+//    public void setContactRoles(List<String> contactRoles) {
+//        this.contactRoles = contactRoles;
+//    }
+}
+----------------
+package com.hrlc.compliance.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+
+@Entity
+public class Plans {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int planId;
+	private String plannumber;
+	
+	
+	
+
+	public int getPlanId() {
+		return planId;
+	}
+
+	public void setPlanId(int planId) {
+		this.planId = planId;
+	}
+
+	public String getPlanNumber() {
+		return plannumber;
+	}
+
+	public void setPlanNumber(String planNumber) {
+		this.plannumber = planNumber;
+	}
+
+	@Override
+	public String toString() {
+		return "Plans [planId=" + planId + ", planNumber=" + plannumber + "]";
+	}
+
+	
+	
+	
+
+}
+------------------
+package com.hrlc.compliance.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.hrlc.compliance.entity.ContactInfo;
+import com.hrlc.compliance.entity.PlanInfo;
+
+public interface ContactInfoRepository extends JpaRepository<ContactInfo, String>{
+//	@Query("select ci from ContactInfo ci WHERE CI.plans.planId=:id")
+	List<ContactInfo> findByPlanId(int id);
+	
+}
+
+
+
+
+
+
 org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'fileprocess': Unsatisfied dependency expressed through field 'yourService': Error creating bean with name 'xmlService': Unsatisfied dependency expressed through field 'contactInfoRepo': Error creating bean with name 'contactInfoRepository' defined in com.hrlc.compliance.repository.ContactInfoRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract java.util.List com.hrlc.compliance.repository.ContactInfoRepository.findByPlanId(int); Reason: Validation failed for query for method public abstract java.util.List com.hrlc.compliance.repository.ContactInfoRepository.findByPlanId(int)
 
 public class ContactInfo {
