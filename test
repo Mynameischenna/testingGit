@@ -1,3 +1,13 @@
+public class ContactInfo {
+	@Id
+ 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+ 	private int contactInfoID;
+	
+	@ManyToOne
+	@JoinColumn(name = "plan_id")
+	private Plans plans;
+
+
 package com.hrlc.compliance.service;
 import java.io.StringReader;
 import java.time.LocalDate;
