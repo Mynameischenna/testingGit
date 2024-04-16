@@ -1,3 +1,37 @@
+import React, { useState } from 'react';
+
+function FileOpener() {
+  const [fileContent, setFileContent] = useState("");
+
+  const handleButtonClick = async () => {
+    try {
+      const response = await fetch('/path/to/your/file.txt'); // Replace with the actual path to your file
+      if (!response.ok) {
+        throw new Error('Failed to fetch file');
+      }
+      const content = await response.text();
+      setFileContent(content);
+    } catch (error) {
+      console.error('Error fetching file:', error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleButtonClick}>Open File</button>
+      <div>{fileContent}</div>
+    </div>
+  );
+}
+
+export default FileOpener;
+
+
+
+
+
+
+
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
