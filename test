@@ -1,3 +1,23 @@
+<td>
+                            <select
+                                value={item.selectedPerson || `${item.firstName} ${item.lastName}`}
+                                onChange={(event) => handlePersonChange(event, index)}
+                                style={{ width: '180px' }}
+                            >
+                                <option value={`${item.firstName} ${item.lastName}`}>
+                                    {item.firstName} {item.lastName}
+                                </option>
+                                {dataFromAPI.map((person, idx) => (
+                                    <option key={idx} value={`${person.firstName} ${person.lastName}`}>
+                                        {person.firstName} {person.lastName}
+                                    </option>
+                                ))}
+                            </select>
+                        </td>
+
+
+
+
 <table>
             <thead>
                 <tr className='head'>
