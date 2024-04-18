@@ -1,4 +1,41 @@
- useEffect(() => {
+ <table>
+                <thead>
+                    <tr className='head'>
+                        <td style={{width:'20%'}}>Person</td>
+                        <td style={{width:'60px'}}> Mail</td>
+                        <td style={{width:'60px'}}>Pre Note</td>
+                        <td style={{width:'140px'}}>Contact Type</td>
+                        <td style={{width:'160px'}}> Notes</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <select name="" id="" style={{width:'180px'}}>
+                                <option value="">option1</option>
+                                <option value="">option2</option>
+                                <option value="">option3</option>
+                            </select>
+                        </td>
+                        <td>
+                            <span className='pen-icon' onClick={openModel}><FaPen/></span>
+                            <input type="checkbox" />
+                        </td>
+                        <td><input type="checkbox" /></td>
+                        <td>
+                            <select name="" id="" style={{width:'180px'}}>
+                                <option value="">option1</option>
+                                <option value="">option2</option>
+                                <option value="">option3</option>
+                            </select>
+                        </td>
+                        <td><input type="text" /></td>
+                        
+                    </tr>
+
+
+
+useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get("http://localhost:8082/id/" + props.currentplan);
