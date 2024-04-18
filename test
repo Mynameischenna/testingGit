@@ -1,3 +1,17 @@
+ useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8082/id/" + props.currentplan);
+                console.log(props.currentplan);
+                console.log("response is", response.data); // Access response.data to print the response data
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [props.currentplan])
+
 useEffect(()=>{
         try {
             const response = axios.get("http://localhost:8082/id/"+props.currentplan);
