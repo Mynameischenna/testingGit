@@ -1,3 +1,14 @@
+useEffect(()=>{
+        try {
+            const response = axios.get("http://localhost:8082/id/"+props.currentplan);
+            console.log(props.currentplan);
+            console.log("response is"+response);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+       
+    },[])
+
 package com.hrlc.compliance.entity;
 
 
