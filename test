@@ -1,6 +1,13 @@
 
 
 
+EmailSender emailSender = new EmailSender();
+	     String recipientEmail = "recipient@example.com"; // Replace with recipient's email address
+	     String subject = "Test Email";
+	     String body = "This is a test email sent from JavaMail.";
+	     emailSender.sendEmail(recipientEmail, subject, body);
+
+
 import j<dependency>
     <groupId>com.sun.mail</groupId>
     <artifactId>javax.mail</artifactId>
