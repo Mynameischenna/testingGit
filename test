@@ -1,4 +1,17 @@
 
+Description:
+
+Field senderService in com.hrlc.compliance.ComplianceApplication required a bean of type 'com.hrlc.compliance.service.EmailService' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.hrlc.compliance.service.EmailService' in your configuration.
+
+
 
 
 EmailSender emailSender = new EmailSender();
