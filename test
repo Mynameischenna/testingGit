@@ -1,4 +1,121 @@
-
+ /*
+	 * Send an email if number of tries without success is equal to 5
+	 */
+	private void sendEmail(int status2, String string) {
+ 
+		Properties props = System.getProperties();
+		//		props.put("mail.smtp.host", "mailhost.gwl.com");
+		props.put("mail.smtp.host", "smtp.east.ssp.aws.gwl.com");
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.debug", "true");
+		props.put("mail.smtp.port", "25");
+		//		Session session = Session.getDefaultInstance(props, null);
+ 
+		Session session = Session.getDefaultInstance(props,
+				new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication("service-ascscripting", "Scriptin1");
+			}
+		});
+ 
+		// Define message
+		MimeMessage message = new MimeMessage(session);
+ 
+		// Set the from address
+		try {
+			message.setFrom(new InternetAddress("paul.raab@empower-retirement.com"));
+ 
+			// Set the to address
+			if (senderEmailID != null) {
+				message.addRecipient(Message.RecipientType.TO, new InternetAddress(senderEmailID));
+			}
+			// Set the to address
+			message.addRecipient(Message.RecipientType.CC, new InternetAddress("paul.raab@empower-retirement.com"));
+			String msgStr = null;
+ 
+			/*
+			 * Success
+			 */
+			if (status2 == 0) {
+ 
+				// Set the subject
+				message.setSubject("Successful transmission - Compliance DocuSign");
+ 
+				// Set the content
+				msgStr = "This email is being sent to you after a successful transmission of\n" +
+"your DocuSign document(s).\n" +
+						string +"\n" +
+"The details of this DocuSign order are as follows:\n" +
+"\n" +
+"PlanNumber: " + PlanNumber + "\n" +
+"ISISReq_ID: " + ISISReq_ID + "\n" +
+"DocuHttpStatus: " + DocuHttpStatus + "\n" +
+"DocuStatus: " + DocuStatus + "\n" +
+"DocuCount: " + DocuCount + "\n" +
+"DocuErrorDetails: " + DocuErrorDetails + "\n";
+			}
+ 
+			/*
+			 * Failure
+			 */
+			else if (status2 ==1) {
+				// Set the subject
+				message.setSubject("Validation Error - Compliance DocuSign");
+ 
+				// Set the content
+				msgStr = "This email is being sent to you due to a validation error for a DocuSign\n" +
+"document(s) that you are trying to send. There will be no further automatic\n" +
+"attempts to send this document. Please investigate this issue and take corrective\n" +
+"action. \n" +
+"Cause: " + string + "\n" +
+"The details of this DocuSign order are as follows:\n" +
+"\n" +
+"PlanNumber: " + PlanNumber + "\n" +
+"ISISReq_ID: " + ISISReq_ID + "\n" +
+"DocuHttpStatus: " + DocuHttpStatus + "\n" +
+"DocuStatus: " + DocuStatus + "\n" +
+"DocuCount: " + DocuCount + "\n" +
+"DocuErrorDetails: " + DocuErrorDetails + "\n";
+			}
+ 
+			/*
+			 * Failure
+			 */
+			else if (status2 == 2) {
+ 
+				// Set the subject
+				message.setSubject("Transmission error - Compliance DocuSign");
+ 
+				// Set the content
+				msgStr = "This email is being sent to you due to a transmission error for a DocuSign\n" +
+"document that you are trying to send. There will be no further automatic\n" +
+"attempts to send this document. Please investigate this issue and take corrective\n" +
+"action. \n" +
+"Cause: " + string + "\n" +
+"The details of this DocuSign order are as follows:\n" +
+"\n" +
+"PlanNumber: " + PlanNumber + "\n" +
+"ISISReq_ID: " + ISISReq_ID + "\n" +
+"DocuHttpStatus: " + DocuHttpStatus + "\n" +
+"DocuStatus: " + DocuStatus + "\n" +
+"DocuCount: " + DocuCount + "\n" +
+"DocuErrorDetails: " + DocuErrorDetails + "\n";
+			}
+ 
+			message.setText(msgStr);
+ 
+			// Send message
+			Transport.send(message);
+ 
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+ 
 
 		<dependency>
     <groupId>org.springframework.boot</groupId>
