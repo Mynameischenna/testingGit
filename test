@@ -1,3 +1,12 @@
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=chennakesava13579@gmail.com
+spring.mail.password=lvfd zcds ykmm yuob
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+
+
 package com.sample.mail;
 
 
