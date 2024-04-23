@@ -1,3 +1,9 @@
+
+org.springframework.mail.MailSendException: Mail server connection failed. Failed messages: org.eclipse.angus.mail.util.MailConnectException: Couldn't connect to host, port: smtp.gmail.com, 587; timeout -1;
+  nested exception is:
+	java.net.ConnectException: Connection timed out: connect
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSe
+
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
 spring.mail.username=chennakesava13579@gmail.com
