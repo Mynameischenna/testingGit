@@ -1,3 +1,194 @@
+import React ,{useState} from 'react';
+import './AddPlan.css';
+import './Testing.css';
+
+function Testing(props){
+    const [fileContent, setFileContent] = useState("");
+
+    const handleButtonClick = async () => {
+      try {
+        const response = await fetch('P:/00000101/document/plandoc.pdf'); // Replace with the actual path to your file
+        if (!response.ok) {
+          throw new Error('Failed to fetch file');
+        }
+        const content = await response.text();
+        setFileContent(content);
+      } catch (error) {
+        console.error('Error fetching file:', error);
+      }
+    }
+    return (
+    <div className='body'>
+       
+           
+        <div className='rightmenu'>
+            
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.CurrentPLanInfo?.clientName} style={{width:"500px"}}/>
+                        <br/>Client Name
+                    </div>
+                    <div className='row11'>
+                    <input value={props.CurrentPLanInfo?.estNumberOfParticipants}/>
+                        <br/>Propective Plan Number
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                    <input value={props.CurrentPLanInfo?.estPlanAssets}/>
+                        <br/>EIN #
+                    </div>
+                    
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.CurrentPLanInfo?.provCompany}/>
+                        <br/>Institution
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.groupOffice}/>
+                        <br/>Group Office
+                    </div>
+                    <div className='row11'>
+                    <input value={props.CurrentPLanInfo?.irsrlCode}/><br/>
+                        Plan Type 
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.trustEin}/><br/>
+                        Trust Ein
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>Sub Institution
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>Prov Company
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>PSC Accu Code
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>Common Remitter
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.complianceAnalyst}/>
+                        <br/>Compliance Analyst
+                    </div>
+                    <div className='row11'><button  className='planbtn' onClick={handleButtonClick}>Plan Document</button></div> 
+                     <div className='row11'><button className='planbtn'>Plan Folder</button></div>
+                    <div className='row11'><button className='planbtn' ><a href='https://www.google.com' target='_blank' style={{textDecoration:'none',color:'white'}}>  Scan Sheets</a></button></div>
+                    <div className='row11'><button className='planbtn'>Update FTW</button></div> 
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.secondaryCaseload} type='checkbox'/>Secondary Caseload
+                    </div>   
+                </div> 
+
+                 <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.gwg} type='checkbox'/>GWG
+                    </div> 
+                    <div className='row11' style={{marginLeft:"120px"}}>
+                        <input value={props.currentPlanInfo?.gwgServices}/>
+                        <br/>GWG Services
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.gwgWorkTracking}/>
+                        <br/>GWG Work Tracking
+                    </div> 
+                    <div className='row11'><button className='planbtn'>GWG Follow Up</button> </div>
+                    
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.planYearEnd} type='date'/>
+                        <br/>Plan Year End
+                    </div>
+                    <div className='row11' style={{marginLeft:"63px"}}>
+                        <input value={props.currentPlanInfo?.planTier}/>
+                        <br/>Plan Teir
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.irsPlanType}/><br/>
+                        IRS Plan Type
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.marketSegment}/><br/>
+                        Market Segment
+                    </div>
+                </div> 
+                
+                 
+                <div className='row1'>
+                    <div className='row11'>
+                        Plan Characteristics
+                    </div>
+                    
+                </div> 
+
+                <div className='row1'>
+                    <div className='row11' style={{marginRight:"55px"}}>
+                    <input checked={props.currentPlanInfo?.ppsExternal} type='checkbox'/>PPSExternal 
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='checkbox'/>Jumbo 401(k)<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>PEAK Pilot Plan<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>Hybrid Plan
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='checkbox'/>403b Restatement Req<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>403b Fee Waived<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>403b Wave Change
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='date'/><br/>
+                        403b Request Date
+                    </div>
+                   
+                </div> 
+                <div className='row1'>
+                
+                    <div className='row11'>
+                    <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>Plan Deconversion<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>PPA Restatement Dashboard<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>Cycle 3 Restatement Dashboard
+                    </div>
+
+
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='checkbox'/>
+                        Check this box to prevent ISIS from Updating the contacts and unlock the contacts form
+                        <button>Delete This plan</button>
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        FTW Customer ID<input checked={props.currentPlanInfo?.jumbo401k} type='text'/><br/>
+                        FTW Plan ID<input checked={props.currentPlanInfo?.jumbo401k} type='text'/>
+                    </div>
+                </div>
+                
+                    
+            </div>
+        </div>
+    
+    )
+}
+export default Testing;
+
+
+
+---------------------
 package com.hrlc.compliance.entity;
 
 
