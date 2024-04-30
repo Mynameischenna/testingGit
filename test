@@ -1,3 +1,46 @@
+import React, { useState, useEffect } from 'react';
+
+function Testing({ CurrentPLanInfo }) {
+    // State variable to hold form data
+    const [formData, setFormData] = useState({
+        clientName: '',
+        estNumberOfParticipants: '',
+        estPlanAssets: '',
+        // Add more fields as needed
+    });
+
+    // Update form data when new props are received
+    useEffect(() => {
+        if (CurrentPLanInfo) {
+            setFormData(CurrentPLanInfo);
+        }
+    }, [CurrentPLanInfo]);
+
+    // Handle input changes
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            [name]: value
+        }));
+    };
+
+    return (
+        <div>
+            <input name="clientName" value={formData.clientName} onChange={handleInputChange} placeholder="Client Name" />
+            <input name="estNumberOfParticipants" value={formData.estNumberOfParticipants} onChange={handleInputChange} placeholder="Estimated Number of Participants" />
+            <input name="estPlanAssets" value={formData.estPlanAssets} onChange={handleInputChange} placeholder="Estimated Plan Assets" />
+            {/* Add more inputs for other fields */}
+        </div>
+    );
+}
+
+export default Testing;
+
+
+
+
+
 import React, { useEffect, useState  ,useRef} from 'react';
 import myimage from'./logo-new.png';
 import axios from 'axios';
