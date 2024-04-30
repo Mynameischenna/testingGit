@@ -1,3 +1,42 @@
+import React, { useState } from 'react';
+import './AddPlan.css';
+import './Testing.css';
+
+function Testing(props) {
+    const [formData, setFormData] = useState(props.CurrentPLanInfo || {});
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    return (
+        <div className='body'>
+            <div className='rightmenu'>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input name="clientName" value={formData.clientName || ''} style={{ width: "500px" }} onChange={handleInputChange} />
+                        <br />Client Name
+                    </div>
+                    <div className='row11'>
+                        <input name="estNumberOfParticipants" value={formData.estNumberOfParticipants || ''} onChange={handleInputChange} />
+                        <br />Propective Plan Number
+                    </div>
+                    {/* Add other input fields similarly */}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Testing;
+
+
+
+----
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
