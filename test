@@ -1,3 +1,236 @@
+import React, { useEffect, useState  ,useRef} from 'react';
+import myimage from'./logo-new.png';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Testing from './Testing';
+import PYE from './PYE';
+import EventLog from './EventLog';
+import NewSetup from './NewSetup';
+import Searching from './Searching';
+import './Home1.css'
+import Contacts from './Contacts';
+
+
+const Home1 = () => {
+    const [currentPlan, setCurrentPlan] = useState();
+    const [currentPlanInfo, setCurrentPlanInfo] = useState();
+    const [newPlan, setNewPlan] = useState();
+    const [newPlanInfo, setNewPlanInfo] = useState();
+    const [clickedPage, setClickedPage] = useState();
+    const navigate = useNavigate();
+    const [sortOrder, setSortOrder] = useState("desc");
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchBy, setSearchBy] = useState('planId');
+    const [filteredPlans, setFilteredPlans] = useState([]);
+    const [isDataFetched, setIsDataFetched] = useState(false);
+    const [activeButton,setActiveButton]=useState(null);
+    const modalRef = useRef(null);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        filterPlans(value, searchBy);
+    };
+
+    const handleSearchByChange = (value) => {
+        setSearchBy(value);
+        filterPlans(searchQuery, value);
+    };
+
+    const filterPlans = (query, searchBy) => {
+        if (!newPlan) return;
+        
+        const filtered = newPlan.filter(plan => {
+            const searchValue = query.toLowerCase();
+            if (searchBy === 'planId') {
+                return plan.planId.toString().includes(searchValue);
+            } else if(searchBy === 'planNumber') {
+                return plan.planNumber.toLowerCase().includes(searchValue);
+            }
+            else{
+                return plan.planName.toLowerCase().includes(searchValue);
+            }
+        });
+        setFilteredPlans(filtered);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8082/getplans");
+                setNewPlan(response.data);
+                setIsDataFetched(true);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+
+        async function getPlanInfodata(){
+            await axios.get("http://localhost:8082/getPlanInfo")
+            .then(res=>{
+               
+                setNewPlanInfo(res.data)
+                })
+            .catch(err =>{console.log(err)
+            })
+            }
+            getPlanInfodata();
+    }, []);
+
+    useEffect(() => {
+        if (isDataFetched) {
+            filterPlans(searchQuery, searchBy);
+        }
+    }, [isDataFetched, searchQuery, searchBy]);
+
+    const tohome = () => {
+        console.log("going home");
+        setClickedPage(null);
+        navigate("/Home");
+    };
+
+    const toggleSortOrder = () => {
+        setSortOrder(sortOrder === "asc" ? 'desc' : 'asc');
+    };
+    async function inputfield(obj){
+        await axios.get("http://localhost:8082/planid/"+obj.planId)
+            .then(res=>{
+               
+               setCurrentPlanInfo(res.data)
+                })
+            .catch(err =>{console.log(err)
+            })
+
+            setCurrentPlan(obj.planId)
+            console.log("selected plan id is "+obj.planId);
+        
+    }
+    const handleSort = (property) => {
+        const sortedPlan = [...newPlan].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[property] > b[property] ? 1 : -1;
+            } else {
+                return a[property] < b[property] ? 1 : -1;
+            }
+        });
+        setNewPlan(sortedPlan);
+        setFilteredPlans(sortedPlan)
+        toggleSortOrder(); // Toggle sorting order after sorting
+    };
+    const handlebutton=(page,id)=>{
+        setClickedPage(page);
+        setActiveButton(id)
+    }
+
+    return (
+        <div className='main'>
+            <div className="navbar">
+                <div className="logo">
+                    <img src={myimage} alt="Empower" />
+                    <h1>Compliance</h1>
+                    
+                </div>
+                <div className="right-btns">
+                    <button className='btn01' onClick={tohome}>Home</button>
+                    <button className={activeButton===1?'active':'btn01'} onClick={()=>handlebutton('planinfo',1)}>Plan Info</button>
+                    <button className={activeButton===2?'active':'btn01'} onClick={()=>handlebutton('setup',2)}>SetUp</button>
+                    <button className={activeButton===3?'active':'btn01'} onClick={()=>handlebutton('pye',3)}>PYE</button>
+                    <button className={activeButton===4?'active':'btn01'} onClick={()=>handlebutton('eventlog',4)}>Event Log</button>
+                    <button className={activeButton===5?'active':'btn01'} onClick={()=>handlebutton('contacts',5)}>Contacts</button>
+                    <button className='btn01'>Amendments</button>
+                    <button className='btn01'>Test</button>
+                </div>
+            </div>
+            <div className="bottom">
+                <div className="btm-left">
+                    <div className="left-up">
+                        <div className="search">
+                            <input className='search-btn' type="text" value={searchQuery} onChange={handleSearchChange} placeholder="Search..." />
+                            <select className='option' value={searchBy} onChange={(e) => handleSearchByChange(e.target.value)}>
+                                <option value="planId">SearchID</option>
+                                <option value="planNumber">Search by Plan Number</option>
+                                <option value="planName">Search by Plan Name</option>
+                            </select>
+                        </div>
+                        <div className="plan">
+                            <table style={{borderSpacing:'10px'}}>
+                                <thead>
+                                <tr>
+                                    <th>planId </th>
+                                    <th>PlanNumber</th>
+                                    <th>PlanName</th>
+                                </tr>
+                                </thead>
+                    
+                                <tbody>
+                                    {filteredPlans.map(plan => (
+                                        <tr style={{cursor:'pointer'}} onClick={()=>inputfield(plan)} key={plan.planId}>
+                                            <td>{plan.planId}</td>
+                                            <td>{plan.planNumber}</td>
+                                            <td>{plan.planName}</td>
+                                        </tr>
+                                        
+                                    ))}
+                                </tbody>  
+                            </table>
+                            {/* {
+                            filteredPlans.length > 0 &&
+                            <ul>
+                                {filteredPlans.map(plan => (
+                                    <li  style={{cursor:'pointer'}} onClick={()=>inputfield(plan)} key={plan.planId}>
+                                        PlanID: {plan.planId}, PlanNum: {plan.planNumber}
+                                    </li>
+                                ))}
+                            </ul>
+                    } */}
+                    </div>
+                        
+                    </div>
+                    <div className="left-down">
+                        <button className='btn01' onClick={() => handleSort('planId')}>Sort by Plan ID </button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Sort by Plan Number </button>
+                        <button className='btn01' onClick={() => handleSort('planName')}>Sort by Plan Name </button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Plans By Client</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Plans In StartUp</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>BY Institution</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Contacts</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>By Analyst</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Termed Plans</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Plans w/o Primary Contacts</button>
+                        <button className='btn01' onClick={() => handleSort('planNumber')}>Deleted Plans</button>
+                        <button className='btn01' onClick={() => setClickedPage('search')}>Search</button>
+                    </div>
+                </div>
+                <div className="btm-right">
+                    <div className='top-info'>
+                        {currentPlanInfo? 
+                        (<div className='top1'>
+                        <p>Plan Id :{currentPlanInfo?.gaId}</p>
+                        <p>Plan Name:{currentPlanInfo?.planName}</p></div>):
+                            (<div className='top1'>
+                            <p>Plan Id :</p>
+                            <p>Plan Name:</p></div>)}
+                        
+                    </div>
+                    {clickedPage === 'search' && <Searching plan={newPlan} />}
+                    {clickedPage === "planinfo" && <Testing CurrentPLanInfo={currentPlanInfo} />}
+                    {clickedPage === "setup" && <NewSetup />}
+                    {clickedPage === "pye" && <PYE />}
+                    {clickedPage === "eventlog" && <EventLog />}
+                    {clickedPage === "contacts" && <Contacts currentplan={currentPlan}/>}
+                </div>
+                
+            </div>
+        </div>
+    );
+};
+
+export default Home1;
+
+
+
 import React, { useState } from 'react';
 import './AddPlan.css';
 import './Testing.css';
