@@ -1,3 +1,131 @@
+
+function Home1() {
+    const [currentPlan, setCurrentPlan] = useState();
+    const [currentPlanInfo, setCurrentPlanInfo] = useState();
+    const [newPlan, setNewPlan] = useState();
+    const [newPlanInfo, setNewPlanInfo] = useState();
+    const [clickedPage, setClickedPage] = useState();
+    const [sortOrder, setSortOrder] = useState("desc");
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchBy, setSearchBy] = useState('planId');
+    const [filteredPlans, setFilteredPlans] = useState([]);
+    const [isDataFetched, setIsDataFetched] = useState(false);
+    const [activeButton,setActiveButton]=useState(null);
+
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        filterPlans(value, searchBy);
+    };
+
+    const handleSearchByChange = (value) => {
+        setSearchBy(value);
+        filterPlans(searchQuery, value);
+    };
+
+    const filterPlans = (query, searchBy) => {
+        if (!newPlan) return;
+        
+        const filtered = newPlan.filter(plan => {
+            const searchValue = query.toLowerCase();
+            if (searchBy === 'planId') {
+                return plan.planId.toString().includes(searchValue);
+            } else if(searchBy === 'planNumber') {
+                return plan.planNumber.toLowerCase().includes(searchValue);
+            }
+            else{
+                return plan.planName.toLowerCase().includes(searchValue);
+            }
+        });
+        setFilteredPlans(filtered);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get("http://localhost:8082/getplans");
+                setNewPlan(response.data);
+                setIsDataFetched(true);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+
+        async function getPlanInfodata(){
+            await axios.get("http://localhost:8082/getPlanInfo")
+            .then(res=>{
+                setNewPlanInfo(res.data);
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        }
+        getPlanInfodata();
+    }, []);
+
+    useEffect(() => {
+        if (isDataFetched) {
+            filterPlans(searchQuery, searchBy);
+        }
+    }, [isDataFetched, searchQuery, searchBy]);
+
+    const inputfield = async (obj) => {
+        try {
+            const response = await axios.get("http://localhost:8082/planid/"+obj.planId);
+            setCurrentPlanInfo(response.data);
+            setCurrentPlan(obj.planId);
+            console.log("selected plan id is "+obj.planId);
+        } catch (error) {
+            console.error('Error fetching plan info:', error);
+        }
+    };
+
+    const handleSort = (property) => {
+        const sortedPlan = [...newPlan].sort((a, b) => {
+            if (sortOrder === 'asc') {
+                return a[property] > b[property] ? 1 : -1;
+            } else {
+                return a[property] < b[property] ? 1 : -1;
+            }
+        });
+        setNewPlan(sortedPlan);
+        setFilteredPlans(sortedPlan);
+        toggleSortOrder(); // Toggle sorting order after sorting
+    };
+
+    const toggleSortOrder = () => {
+        setSortOrder(sortOrder === "asc" ? 'desc' : 'asc');
+    };
+
+    const handlebutton = (page, id) => {
+        setClickedPage(page);
+        setActiveButton(id);
+    };
+
+    return (
+        <div className='main'>
+            {/* Your navbar and other UI elements */}
+            <div className="bottom">
+                <div className="btm-left">
+                    {/* Your left-side UI elements */}
+                </div>
+                <div className="btm-right">
+                    {/* Render the Testing component with currentPlanInfo as prop */}
+                    {clickedPage === "planinfo" && <Testing currentPlanInfo={currentPlanInfo} />}
+                    {/* Other components based on clickedPage */}
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Home1;
+
+
+
+
 import React, { useState } from 'react';
 import './AddPlan.css';
 import './Testing.css';
