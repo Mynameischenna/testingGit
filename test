@@ -1,4 +1,63 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+function YourFormComponent(props) {
+    const initialValues = props.initialValues;
+    const [formData, setFormData] = useState(initialValues);
+    const [updatedFormData, setUpdatedFormData] = useState(initialValues);
+
+    useEffect(() => {
+        setUpdatedFormData(initialValues); // Initialize updatedFormData with initial form data from props
+    }, [initialValues]);
+
+    const handleChange = (e) => {
+        setUpdatedFormData({ ...updatedFormData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.put(`/api/forms/${id}`, updatedFormData); // Assuming id is the ID of the form data you want to update
+            console.log('Form data updated:', response.data);
+            // Handle successful update, e.g., show a success message
+            setFormData(updatedFormData); // Update the form state with the updated form data
+        } catch (error) {
+            console.error('Error updating form data:', error);
+            // Handle error, e.g., show an error message
+        }
+    };
+
+    return (
+        <form onSubmit={handleSubmit}>
+            <input
+                type="text"
+                name="field1"
+                value={updatedFormData.field1}
+                onChange={handleChange}
+            />
+            <input
+                type="text"
+                name="field2"
+                value={updatedFormData.field2}
+                onChange={handleChange}
+            />
+            {/* Add other form fields here */}
+            <button type="submit">Update Form</button>
+        </form>
+    );
+}
+
+export default YourFormComponent;
+
+
+
+
+
+
+
+
+
+import React, { useState, useEffect } from 'react';
 
 function Testing({ CurrentPLanInfo }) {
     // State variable to hold form data
