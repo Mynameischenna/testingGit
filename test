@@ -1,3 +1,17 @@
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put('http://localhost:8080/api/update', formData);
+      console.log(response.data); // Assuming backend returns the saved data
+      // Optionally, reset the form after successful submission
+      setFormData({
+        name: '',
+        email: '',
+      });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
 
 https://teams.microsoft.com/l/meetup-join/19%3ameeting_NmY2YTczYTgtYWZiYi00YTc4LTg3ZDMtZGY2MWU4ZGZmMTBi%40thread.v2/0?context=%7b%22Tid%22%3a%22d344fc8a-8286-4945-9a21-49aed506d485%22%2c%22Oid%22%3a%22aeb1f80b-21fd-462f-86c6-40255d6bd1b9%22%7d
