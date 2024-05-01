@@ -1,3 +1,23 @@
+public void uodatePlanInfo(PlanInfo planInfo) {
+	        // Check if a record with the same planInfoID already exists in the database
+	        PlanInfo existingPlanInfoOptional = planInfoRepo.findByPlanId(planInfo.getPlanInfoID());
+	        
+	        if (existingPlanInfoOptional!=null) {
+	            // If a record with the same ID exists, update the existing record
+	            PlanInfo existingPlanInfo = existingPlanInfoOptional.get();
+	            // Update the existing record with the new data
+	            existingPlanInfo.setEvId(planInfo.getEvId());
+	            existingPlanInfo.setPlanName(planInfo.getPlanName());
+	            // Set other fields as needed
+
+	            // Save the updated record
+	            planInfoRepository.save(existingPlanInfo);
+	        } else {
+	            // If no record with the same ID exists, simply save the new record
+	            planInfoRepository.save(planInfo);
+	        }
+	    }
+
 
     public void uodatePlanInfo(PlanInfo planInfo) {
         // Check if a record with the same planInfoID already exists in the database
