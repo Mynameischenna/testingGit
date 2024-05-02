@@ -1,3 +1,30 @@
+ existingPlanInfo.setEvId(planInfo.getEvId());
+        existingPlanInfo.setPlanName(planInfo.getPlanName());
+        existingPlanInfo.setIrsrlCode(planInfo.getIrsrlCode());
+        existingPlanInfo.setProvCompany(planInfo.getProvCompany());
+        existingPlanInfo.setProdId(planInfo.getProdId());
+        existingPlanInfo.setStatusCode(planInfo.getStatusCode());
+        existingPlanInfo.setDpDateTime(planInfo.getDpDateTime());
+        existingPlanInfo.setRolloverInd(planInfo.getRolloverInd());
+        existingPlanInfo.setGaId(planInfo.getGaId());
+        existingPlanInfo.setClientName(planInfo.getClientName());
+        existingPlanInfo.setFirstLineMailing(planInfo.getFirstLineMailing());
+        existingPlanInfo.setScndLineMailing(planInfo.getScndLineMailing());
+        existingPlanInfo.setCity(planInfo.getCity());
+        existingPlanInfo.setStateCode(planInfo.getStateCode());
+        existingPlanInfo.setZipCode(planInfo.getZipCode());
+        existingPlanInfo.setCountry(planInfo.getCountry());
+        existingPlanInfo.setInternalComplianceInd(planInfo.getInternalComplianceInd());
+        existingPlanInfo.setPlanAnnivDate(planInfo.getPlanAnnivDate());
+        existingPlanInfo.setEstNumberOfParticipants(planInfo.getEstNumberOfParticipants());
+        existingPlanInfo.setEstPlanAssets(planInfo.getEstPlanAssets());
+        existingPlanInfo.setEstImplementationDate(planInfo.getEstImplementationDate());
+        existingPlanInfo.setSubsetCashCode(planInfo.getSubsetCashCode());
+        existingPlanInfo.setClientEntityType(planInfo.getClientEntityType());
+        existingPlanInfo.setTpaFirmId(planInfo.getTpaFirmId());
+
+
+
 public void uodatePlanInfo(PlanInfo planInfo) {
 	        // Check if a record with the same planInfoID already exists in the database
 	        PlanInfo existingPlanInfoOptional = planInfoRepo.findByPlanId(planInfo.getPlanInfoID());
