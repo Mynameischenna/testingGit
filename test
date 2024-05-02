@@ -1,3 +1,81 @@
+private void savePlanInfo(Element parent) {
+		PlanInfo planInfo = new PlanInfo();
+		Plans plans = new  Plans();
+		String ga_id=getElementValue(parent, "ga_id");
+		String planName = getElementValue(parent, "plan_name");
+		
+		// check its already exists or new file
+				
+				PlanInfo existingfRow = planInfoRepo.findByGaId(ga_id);
+				if(existingfRow!=null) {
+					planRepo.save(plans);
+					planInfo.setEvId(getElementValue(parent,"ev_id"));
+				 	planInfo.setPlanName(getElementValue(parent, "plan_name"));
+			        planInfo.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+			        planInfo.setProvCompany(getElementValue(parent, "prov_company"));
+			        planInfo.setProdId(getElementValue(parent, "prod_id"));
+			        planInfo.setStatusCode(getElementValue(parent, "status_code"));
+			        planInfo.setDpDateTime(getElementValue(parent, "dpdate_time"));
+			        planInfo.setRolloverInd(getElementValue(parent, "rollover_ind"));
+			        planInfo.setGaId(getElementValue(parent, "ga_id"));
+			        planInfo.setClientName(getElementValue(parent, "client_name"));
+			        planInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+			        planInfo.setScndLineMailing(getElementValue(parent, "scnd_line_mailing"));
+			        planInfo.setCity(getElementValue(parent, "city"));
+			        planInfo.setStateCode(getElementValue(parent, "state_code"));
+			        planInfo.setZipCode(getElementValue(parent, "zip_code"));
+			        planInfo.setCountry(getElementValue(parent, "country"));
+			        planInfo.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+			        planInfo.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+			        planInfo.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+			        planInfo.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+			        planInfo.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+			        planInfo.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+			        planInfo.setClientEntityType(getElementValue(parent, "client_entity_type"));
+			        planInfo.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+			        planInfoRepo.save(planInfo);
+				}
+				
+				else {
+					
+				
+							plans.setPlanNumber(ga_id);
+							plans.setPlanName(planName);
+							planRepo.save(plans);
+							imp=ga_id;
+		//setting plan_info id
+		Plans plan1 = getLastRow();
+		System.out.println("planinfo"+plan1);
+		planInfo.setPlans(plan1);
+		planInfo.setEvId(getElementValue(parent,"ev_id"));
+	 	planInfo.setPlanName(getElementValue(parent, "plan_name"));
+        planInfo.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        planInfo.setProvCompany(getElementValue(parent, "prov_company"));
+        planInfo.setProdId(getElementValue(parent, "prod_id"));
+        planInfo.setStatusCode(getElementValue(parent, "status_code"));
+        planInfo.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        planInfo.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        planInfo.setGaId(getElementValue(parent, "ga_id"));
+        planInfo.setClientName(getElementValue(parent, "client_name"));
+        planInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        planInfo.setScndLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        planInfo.setCity(getElementValue(parent, "city"));
+        planInfo.setStateCode(getElementValue(parent, "state_code"));
+        planInfo.setZipCode(getElementValue(parent, "zip_code"));
+        planInfo.setCountry(getElementValue(parent, "country"));
+        planInfo.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        planInfo.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        planInfo.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        planInfo.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        planInfo.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        planInfo.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        planInfo.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        planInfo.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+        planInfoRepo.save(planInfo);
+				}
+
+
+
 package com.hrlc.compliance.entity;
 
 
