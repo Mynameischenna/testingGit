@@ -1,3 +1,17 @@
+public void deleteContactRolesByPlanId(int planId) {
+        // Find ContactInfo entities by planId
+        Iterable<ContactInfo> contactInfos = contactInfoRepository.findByPlanId(planId);
+
+        // Iterate over each ContactInfo entity
+        for (ContactInfo contactInfo : contactInfos) {
+            // Find ContactRole entities associated with the current ContactInfo
+            Iterable<ContactRole> contactRoles = contactRoleRepository.findByContactInfo(contactInfo);
+
+            // Delete each ContactRole entity
+            contactRoleRepository.deleteAll(contactRoles);
+        }
+
+
 
 Hibernate: select cil1_0.plan_id,cil1_0.contact_infoid,cil1_0.city,cil1_0.company_name,cil1_0.contact_id,cil1_0.country,cil1_0.email_address,cil1_0.fax_nbr,cil1_0.first_line_mailing,cil1_0.first_name,cil1_0.job_title,cil1_0.last_name,cil1_0.phone_nbr,cil1_0.second_line_mailing,cil1_0.state_code,cil1_0.zip_code from contact_info cil1_0 where cil1_0.plan_id=?
 Hibernate: select cr1_0.contact_info_id,cr1_0.id,cr1_0.role from contact_role cr1_0 where cr1_0.contact_info_id=?
