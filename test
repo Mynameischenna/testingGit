@@ -1,3 +1,31 @@
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+public class Plans {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int planId;
+
+    @Column(name = "plan_number") // Matches the field name in the database
+    private String planNumber;
+
+    private String planName;
+
+    // One-to-One mapping with PlanInfo
+    @OneToOne(mappedBy = "plans", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PlanInfo planInfo;
+
+    // One-to-Many mapping with ContactInfo
+    @OneToMany(mappedBy = "plans", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ContactInfo> contactInfoList = new ArrayList<>();
+
+    // Constructors, getters, and setters
+}
+
+---------------------------previous data
 package com.hrlc.compliance.entity;
 
 
