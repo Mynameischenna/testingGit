@@ -24,6 +24,22 @@ public class Plans {
 
     // Constructors, getters, and setters
 }
+import javax.persistence.*;
+
+@Entity
+public class PlanInfo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int planInfoID;
+
+    // One-to-One mapping with Plans
+    @OneToOne
+    @JoinColumn(name = "plan_id")
+    private Plans plans;
+
+    // Constructors, getters, and setters
+}
 
 ---------------------------previous data
 package com.hrlc.compliance.entity;
