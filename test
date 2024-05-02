@@ -1,3 +1,103 @@
+@Service
+public class PlanInfoService {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepository; // Inject your repository here
+
+    @Autowired
+    private PlansRepository planRepository; // Inject your Plans repository here
+
+    public void savePlanInfo(Element parent) {
+        String gaId = getElementValue(parent, "ga_id");
+        PlanInfo existingRow = planInfoRepository.findByGaId(gaId);
+
+        if (existingRow != null) {
+            // If the row exists, update it
+            updateExistingRow(existingRow, parent);
+        } else {
+            // If the row does not exist, insert a new row
+            insertNewRow(parent);
+        }
+    }
+
+    private void updateExistingRow(PlanInfo existingRow, Element parent) {
+        // Update the existing row with the new values from the XML
+        existingRow.setEvId(getElementValue(parent, "ev_id"));
+        existingRow.setPlanName(getElementValue(parent, "plan_name"));
+        existingRow.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        existingRow.setProvCompany(getElementValue(parent, "prov_company"));
+        existingRow.setProdId(getElementValue(parent, "prod_id"));
+        existingRow.setStatusCode(getElementValue(parent, "status_code"));
+        existingRow.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        existingRow.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        existingRow.setGaId(getElementValue(parent, "ga_id"));
+        existingRow.setClientName(getElementValue(parent, "client_name"));
+        existingRow.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        existingRow.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        existingRow.setCity(getElementValue(parent, "city"));
+        existingRow.setStateCode(getElementValue(parent, "state_code"));
+        existingRow.setZipCode(getElementValue(parent, "zip_code"));
+        existingRow.setCountry(getElementValue(parent, "country"));
+        existingRow.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        existingRow.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        existingRow.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        existingRow.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        existingRow.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        existingRow.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        existingRow.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        existingRow.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+
+        // Save the updated row
+        planInfoRepository.save(existingRow);
+    }
+
+    private void insertNewRow(Element parent) {
+        PlanInfo planInfo = new PlanInfo();
+
+        // Set values from the XML
+        planInfo.setEvId(getElementValue(parent, "ev_id"));
+        planInfo.setPlanName(getElementValue(parent, "plan_name"));
+        planInfo.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        planInfo.setProvCompany(getElementValue(parent, "prov_company"));
+        planInfo.setProdId(getElementValue(parent, "prod_id"));
+        planInfo.setStatusCode(getElementValue(parent, "status_code"));
+        planInfo.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        planInfo.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        planInfo.setGaId(getElementValue(parent, "ga_id"));
+        planInfo.setClientName(getElementValue(parent, "client_name"));
+        planInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        planInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        planInfo.setCity(getElementValue(parent, "city"));
+        planInfo.setStateCode(getElementValue(parent, "state_code"));
+        planInfo.setZipCode(getElementValue(parent, "zip_code"));
+        planInfo.setCountry(getElementValue(parent, "country"));
+        planInfo.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        planInfo.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        planInfo.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        planInfo.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        planInfo.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        planInfo.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        planInfo.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        planInfo.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+
+        // Save the new row
+        planInfoRepository.save(planInfo);
+
+        // Save associated Plans if necessary
+        saveAssociatedPlan(parent);
+    }
+
+    private void saveAssociatedPlan(Element parent) {
+        Plans plans = new Plans();
+        plans.setPlanNumber(getElementValue(parent, "ga_id")); // Assuming ga_id maps to planNumber
+        plans.setPlanName(getElementValue(parent, "plan_name")); // Assuming plan_name maps to planName
+        planRepository.save(plans);
+    }
+}
+
+
+
+
 private void savePlanInfo(Element parent) {
 		PlanInfo planInfo = new PlanInfo();
 		Plans plans = new  Plans();
