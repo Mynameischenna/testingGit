@@ -1,4 +1,142 @@
- // Update the relationship with associated Plans
+
+	public void savePlanInfo(Element parent) {
+        String gaId = getElementValue(parent, "ga_id");
+        PlanInfo existingRow = planInfoRepo.findByGaId(gaId);
+
+        if (existingRow != null) {
+            // If the row exists, update it
+            updateExistingRow(existingRow, parent);
+        } else {
+            // If the row does not exist, insert a new row
+            insertNewRow(parent);
+        }
+    }
+
+    private void updateExistingRow(PlanInfo existingRow, Element parent) {
+        // Update the existing row with the new values from the XML
+        existingRow.setEvId(getElementValue(parent, "ev_id"));
+        existingRow.setPlanName(getElementValue(parent, "plan_name"));
+        existingRow.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        existingRow.setProvCompany(getElementValue(parent, "prov_company"));
+        existingRow.setProdId(getElementValue(parent, "prod_id"));
+        existingRow.setStatusCode(getElementValue(parent, "status_code"));
+        existingRow.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        existingRow.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        existingRow.setGaId(getElementValue(parent, "ga_id"));
+        existingRow.setClientName(getElementValue(parent, "client_name"));
+        existingRow.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        existingRow.setScndLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        existingRow.setCity(getElementValue(parent, "city"));
+        existingRow.setStateCode(getElementValue(parent, "state_code"));
+        existingRow.setZipCode(getElementValue(parent, "zip_code"));
+        existingRow.setCountry(getElementValue(parent, "country"));
+        existingRow.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        existingRow.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        existingRow.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        existingRow.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        existingRow.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        existingRow.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        existingRow.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        existingRow.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+        // Update the relationship with associated Plans
+        Plans plans = planRepo.findByPlannumber(existingRow.getGaId());
+        if (plans != null) {
+            plans = new Plans();
+            System.out.println("hey i am boss");
+            plans.setPlanNumber(existingRow.getGaId());
+            plans.setPlanName(existingRow.getPlanName());
+//            planRepo.save(plans);
+        }
+        existingRow.setPlans(plans);
+        // Save the updated row
+        planInfoRepo.save(existingRow);
+    }
+
+    private void insertNewRow(Element parent) {
+        PlanInfo planInfo = new PlanInfo();
+
+        // Set values from the XML
+        planInfo.setEvId(getElementValue(parent, "ev_id"));
+        planInfo.setPlanName(getElementValue(parent, "plan_name"));
+        planInfo.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        planInfo.setProvCompany(getElementValue(parent, "prov_company"));
+        planInfo.setProdId(getElementValue(parent, "prod_id"));
+        planInfo.setStatusCode(getElementValue(parent, "status_code"));
+        planInfo.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        planInfo.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        planInfo.setGaId(getElementValue(parent, "ga_id"));
+        planInfo.setClientName(getElementValue(parent, "client_name"));
+        planInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        planInfo.setScndLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        planInfo.setCity(getElementValue(parent, "city"));
+        planInfo.setStateCode(getElementValue(parent, "state_code"));
+        planInfo.setZipCode(getElementValue(parent, "zip_code"));
+        planInfo.setCountry(getElementValue(parent, "country"));
+        planInfo.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        planInfo.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        planInfo.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        planInfo.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        planInfo.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        planInfo.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        planInfo.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        planInfo.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+
+        // Save the new row
+        planInfoRepo.save(planInfo);
+
+        // Save associated Plans if necessary
+        saveAssociatedPlan(parent);
+    }
+
+    private void saveAssociatedPlan(Element parent) {
+        Plans plans = new Plans();
+        plans.setPlanNumber(getElementValue(parent, "ga_id")); // Assuming ga_id maps to planNumber
+        plans.setPlanName(getElementValue(parent, "plan_name")); // Assuming plan_name maps to planName
+        planRepo.save(plans);
+    }
+
+
+hey i am boss
+org.springframework.dao.InvalidDataAccessApiUsageException: org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : com.hrlc.compliance.entity.PlanInfo.plans -> com.hrlc.compliance.entity.Plans
+	at org.springframework.orm.jpa.EntityManagerFactoryUtils.convertJpaAccessExceptionIfPossible(EntityManagerFactoryUtils.java:368)
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:246)
+	at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:565)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:794)
+	at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:757)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:669)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:419)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:119)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:137)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:164)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:97)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:184)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:220)
+	at jdk.proxy2/jdk.proxy2.$Proxy116.save(Unknown Source)
+	at com.hrlc.compliance.service.xmlService.updateExistingRow(xmlService.java:146)
+	at com.hrlc.compliance.service.xmlService.savePlanInfo(xmlService.java:102)
+	at com.hrlc.compliance.service.xmlService.processXmlData(xmlService.java:80)
+	at com.hrlc.compliance.controller.Fileprocess.processNextFile(Fileprocess.java:69)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+Caused by: java.lang.IllegalStateException: org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : com.hrlc.compliance.entity.PlanInfo.plans -> com.hrlc.compliance.entity.Plans
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:157)
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:167)
+	at org.hibernate.internal.ExceptionConverterImpl.convert(ExceptionConverterImpl.java:173)
+	at org.hibernate.internal.SessionImpl.doFlush(SessionImpl.java:1427)
+	at org.hibernate.internal.SessionImpl.managedFlush(SessionImpl.java:504)
+	at org.hibernate.internal.SessionImpl.flushBeforeTransactionCompletion(SessionImpl.java:2339)
+	at org.hibernate.internal.SessionImpl.beforeTransactionCompletion(SessionImpl.java:1996)
+	at org.hibernate.engine.jdbc.internal.JdbcCoordinatorImpl.beforeTransactionCompletion(JdbcCoordinatorImpl.java:439)
+	at org.hib
+
+
+
+
+// Update the relationship with associated Plans
         Plans plans = planRepository.findByPlanNumber(existingRow.getGaId());
         if (plans == null) {
             plans = new Plans();
