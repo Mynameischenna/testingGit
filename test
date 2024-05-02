@@ -1,4 +1,38 @@
- existingPlanInfo.setEvId(planInfo.getEvId());
+@Entity
+public class Plans {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int planId;
+	private String plannumber;
+	private String planName;
+	
+@Entity
+public class PlanInfo {
+	 	@Id
+	 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	 	private int planInfoID;
+	 	@OneToOne
+	 	private Plans plans;
+	 	
+	    public Plans getPlans() {
+			return plans;	
+
+@Entity
+public class ContactInfo {
+	@Id
+ 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+ 	private int contactInfoID;
+	
+	@ManyToOne
+	@JoinColumn(name = "planId")
+	private Plans plans;
+	
+ 	
+    public int getContactInfoID() {
+		return contactInfoID;
+
+existingPlanInfo.setEvId(planInfo.getEvId());
         existingPlanInfo.setPlanName(planInfo.getPlanName());
         existingPlanInfo.setIrsrlCode(planInfo.getIrsrlCode());
         existingPlanInfo.setProvCompany(planInfo.getProvCompany());
