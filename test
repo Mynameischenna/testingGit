@@ -1,3 +1,39 @@
+Continue to build your rewarding career helping others achieve their financial dream at an organization that values your own long-term success. With your unique talents, you have what it takes to be bold and brilliant in everything you do and reach new heights for a company dedicated to diversity and inclusion, community and you. 
+
+This role is a job level of G Professional.
+Empower India Data Science team is looking for an Analyst who is capable of producing in-depth analysis that suggests strategic and operational changes. The ideal candidate will understand the business problem, collect and study relevant data and able to produce meaningful and actionable analysis that helps to solve the business problem in hand.
+
+
+Role Responsibilities:
+
+Understand the business problem, able to convert it as an analytical problem.
+Understand the data need, collect, interpret and clean the data for analysis
+Produce meaningful insights using analytical/data modelling techniques and interpret and justify the results with the business context
+Able to present the analysis and results to the business stakeholders
+Generate BI reports and able to automate them
+Work with management to prioritize business and information needs
+Educational Qualification:
+
+Graduate / Post-graduate degree in Business Management/Statistics/Economics/Finance
+Required Experience:
+
+1-3 years of experience working in analytics, data science or related experience
+Attention to detail, and should be open to learn quickly on new technologies and statistical techniques in analytics like Machine Learning, AI, SAS, AWS, Python, Tableau etc.
+Working experience with tools such as Google Analytics/ Adobe Analytics
+Required skills and competencies:
+
+Technical expertise regarding data modelling using statistical techniques, data mining, generate and automate BI reports
+Strong knowledge of and experience with the data modelling techniques like Time Series, Regression, Segmentation, Clustering, Market Mix, Machine Learning, AI
+Strong analytical skills to be able to understand the business problem, collect and analyze the data and able to interpret the results
+Strong written and verbal communication skill and be able to present the results to the senior stakeholders
+Overall understanding of US Retirement Industry
+Self-motivation, excellent accountability and ownership skills
+Excellent team player
+
+
+This job description is not intended to be an exhaustive list of all duties, responsibilities and qualifications of the job.  The employer has the right to revise this job description at any time.   You will be evaluated in part based on your performance of the responsibilities and/or tasks listed in this job description.   You may be required perform other duties that are not included on this job description.  The job description is not a contract for employment, and either you or the employer may terminate employment at any time, for any reason, as per terms and conditions of your employment contract.
+We are an equal opportunity employer with a commitment to diversity.  All individuals, regardless of personal characteristics, are encouraged to apply.  All qualified applicants will receive consideration for employment without regard to age, race, color, national origin, ancestry, sex, sexual orientation, gender, gender identity, gender expression, marital status, pregnancy, religion, physical or mental disability, military or veteran status, genetic information, or any other status protected by applicable state or local law. 
+
 
 	public void savePlanInfo(Element parent) {
         String gaId = getElementValue(parent, "ga_id");
