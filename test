@@ -1,3 +1,7 @@
+https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=451f2815-40fe-44bb-b8a6-3a2e55cf40c4&scope=https%3A%2F%2Fwww.wvd.microsoft.com%2FUser.Access%20openid%20profile%20offline_access&redirect_uri=https%3A%2F%2Fwindows365.microsoft.com%2Fent%2Fspa-signin-oidc&client-request-id=86d259c6-3739-4835-bef6-3a63bc9ee5e1&response_mode=fragment&response_type=code&x-client-SKU=msal.js.browser&x-client-VER=2.31.0&client_info=1&code_challenge=GCctYMmPiFs-55gAFDSNyPucoF6jHzQt2dJCgl5he54&code_challenge_method=S256&prompt=select_account&nonce=6848fbc2-2254-43ea-bfa0-81468aef7486&state=eyJpZCI6IjNhNWY5YjY3LTIzM2QtNDA5ZS1hZjQ2LWZlM2VjZmQ2N2QyMiIsIm1ldGEiOnsiaW50ZXJhY3Rpb25UeXBlIjoicmVkaXJlY3QifX0%3D
+
+
+
 https://login.microsoftonline.com/common/SAS/ProcessAuth
 
 
