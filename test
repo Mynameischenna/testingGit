@@ -1,3 +1,9 @@
+Home1.jsx:62 
+        
+        
+       GET http://localhost:8082/getplans net::ERR_FAILED 200 (OK)
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
