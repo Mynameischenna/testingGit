@@ -1,4 +1,35 @@
- private void replaceTags(XWPFDocument document, PlanInfo planInfo) {
+ public void replaceTags(XWPFDocument document, PlanInfo planInfo) {
+        // Define your tag replacements for PlanInfo
+        Map<String, String> tagReplacements = Map.of(
+                "ssmPlanName", planInfo.getPlanName(),
+                "{{status_code}}", planInfo.getStatusCode()
+                // Add more tag replacements as needed
+        );
+
+        // Iterate through all paragraphs in the document
+        for (XWPFParagraph paragraph : document.getParagraphs()) {
+            // Iterate through the runs (text elements) in the paragraph
+            for (XWPFRun run : paragraph.getRuns()) {
+                String text = run.getText(0);
+                if (text != null) {
+                    // Replace tags in the text
+                    for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+                        String tag = entry.getKey();
+                        String replacement = entry.getValue();
+                        text = text.replace(tag, replacement);
+                    }
+                    // Set the modified text back to the run
+                    run.setText(text, 0);
+                }
+            }
+        }
+    }
+
+
+
+
+
+private void replaceTags(XWPFDocument document, PlanInfo planInfo) {
      Range range = document.getRange();
 
      // Define your tag replacements for PlanInfo
