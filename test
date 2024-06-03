@@ -1,3 +1,30 @@
+ private void replaceTags(XWPFDocument document, PlanInfo planInfo) {
+     Range range = document.getRange();
+
+     // Define your tag replacements for PlanInfo
+     Map<String, String> tagReplacements = Map.of(
+             "ssmPlanName", planInfo.getPlanName(),
+             "{{status_code}}", planInfo.getStatusCode()
+             // Add more tag replacements as needed
+     );
+
+     // Iterate through the tag replacements
+     for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+         String tag = entry.getKey();
+         String replacement = entry.getValue();
+
+//         // Debugging: Print the tag and replacement value
+//         System.out.println("Replacing tag: " + tag);
+//         System.out.println("With value: " + replacement);
+
+         // Replace the tag in the document
+         range.replaceText(tag, replacement);
+     }
+ }
+
+
+
+
 Home1.jsx:62 
         
         
