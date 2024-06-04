@@ -1,4 +1,187 @@
+package com.hrlc.compliance.controller;
+
+//replacing tags with acutal data and generating seperate file for each row
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Range;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hrlc.compliance.entity.PlanInfo;
+import com.hrlc.compliance.entity.UserInfo;
+import com.hrlc.compliance.repository.PlanInfoRepository;
+import com.hrlc.compliance.repository.UserInfoRepository;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+public class ReplaceDocxTags {
+
+ @Autowired
+ private PlanInfoRepository planInfoRepo;
+
+ @Autowired
+ private UserInfoRepository userInfoRepo;
+
+ @PostMapping("/generate-docx-files")
+ public ResponseEntity<List<String>> generateDocxFiles() {
+     try {
+         // Fetch data from the database
+         List<PlanInfo> planInfoList = planInfoRepo.findAll();
+         List<UserInfo> userInfoList = userInfoRepo.findAll();
+
+         // Generate DOCX files
+         List<String> filePaths = generateDocxFiles(planInfoList, userInfoList);
+
+         return ResponseEntity.ok().body(filePaths);
+     } catch (IOException e) {
+         e.printStackTrace();
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+     }
+ }
+
+ private List<String> generateDocxFiles(List<PlanInfo> planInfoList, List<UserInfo> userInfoList) throws IOException {
+     // Create a list to store the file paths of the generated DOCX files
+     List<String> filePaths = new ArrayList<>();
+     
+     int minLength = Math.min(planInfoList.size(), userInfoList.size());
+
+     // Iterate over the data fetched from the database
+     for (int i = 0; i <minLength; i++) {
+         PlanInfo planInfo = planInfoList.get(i);
+         UserInfo userInfo = userInfoList.get(i);
+
+         try {
+             // Read the DOCX template file content
+             byte[] dotTemplateContent = Files.readAllBytes(Paths.get("C:\\Users\\chnksv\\Desktop\\Plan Express Specifications.docx"));
+
+             // Replace XML tags in the DOCX file
+             byte[] modifiedDocument = replaceXmlTagsInDocx(dotTemplateContent, planInfo, userInfo);
+
+             // Save the modified DOCX file
+             String filePath = saveModifiedDocxFile(modifiedDocument, planInfo.getEvId());
+
+             // Add the file path to the list
+             filePaths.add(filePath);
+         } catch (IOException e) {
+             // Handle exceptions for the current xmlEntity if needed
+             e.printStackTrace();
+         }
+     }
+
+     return filePaths;
+ }
+
+ private byte[] replaceXmlTagsInDocx(byte[] dotContent, PlanInfo planInfo, UserInfo userInfo) throws IOException {
+     try (
+    		 ByteArrayInputStream inputStream = new ByteArrayInputStream(dotContent);
+    		 XWPFDocument document = new XWPFDocument(inputStream);
+          ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+         // Replace tags for PlanInfo
+         replaceTags(document, planInfo);
+
+         // Replace tags for UserInfo
+//         replaceTags(document, userInfo);
+
+         document.write(outputStream);
+         return outputStream.toByteArray();
+     }
+ }
+
  public void replaceTags(XWPFDocument document, PlanInfo planInfo) {
+     // Define your tag replacements for PlanInfo
+	 System.out.println("helo boss");
+     Map<String, String> tagReplacements = Map.of(
+             "<ssmNRA>", planInfo.getPlanName(),
+             "{{status_code}}", planInfo.getStatusCode()
+             // Add more tag replacements as needed
+     );
+
+     // Iterate through all paragraphs in the document
+     for (XWPFParagraph paragraph : document.getParagraphs()) {
+         // Iterate through the runs (text elements) in the paragraph
+         for (XWPFRun run : paragraph.getRuns()) {
+             String text = run.getText(0);
+             if (text != null) {
+                 // Replace tags in the text
+                 for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+                     String tag = entry.getKey();
+                     String replacement = entry.getValue();
+                     text = text.replace(tag, replacement);
+                 }
+                 // Set the modified text back to the run
+                 run.setText(text, 0);
+             }
+         }
+     }
+ }
+ private void replaceTags(HWPFDocument document, UserInfo userInfo) {
+     Range range = document.getRange();
+
+     // Define your tag replacements for UserInfo
+     Map<String, String> tagReplacements = Map.of(
+             "ssmPlanNumber", userInfo.getLogonId(),
+             "{{last_name}}", userInfo.getLastName()
+             // Add more tag replacements as needed
+     );
+
+     // Iterate through the tag replacements
+     for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+         String tag = entry.getKey();
+         String replacement = entry.getValue();
+
+//         // Debugging: Print the tag and replacement value
+//         System.out.println("Replacing tag: " + tag);
+//         System.out.println("With value: " + replacement);
+
+         // Replace the tag in the document
+         range.replaceText(tag, replacement);
+     }
+ }
+
+ private String saveModifiedDocxFile(byte[] modifiedDocxContent, String evId) throws IOException {
+	    // Generate a timestamp for the filename
+	    LocalDateTime currentTime = LocalDateTime.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+	    String timestamp = currentTime.format(formatter);
+
+	    // Construct the filename with the timestamp
+	    String filename = evId + " " + timestamp + ".docx";
+
+	    // Construct the file path with the timestamped filename
+	    String filePath = "C:\\TestXML\\Files\\" + filename;
+
+	    // Write the modified DOCX content to the file
+	    try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+	        fileOutputStream.write(modifiedDocxContent);
+	    }
+
+	    // Return the file path
+	    return filePath;
+	}
+}
+
+
+
+
+public void replaceTags(XWPFDocument document, PlanInfo planInfo) {
         // Define your tag replacements for PlanInfo
         Map<String, String> tagReplacements = Map.of(
                 "ssmPlanName", planInfo.getPlanName(),
