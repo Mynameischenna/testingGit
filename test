@@ -1,4 +1,278 @@
+ibernate: select pi1_0.plan_infoid,pi1_0.city,pi1_0.client_entity_type,pi1_0.client_name,pi1_0.country,pi1_0.dp_date_time,pi1_0.est_implementation_date,pi1_0.est_number_of_participants,pi1_0.est_plan_assets,pi1_0.ev_id,pi1_0.first_line_mailing,pi1_0.ga_id,pi1_0.internal_compliance_ind,pi1_0.irsrl_code,pi1_0.plan_anniv_date,pi1_0.plan_name,pi1_0.plans_plan_id,pi1_0.prod_id,pi1_0.prov_company,pi1_0.rollover_ind,pi1_0.scnd_line_mailing,pi1_0.state_code,pi1_0.status_code,pi1_0.subset_cash_code,pi1_0.tpa_firm_id,pi1_0.zip_code from plan_info pi1_0
+Hibernate: select p1_0.plan_id,p1_0.plan_name,p1_0.plannumber from plans p1_0 where p1_0.plan_id=?
+Hibernate: select p1_0.plan_id,p1_0.plan_name,p1_0.plannumber from plans p1_0 where p1_0.plan_id=?
+Hibernate: select p1_0.plan_id,p1_0.plan_name,p1_0.plannumber from plans p1_0 where p1_0.plan_id=?
+Hibernate: select p1_0.plan_id,p1_0.plan_name,p1_0.plannumber from plans p1_0 where p1_0.plan_id=?
+Hibernate: select ui1_0.user_infoid,ui1_0.area_code,ui1_0.email_address,ui1_0.first_name,ui1_0.job_title,ui1_0.last_name,ui1_0.logon_id,ui1_0.middle_name,ui1_0.phone_nbr,ui1_0.plans_plan_id from user_info ui1_0
+2024-06-10T05:58:50.386-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hwpf.model.PAPBinTable    : Paragraph [91; 92) has no PAPX. Creating new one.
+2024-06-10T05:58:50.415-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.423-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.424-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.425-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.425-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.425-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.444-06:00  INFO 9652 --- [nio-8082-exec-6] org.apache.poi.POIDocument               : Wrote property set SummaryInformation of size 460
+2024-06-10T05:58:50.445-06:00  INFO 9652 --- [nio-8082-exec-6] org.apache.poi.POIDocument               : Wrote property set DocumentSummaryInformation of size 324
+2024-06-10T05:58:50.537-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hwpf.model.PAPBinTable    : Paragraph [91; 92) has no PAPX. Creating new one.
+2024-06-10T05:58:50.552-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.553-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.553-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.553-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.553-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.553-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.581-06:00  INFO 9652 --- [nio-8082-exec-6] org.apache.poi.POIDocument               : Wrote property set SummaryInformation of size 460
+2024-06-10T05:58:50.583-06:00  INFO 9652 --- [nio-8082-exec-6] org.apache.poi.POIDocument               : Wrote property set DocumentSummaryInformation of size 324
+2024-06-10T05:58:50.697-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hwpf.model.PAPBinTable    : Paragraph [91; 92) has no PAPX. Creating new one.
+2024-06-10T05:58:50.715-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.716-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.717-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.717-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.717-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.717-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hpsf.CodePageString       : String terminator (\0) for CodePageString property value occurred before the end of string. Trimming and hope for the best.
+2024-06-10T05:58:50.760-06:00  INFO 9652 --- [nio-8082-exec-6] org.apache.poi.POIDocument               : Wrote property set SummaryInformation of size 460
+2024-06-10T05:58:50.761-06:00  INFO 9652 --- [nio-8082-exec-6] org.apache.poi.POIDocument               : Wrote property set DocumentSummaryInformation of size 324
+2024-06-10T05:58:50.844-06:00  WARN 9652 --- [nio-8082-exec-6] org.apache.poi.hwpf.model.PAPBinTable    : Paragraph [91; 92) has no PAPX. Creating new one.
+2024-06-10T05:58:50.855-06:00 ERROR 9652 --- [nio-8082-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.NullPointerException] with root cause
+
+java.lang.NullPointerException: null
+	at java.base/java.util.Objects.requireNonNull(Objects.java:209) ~[na:na]
+	at java.base/java.util.ImmutableCollections$MapN.<init>(ImmutableCollections.java:1186) ~[na:na]
+	at java.base/java.util.Map.of(Map.java:1373) ~[na:na]
+	at com.hrlc.compliance.controller.ReplaceDocxTags.replaceTags(ReplaceDocxTags.java:109) ~[classes/:na]
+	at com.hrlc.compliance.controller.ReplaceDocxTags.replaceXmlTagsInDocx(ReplaceDocxTags.java:95) ~[classes/:na]
+	at com.hrlc.compliance.controller.ReplaceDocxTags.generateDocxFiles(ReplaceDocxTags.java:73) ~[classes/:na]
+	at com.hrlc.compliance.controller.ReplaceDocxTags.generateDocxFiles(ReplaceDocxTags.java:48) ~[classes/:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:261) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:189) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:118) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:917) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:829) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1089) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:979) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1014) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:914) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:590) ~[tomcat-embed-core-10.1.18.jar:6.0]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:885) ~[spring-webmvc-6.1.3.jar:6.1.3]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:658) ~[tomcat-embed-core-10.1.18.jar:6.0]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:205) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51) ~[tomcat-embed-websocket-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-6.1.3.jar:6.1.3]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:174) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:149) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:167) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:90) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:115) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:93) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:74) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:340) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:391) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:896) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1744) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[tomcat-embed-core-10.1.18.jar:10.1.18]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+
+--------
 package com.hrlc.compliance.controller;
+
+//replacing tags with acutal data and generating seperate file for each row
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Range;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+//import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hrlc.compliance.entity.PlanInfo;
+import com.hrlc.compliance.entity.UserInfo;
+import com.hrlc.compliance.repository.PlanInfoRepository;
+import com.hrlc.compliance.repository.UserInfoRepository;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+public class ReplaceDocxTags {
+
+ @Autowired
+ private PlanInfoRepository planInfoRepo;
+
+ @Autowired
+ private UserInfoRepository userInfoRepo;
+
+ @PostMapping("/generate-docx-files")
+ public ResponseEntity<List<String>> generateDocxFiles() {
+     try {
+         // Fetch data from the database
+         List<PlanInfo> planInfoList = planInfoRepo.findAll();
+         List<UserInfo> userInfoList = userInfoRepo.findAll();
+
+         // Generate DOCX files
+         List<String> filePaths = generateDocxFiles(planInfoList, userInfoList);
+
+         return ResponseEntity.ok().body(filePaths);
+     } catch (IOException e) {
+         e.printStackTrace();
+         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+     }
+ }
+
+ private List<String> generateDocxFiles(List<PlanInfo> planInfoList, List<UserInfo> userInfoList) throws IOException {
+     // Create a list to store the file paths of the generated DOCX files
+     List<String> filePaths = new ArrayList<>();
+     
+     int minLength = Math.min(planInfoList.size(), userInfoList.size());
+
+     // Iterate over the data fetched from the database
+     for (int i = 0; i <minLength; i++) {
+         PlanInfo planInfo = planInfoList.get(i);
+         UserInfo userInfo = userInfoList.get(i);
+
+         try {
+             // Read the DOCX template file content
+             byte[] dotTemplateContent = Files.readAllBytes(Paths.get("C:\\TestXML\\af_plan_provision_summary_document_section_1_09.2020.dot"));
+
+             // Replace XML tags in the DOCX file
+             byte[] modifiedDocument = replaceXmlTagsInDocx(dotTemplateContent, planInfo, userInfo);
+
+             // Save the modified DOCX file
+             String filePath = saveModifiedDocxFile(modifiedDocument, planInfo.getEvId());
+
+             // Add the file path to the list
+             filePaths.add(filePath);
+         } catch (IOException e) {
+             // Handle exceptions for the current xmlEntity if needed
+             e.printStackTrace();
+         }
+     }
+
+     return filePaths;
+ }
+
+ private byte[] replaceXmlTagsInDocx(byte[] dotContent, PlanInfo planInfo, UserInfo userInfo) throws IOException {
+     try (ByteArrayInputStream inputStream = new ByteArrayInputStream(dotContent);
+          HWPFDocument document = new HWPFDocument(inputStream);
+          ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+         // Replace tags for PlanInfo
+         replaceTags(document, planInfo);
+
+         // Replace tags for UserInfo
+         replaceTags(document, userInfo);
+
+         document.write(outputStream);
+         return outputStream.toByteArray();
+     }
+ }
+
+ private void replaceTags(HWPFDocument document, PlanInfo planInfo) {
+     Range range = document.getRange();
+
+     // Define your tag replacements for PlanInfo
+     Map<String, String> tagReplacements = Map.of(
+             "<ssmPlanName>", planInfo.getPlanName(),
+             "<ssmPlanNumber>", planInfo.getGaId()
+             // Add more tag replacements as needed
+     );
+
+     // Iterate through the tag replacements
+     for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+         String tag = entry.getKey();
+         String replacement = entry.getValue();
+
+//         // Debugging: Print the tag and replacement value
+//         System.out.println("Replacing tag: " + tag);
+//         System.out.println("With value: " + replacement);
+
+         // Replace the tag in the document
+         range.replaceText(tag, replacement);
+     }
+ }
+
+ private void replaceTags(HWPFDocument document, UserInfo userInfo) {
+     Range range = document.getRange();
+
+     // Define your tag replacements for UserInfo
+     Map<String, String> tagReplacements = Map.of(
+             "<ssmPlanName>", userInfo.getLogonId(),
+             "<ssmPlanNumber>", userInfo.getLastName()
+             // Add more tag replacements as needed
+     );
+
+     // Iterate through the tag replacements
+     for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+         String tag = entry.getKey();
+         String replacement = entry.getValue();
+
+//         // Debugging: Print the tag and replacement value
+//         System.out.println("Replacing tag: " + tag);
+//         System.out.println("With value: " + replacement);
+
+         // Replace the tag in the document
+         range.replaceText(tag, replacement);
+     }
+ }
+
+ private String saveModifiedDocxFile(byte[] modifiedDocxContent, String evId) throws IOException {
+	    // Generate a timestamp for the filename
+	    LocalDateTime currentTime = LocalDateTime.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+	    String timestamp = currentTime.format(formatter);
+
+	    // Construct the filename with the timestamp
+	    String filename = evId + " " + timestamp + ".doc";
+
+	    // Construct the file path with the timestamped filename
+	    String filePath = "C:\\TestXML\\Files\\" + filename;
+
+	    // Write the modified DOCX content to the file
+	    try (FileOutputStream fileOutputStream = new FileOutputStream(filePath)) {
+	        fileOutputStream.write(modifiedDocxContent);
+	    }
+
+	    // Return the file path
+	    return filePath;
+	}
+}
+
+
+
+-------------------------------
+-package com.hrlc.compliance.controller;
 
 import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
