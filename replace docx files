@@ -1,0 +1,123 @@
+package com.hrlc.compliance.controller;
+
+import org.apache.poi.hwpf.HWPFDocument;
+import org.apache.poi.hwpf.usermodel.Range;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.hrlc.compliance.entity.PlanInfo;
+import com.hrlc.compliance.entity.UserInfo;
+import com.hrlc.compliance.repository.PlanInfoRepository;
+import com.hrlc.compliance.repository.UserInfoRepository;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+public class ReplaceDocxTags {
+
+    @Autowired
+    private PlanInfoRepository planInfoRepo;
+
+    @Autowired
+    private UserInfoRepository userInfoRepo;
+
+    @PostMapping("/generate-docx-files")
+    public ResponseEntity<List<String>> generateDocxFiles() {
+        try {
+            // Fetch data from the database
+            List<PlanInfo> planInfoList = planInfoRepo.findAll();
+            List<UserInfo> userInfoList = userInfoRepo.findAll();
+
+            // Generate DOCX files
+            List<String> filePaths = generateDocxFiles(planInfoList, userInfoList);
+
+            return ResponseEntity.ok().body(filePaths);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    private List<String> generateDocxFiles(List<PlanInfo> planInfoList, List<UserInfo> userInfoList) throws IOException {
+        // Create a list to store the file paths of the generated DOCX files
+        List<String> filePaths = new ArrayList<>();
+        
+        int minLength = Math.min(planInfoList.size(), userInfoList.size());
+
+        // Iterate over the data fetched from the database
+        for (int i = 0; i < minLength; i++) {
+            PlanInfo planInfo = planInfoList.get(i);
+            UserInfo userInfo = userInfoList.get(i);
+
+            try {
+                // Read the DOCX template file content
+                byte[] dotTemplateContent = Files.readAllBytes(Paths.get("C:\\TestXML\\af_plan_provision_summary_document_section_1_09.2020.dot"));
+
+                // Replace XML tags in the DOCX file
+                byte[] modifiedDocument = replaceXmlTagsInDocx(dotTemplateContent, planInfo, userInfo);
+
+                // Save the modified DOCX file
+                String filePath = saveModifiedDocxFile(modifiedDocument, planInfo.getEvId());
+
+                // Add the file path to the list
+                filePaths.add(filePath);
+            } catch (IOException e) {
+                // Handle exceptions for the current planInfo if needed
+                e.printStackTrace();
+            }
+        }
+
+        return filePaths;
+    }
+
+    private byte[] replaceXmlTagsInDocx(byte[] dotContent, PlanInfo planInfo, UserInfo userInfo) throws IOException {
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(dotContent);
+             HWPFDocument document = new HWPFDocument(inputStream);
+             ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+
+            // Replace tags for PlanInfo and UserInfo
+            replaceTags(document, planInfo, userInfo);
+
+            document.write(outputStream);
+            return outputStream.toByteArray();
+        }
+    }
+
+    private void replaceTags(HWPFDocument document, PlanInfo planInfo, UserInfo userInfo) {
+        Range range = document.getRange();
+
+        // Define your tag replacements for PlanInfo and UserInfo
+        Map<String, String> tagReplacements = Map.of(
+                "<ssmPlanName>", planInfo.getPlanName(),
+                "<ssmPlanNumber>", planInfo.getGaId(),
+                "<ssmLogonId>", userInfo.getLogonId(),
+                "<ssmLastName>", userInfo.getLastName()
+                // Add more tag replacements as needed
+        );
+
+        // Iterate through the tag replacements
+        for (Map.Entry<String, String> entry : tagReplacements.entrySet()) {
+            String tag = entry.getKey();
+            String replacement = entry.getValue();
+            range.replaceText(tag, replacement);
+        }
+    }
+
+    private String saveModifiedDocxFile(byte[] modifiedDocument, String evId) throws IOException {
+        String filePath = "C:\\GeneratedDocxFiles\\" + evId + ".docx";
+        try (FileOutputStream fos = new FileOutputStream(filePath)) {
+            fos.write(modifiedDocument);
+        }
+        return filePath;
+    }
+}
