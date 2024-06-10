@@ -1,4 +1,243 @@
 
+import React, { useEffect, useState } from 'react';
+import './PlanInfo.css';
+import axios from 'axios';
+
+function PlanInfo(props) {
+
+const [formData, setFormData] = useState(props.CurrentPLanInfo || {});
+const [delete1,setDelete]=useState(false);
+
+useEffect(()=>{setFormData(props.CurrentPLanInfo||{})},[props,delete1])
+const deletePlan=()=>{
+    // const v = props.CurrentPLanInfo.plans.planId
+    axios.delete("http://localhost:8082/id/"+props.CurrentPLanInfo.plans.planId)
+    .then(response=>{
+        setDelete(true);
+        console.log('item deleted successfully');
+    })
+    .catch(error=>{
+        console.error("there was a problem with axios request ",error);
+    })
+    console.log(props.CurrentPLanInfo.plans.planId);
+    console.log("deleted props",props.CurrentPLanInfo);
+}
+
+const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    console.log("form data",props);
+    // console.log("before form data",formData);
+    
+    setFormData(prevState => ({
+        ...prevState,
+        [name]: value
+    }));
+    // console.log("after  data",formData);
+};
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.put('http://localhost:8082/update',formData);
+      console.log(response.data); // Assuming backend returns the saved data
+      // Optionally, reset the form after successful submission
+    //   setFormData({
+    //     name: '',
+    //     email: '',
+    //   });
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+
+return (
+    <form onSubmit={handleSubmit}>
+    <div className='body'>
+       
+           
+        <div className='rightmenu'>
+            
+                <div className='row1'>
+                    <div className='row11'>
+                    <input name="clientName" value={formData.clientName || ''} style={{ width: "500px" }} onChange={handleInputChange} />
+                        <br />Client Name
+                    </div>
+                    <div className='row11'>
+                    <input name='estNumberOfParticipants' value={formData.estNumberOfParticipants || ''} onChange={handleInputChange}/>
+                        <br/>Propective Plan Number
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                    <input name='estPlanAssets' value={formData.estPlanAssets || ''} onChange={handleInputChange}/>
+                        <br/>EIN #
+                    </div>
+                    
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input name='provCompany' value={formData.provCompany || ''} onChange={handleInputChange}/>
+                        <br/>Institution
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.groupOffice}/>
+                        <br/>Group Office
+                    </div>
+                    <div className='row11'>
+                    <input name='irsrlCode' value={formData.irsrlCode || ''} onChange={handleInputChange}/>  <br/>
+                    
+                        Plan Type 
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.trustEin}/><br/>
+                        Trust Ein
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>Sub Institution
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>Prov Company
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>PSC Accu Code
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.subInstitution}/>
+                        <br/>Common Remitter
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.complianceAnalyst}/>
+                        <br/>Compliance Analyst
+                    </div>
+                    <div className='row11'><button  className='planbtn' >Plan Document</button></div> 
+                     <div className='row11'><button className='planbtn'>Plan Folder</button></div>
+                    <div className='row11'><button className='planbtn' ><a href='https://www.google.com' target='_blank' style={{textDecoration:'none',color:'white'}}>  Scan Sheets</a></button></div>
+                    <div className='row11'><button className='planbtn'>Update FTW</button></div> 
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.secondaryCaseload} type='checkbox'/>Secondary Caseload
+                    </div>   
+                </div> 
+
+                 <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.gwg} type='checkbox'/>GWG
+                    </div> 
+                    {/* <div className='row11' style={{marginLeft:"120px"}}>
+                        <input value={props.currentPlanInfo?.gwgServices}/>
+                        <br/>GWG Services
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.gwgWorkTracking}/>
+                        <br/>GWG Work Tracking
+                    </div> 
+                    <div className='row11'><button className='planbtn'>Plan Document</button> </div>
+                    <div className='row11'><button className='planbtn'>GWG Follow Up</button> </div>
+                    <div className='row11'><button className='planbtn'>GWG Follow Up</button> </div>
+                    <div className='row11'><button className='planbtn'>GWG Follow Up</button> </div> */}
+                    
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.planYearEnd} type='date'/>
+                        <br/>Plan Year End
+                    </div>
+                    <div className='row11' style={{marginLeft:"63px"}}>
+                        <input value={props.currentPlanInfo?.planTier}/>
+                        <br/>Plan Teir
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.irsPlanType}/><br/>
+                        IRS Plan Type
+                    </div>
+                    <div className='row11'>
+                        <input value={props.currentPlanInfo?.marketSegment}/><br/>
+                        Market Segment
+                    </div>
+                </div> 
+                
+                 
+                <div className='row1'>
+                    <div className='row11'>
+                        Plan Characteristics
+                    </div>
+                    
+                </div> 
+
+                <div className='row1'>
+                    <div className='row11' style={{marginRight:"55px"}}>
+                    <input checked={props.currentPlanInfo?.ppsExternal} type='checkbox'/>PPSExternal 
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='checkbox'/>Jumbo 401(k)<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>PEAK Pilot Plan<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>Hybrid Plan
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='checkbox'/>403b Restatement Req<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>403b Fee Waived<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>403b Wave Change
+                    </div>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='date'/><br/>
+                        403b Request Date
+                    </div>
+                   
+                </div> 
+                <div className='row1'>
+                
+                    <div className='row44'>
+                    <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>Plan Deconversion<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>PPA Restatement Dashboard<br/>
+                        <input checked={props.currentPlanInfo?.peakPilotPlan} type='checkbox'/>Cycle 3 Restatement Dashboard
+                    </div>
+
+
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <input checked={props.currentPlanInfo?.jumbo401k} type='checkbox'/>
+                        Check this box to prevent ISIS from Updating the contacts and unlock the contacts form
+                        <button className='planbtn' onClick={deletePlan} style={{marginLeft:"10px"}}>Delete This plan</button>
+                    </div>
+                </div>
+                <div className='row1'>
+                    <div className='row11'>
+                        <label style={{display:'inline-block',width:'150px'}}>FTW Customer ID</label>
+                        <input  checked={props.currentPlanInfo?.jumbo401k} type='text'/><br/>
+                        <label style={{display:'inline-block',width:'150px'}}>FTW Plan ID</label>
+                        <input  checked={props.currentPlanInfo?.jumbo401k} type='text'/>
+                    </div>
+                </div>
+                <div>
+                
+                </div>
+                
+                
+
+            </div>
+        </div>
+        <button className='planbtn' type='submit'>Update</button>
+        </form>
+    )
+}
+export default PlanInfo;
+
+
+
+
+
+
+
+
 java.lang.NullPointerException: null
 	at java.base/java.util.Objects.requireNonNull(Objects.java:209) ~[na:na]
 	at java.base/java.util.ImmutableCollections$MapN.<init>(ImmutableCollections.java:1186) ~[na:na]
