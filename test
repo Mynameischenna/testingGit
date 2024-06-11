@@ -1,4 +1,320 @@
 package com.hrlc.compliance.service;
+
+import java.io.StringReader;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import com.hrlc.compliance.entity.ContactInfo;
+import com.hrlc.compliance.entity.PlanInfo;
+import com.hrlc.compliance.entity.Plans;
+import com.hrlc.compliance.entity.UserInfo;
+import com.hrlc.compliance.repository.ContactInfoRepository;
+import com.hrlc.compliance.repository.PlanInfoRepository;
+import com.hrlc.compliance.repository.PlanRepo;
+import com.hrlc.compliance.repository.UserInfoRepository;
+
+@Service
+public class XmlService {
+    
+    @Autowired
+    private UserInfoRepository userInfoRepo;
+
+    @Autowired
+    private PlanInfoRepository planInfoRepo;
+
+    @Autowired
+    private ContactInfoRepository contactInfoRepo;
+
+    @Autowired
+    private PlanRepo planRepo;
+
+    private Plans newPlan = null;
+    private PlanInfo planNumber = null;
+
+    public List<PlanInfo> getPlanInfo() {
+        return planInfoRepo.findAll();
+    }
+
+    public List<UserInfo> getUserInfo() {
+        return userInfoRepo.findAll();
+    }
+
+    public ResponseEntity<String> processXmlData(String xmlData) {
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document document = dBuilder.parse(new InputSource(new StringReader(xmlData)));
+
+            NodeList parentNodes = document.getElementsByTagName("*");
+
+            for (int i = 0; i < parentNodes.getLength(); i++) {
+                Element parent = (Element) parentNodes.item(i);
+                processNode(parent);
+            }
+            return new ResponseEntity<>("Data saved successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Failed to process XML data", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private void processNode(Element parent) {
+        String gaId = getElementValue(parent, "ga_id");
+        planNumber = planInfoRepo.findByGaId(gaId);
+
+        switch (parent.getTagName()) {
+            case "user_info":
+                saveUserInfo(parent);
+                break;
+            case "plan_info":
+                savePlanInfo(parent);
+                break;
+            case "contact_info":
+                saveContactInfo(parent);
+                break;
+        }
+    }
+
+    private void savePlanInfo(Element parent) {
+        String gaId = getElementValue(parent, "ga_id");
+        PlanInfo existingRow = planInfoRepo.findByGaId(gaId);
+
+        if (existingRow != null) {
+            updatePlanInfo(existingRow, parent);
+        } else {
+            createNewPlanInfo(parent);
+        }
+    }
+
+    private void updatePlanInfo(PlanInfo planInfo, Element parent) {
+        planInfo.setEvId(getElementValue(parent, "ev_id"));
+        planInfo.setPlanName(getElementValue(parent, "plan_name"));
+        planInfo.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        planInfo.setProvCompany(getElementValue(parent, "prov_company"));
+        planInfo.setProdId(getElementValue(parent, "prod_id"));
+        planInfo.setStatusCode(getElementValue(parent, "status_code"));
+        planInfo.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        planInfo.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        planInfo.setClientName(getElementValue(parent, "client_name"));
+        planInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        planInfo.setScndLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        planInfo.setCity(getElementValue(parent, "city"));
+        planInfo.setStateCode(getElementValue(parent, "state_code"));
+        planInfo.setZipCode(getElementValue(parent, "zip_code"));
+        planInfo.setCountry(getElementValue(parent, "country"));
+        planInfo.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        planInfo.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        planInfo.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        planInfo.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        planInfo.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        planInfo.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        planInfo.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        planInfo.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+        planInfoRepo.save(planInfo);
+    }
+
+    private void createNewPlanInfo(Element parent) {
+        Plans plan = new Plans();
+        plan.setPlanNumber(getElementValue(parent, "ga_id"));
+        plan.setPlanName(getElementValue(parent, "plan_name"));
+        planRepo.save(plan);
+
+        PlanInfo planInfo = new PlanInfo();
+        planInfo.setGaId(getElementValue(parent, "ga_id"));
+        planInfo.setEvId(getElementValue(parent, "ev_id"));
+        planInfo.setPlanName(getElementValue(parent, "plan_name"));
+        planInfo.setIrsrlCode(getElementValue(parent, "irsrl_code"));
+        planInfo.setProvCompany(getElementValue(parent, "prov_company"));
+        planInfo.setProdId(getElementValue(parent, "prod_id"));
+        planInfo.setStatusCode(getElementValue(parent, "status_code"));
+        planInfo.setDpDateTime(getElementValue(parent, "dpdate_time"));
+        planInfo.setRolloverInd(getElementValue(parent, "rollover_ind"));
+        planInfo.setClientName(getElementValue(parent, "client_name"));
+        planInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        planInfo.setScndLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        planInfo.setCity(getElementValue(parent, "city"));
+        planInfo.setStateCode(getElementValue(parent, "state_code"));
+        planInfo.setZipCode(getElementValue(parent, "zip_code"));
+        planInfo.setCountry(getElementValue(parent, "country"));
+        planInfo.setInternalComplianceInd(getElementValue(parent, "internal_compliance_ind"));
+        planInfo.setPlanAnnivDate(getElementValue(parent, "plan_anniv_date"));
+        planInfo.setEstNumberOfParticipants(getElementValue(parent, "est_number_of_participants"));
+        planInfo.setEstPlanAssets(getElementValue(parent, "est_plan_assets"));
+        planInfo.setEstImplementationDate(LocalDate.parse(getElementValue(parent, "est_implementation_date")));
+        planInfo.setSubsetCashCode(getElementValue(parent, "subset_cash_code"));
+        planInfo.setClientEntityType(getElementValue(parent, "client_entity_type"));
+        planInfo.setTpaFirmId(getElementValue(parent, "tpa_firm_id"));
+        planInfo.setPlans(plan);
+        newPlan = plan;
+        planInfoRepo.save(planInfo);
+    }
+
+    private void saveUserInfo(Element parent) {
+        UserInfo existingUserInfo = null;
+        if (planNumber != null) {
+            existingUserInfo = userInfoRepo.findByPlansPlanId(Integer.parseInt(planNumber.getGaId()));
+        }
+
+        if (existingUserInfo != null) {
+            updateUserInfo(existingUserInfo, parent);
+        } else {
+            createNewUserInfo(parent);
+        }
+    }
+
+    private void updateUserInfo(UserInfo userInfo, Element parent) {
+        userInfo.setLogonId(getElementValue(parent, "logon_id"));
+        userInfo.setLastName(getElementValue(parent, "last_name"));
+        userInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+        userInfo.setJobTitle(getElementValue(parent, "job_title"));
+        userInfo.setMiddleName(getElementValue(parent, "middle_name"));
+        userInfo.setAreaCode(getElementValue(parent, "area_code"));
+        userInfo.setFirstName(getElementValue(parent, "first_name"));
+        userInfo.setEmailAddress(getElementValue(parent, "email_address"));
+        userInfoRepo.save(userInfo);
+    }
+
+    private void createNewUserInfo(Element parent) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setLogonId(getElementValue(parent, "logon_id"));
+        userInfo.setLastName(getElementValue(parent, "last_name"));
+        userInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+        userInfo.setJobTitle(getElementValue(parent, "job_title"));
+        userInfo.setMiddleName(getElementValue(parent, "middle_name"));
+        userInfo.setAreaCode(getElementValue(parent, "area_code"));
+        userInfo.setFirstName(getElementValue(parent, "first_name"));
+        userInfo.setEmailAddress(getElementValue(parent, "email_address"));
+        userInfo.setPlans(newPlan);
+        userInfoRepo.save(userInfo);
+    }
+
+    private void saveContactInfo(Element parent) {
+        if (planNumber != null) {
+            List<ContactInfo> existingContactInfos = contactInfoRepo.findByPlansPlanId(Integer.parseInt(planNumber.getGaId()));
+            if (!existingContactInfos.isEmpty()) {
+                updateContactInfos(existingContactInfos, parent);
+            } else {
+                createNewContactInfo(parent);
+            }
+        } else {
+            createNewContactInfo(parent);
+        }
+    }
+
+    private void updateContactInfos(List<ContactInfo> contactInfos, Element parent) {
+        for (ContactInfo contactInfo : contactInfos) {
+            contactInfo.setFirstName(getElementValue(parent, "first_name"));
+            contactInfo.setLastName(getElementValue(parent, "last_name"));
+            contactInfo.setJobTitle(getElementValue(parent, "job_title"));
+            contactInfo.setCompanyName(getElementValue(parent, "company_name"));
+            contactInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+            contactInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+            contactInfo.setCity(getElementValue(parent, "city"));
+            contactInfo.setStateCode(getElementValue(parent, "state_code"));
+            contactInfo.setZipCode(getElementValue(parent, "zip_code"));
+            contactInfo.setCountry(getElementValue(parent, "country"));
+            contactInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+            contactInfo.setFaxNbr(getElementValue(parent, "fax_nbr"));
+            contactInfo.setEmailAddress(getElementValue(parent, "email_address"));
+            contactInfoRepo.save(contactInfo);
+        }
+    }
+
+    private void createNewContactInfo(Element parent) {
+        ContactInfo contactInfo = new ContactInfo();
+        contactInfo.setContactId(getElementValue(parent, "contact_id"));
+        contactInfo.setFirstName(getElementValue(parent, "first_name"));
+        contactInfo.setLastName(getElementValue(parent, "last_name"));
+        contactInfo.setJobTitle(getElementValue(parent, "job_title"));
+        contactInfo.setCompanyName(getElementValue(parent, "company_name"));
+        contactInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        contactInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        contactInfo.setCity(getElementValue(parent, "city"));
+        contactInfo.setStateCode(getElementValue(parent, "state_code"));
+        contactInfo.setZipCode(getElementValue(parent, "zip_code"));
+        contactInfo.setCountry(getElementValue(parent, "country"));
+        contactInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+        contactInfo.setFaxNbr(getElementValue(parent, "fax_nbr"));
+        contactInfo.setEmailAddress(getElementValue(parent, "email_address"));
+        contactInfo.setPlans(newPlan);
+        contactInfoRepo.save(contactInfo);
+    }
+
+    private String getElementValue(Element parseElement, String childTagName) {
+        NodeList childNodes = parseElement.getElementsByTagName(childTagName);
+        if (childNodes.getLength() > 0) {
+            return childNodes.item(0).getTextContent();
+        }
+        return null;
+    }
+
+    public PlanInfo findByGaId(String gaId) {
+        return planInfoRepo.findByGaId(gaId);
+    }
+
+    public List<ContactInfo> contactByPlanId(int id) {
+        return contactInfoRepo.findByPlansPlanId(id);
+    }
+
+    public PlanInfo findByPlanId(int planId) {
+        return planInfoRepo.findByPlanId(planId);
+    }
+
+    public Plans getLastRow() {
+        Optional<Plans> plans = planRepo.findLastRow();
+        return plans.orElse(null);
+    }
+
+    public void updatePlanInfo(PlanInfo planInfo) {
+        planInfoRepo.save(planInfo);
+    }
+
+    public void updateContactInfo(ContactInfo contactInfo) {
+        contactInfoRepo.save(contactInfo);
+    }
+
+    public void deletePlan(int id) {
+        PlanInfo planInfo = planInfoRepo.findByPlanId(id);
+        if (planInfo != null) {
+            planInfoRepo.delete(planInfo);
+        }
+
+        List<ContactInfo> contactInfos = contactInfoRepo.findByPlansPlanId(id);
+        if (contactInfos != null && !contactInfos.isEmpty()) {
+            contactInfoRepo.deleteAll(contactInfos);
+        }
+
+        Plans plan = planRepo.findById(id).orElse(null);
+        if (plan != null) {
+            planRepo.delete(plan);
+        }
+    }
+
+    public List<Plans> getPlans() {
+        return planRepo.findAll();
+    }
+}
+
+
+
+
+
+
+
+package com.hrlc.compliance.service;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.util.List;
