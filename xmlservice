@@ -1,4 +1,66 @@
-  private void saveContactInfo(Element parent) {
+private void saveContactInfo(Element parent) {
+    List<ContactInfo> existingContactInfoList = null;
+    
+    if (planNumber != null) {
+        existingContactInfoList = contactInfoRepo.findByPlansPlanId(Integer.parseInt(planNumber.getGaId()));
+    }
+
+    if (existingContactInfoList != null && !existingContactInfoList.isEmpty()) {
+        System.out.println("existing contact info");
+
+        for (ContactInfo existingContactInfo : existingContactInfoList) {
+            existingContactInfo.setFirstName(getElementValue(parent, "first_name"));
+            existingContactInfo.setLastName(getElementValue(parent, "last_name"));
+            existingContactInfo.setJobTitle(getElementValue(parent, "job_title"));
+            existingContactInfo.setCompanyName(getElementValue(parent, "company_name"));
+            existingContactInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+            existingContactInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+            existingContactInfo.setCity(getElementValue(parent, "city"));
+            existingContactInfo.setStateCode(getElementValue(parent, "state_code"));
+            existingContactInfo.setZipCode(getElementValue(parent, "zip_code"));
+            existingContactInfo.setCountry(getElementValue(parent, "country"));
+            existingContactInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+            existingContactInfo.setFaxNbr(getElementValue(parent, "fax_nbr"));
+            existingContactInfo.setEmailAddress(getElementValue(parent, "email_address"));
+            // Set other fields as needed
+            contactInfoRepo.save(existingContactInfo);
+        }
+    } else {
+        System.out.println("new contact info");
+        ContactInfo contactInfo = new ContactInfo();
+        contactInfo.setContactId(getElementValue(parent, "contact_id"));
+        contactInfo.setFirstName(getElementValue(parent, "first_name"));
+        contactInfo.setLastName(getElementValue(parent, "last_name"));
+        contactInfo.setJobTitle(getElementValue(parent, "job_title"));
+        contactInfo.setCompanyName(getElementValue(parent, "company_name"));
+        contactInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+        contactInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+        contactInfo.setCity(getElementValue(parent, "city"));
+        contactInfo.setStateCode(getElementValue(parent, "state_code"));
+        contactInfo.setZipCode(getElementValue(parent, "zip_code"));
+        contactInfo.setCountry(getElementValue(parent, "country"));
+        contactInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+        contactInfo.setFaxNbr(getElementValue(parent, "fax_nbr"));
+        contactInfo.setEmailAddress(getElementValue(parent, "email_address"));
+        contactInfo.setPlans(newPlan);
+        // Set other fields as needed
+        contactInfoRepo.save(contactInfo);
+    }
+}
+
+private String getElementValue(Element parent, String childTagName) {
+    NodeList childNodes = parent.getElementsByTagName(childTagName);
+    if (childNodes.getLength() > 0) {
+        return childNodes.item(0).getTextContent();
+    }
+    return null;
+}
+
+
+
+
+
+private void saveContactInfo(Element parent) {
     	List<ContactInfo> existingContactInfo1=null;
     	if(exisitPlan!=null) {
     		
