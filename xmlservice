@@ -1,3 +1,71 @@
+  private void saveContactInfo(Element parent) {
+    	List<ContactInfo> existingContactInfo1=null;
+    	if(exisitPlan!=null) {
+    		
+    	}
+//    	Plans plan=null;
+//        if(planNumber!=null) {
+//        	existingContactInfo1 = contactInfoRepo.findByPlansPlanId(exisitPlan.getPlanId());
+//        	plan = planRepo.findByPlannumber(planNumber.getGaId());
+//        	System.out.println("size is "+existingContactInfo1.size());
+//        	
+//        }
+//        String contactId = getElementValue(parent, "contact_id");
+//        ContactInfo existingContactInfo = contactInfoRepo.findById(contactId).orElse(null);
+    	
+
+    if (existingContactInfo1 != null) {
+    	System.out.println("exisiting  contactinfo ");
+    	contactInfoRepo.saveAll(existingContactInfo1);
+//        for(int i=0;i<existingContactInfo1.size();i++){
+//        	ContactInfo existingContactInfo = existingContactInfo1.get(i);
+//        	
+//        	System.out.println("hello error");
+//            existingContactInfo.setFirstName(getElementValue(parent, "first_name"));
+//            existingContactInfo.setLastName(getElementValue(parent, "last_name"));
+//            existingContactInfo.setJobTitle(getElementValue(parent, "job_title"));
+//            existingContactInfo.setCompanyName(getElementValue(parent, "company_name"));
+//            existingContactInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+//            existingContactInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+//            existingContactInfo.setCity(getElementValue(parent, "city"));
+//            existingContactInfo.setStateCode(getElementValue(parent, "state_code"));
+//            existingContactInfo.setZipCode(getElementValue(parent, "zip_code"));
+//            existingContactInfo.setCountry(getElementValue(parent, "country"));
+//            existingContactInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+//            existingContactInfo.setFaxNbr(getElementValue(parent, "fax_nbr"));
+//            existingContactInfo.setEmailAddress(getElementValue(parent, "email_address"));
+//            contactInfoRepo.save(existingContactInfo);
+////            existingContactInfo.setPlans(plan);
+//            // Set other fields as needed
+//        }
+    }else {
+    	// adding new contact info
+    		System.out.println("new  contactinfo ");
+            ContactInfo contactInfo = new ContactInfo();
+            contactInfo.setContactId(getElementValue(parent, "contact_id"));
+            contactInfo.setFirstName(getElementValue(parent, "first_name"));
+            contactInfo.setLastName(getElementValue(parent, "last_name"));
+            contactInfo.setJobTitle(getElementValue(parent, "job_title"));
+            contactInfo.setCompanyName(getElementValue(parent, "company_name"));
+            contactInfo.setFirstLineMailing(getElementValue(parent, "first_line_mailing"));
+            contactInfo.setSecondLineMailing(getElementValue(parent, "scnd_line_mailing"));
+            contactInfo.setCity(getElementValue(parent, "city"));
+            contactInfo.setStateCode(getElementValue(parent, "state_code"));
+            contactInfo.setZipCode(getElementValue(parent, "zip_code"));
+            contactInfo.setCountry(getElementValue(parent, "country"));
+            contactInfo.setPhoneNbr(getElementValue(parent, "phone_nbr"));
+            contactInfo.setFaxNbr(getElementValue(parent, "fax_nbr"));
+            contactInfo.setEmailAddress(getElementValue(parent, "email_address"));
+            contactInfo.setPlans(newPlan);
+            // Set other fields as needed
+            contactInfoRepo.save(contactInfo);
+        }
+    }
+
+
+
+
+
 
 
 package com.hrlc.compliance.service;
