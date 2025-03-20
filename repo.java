@@ -1,3 +1,168 @@
+import com.ecm1.ECM1.controller.ECMcontroller;
+import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+
+public class FileSelectorGUI {
+    private final FileSelectionData fileData;
+    private final ECMcontroller mcontroller;
+    private final JTextField txtWorkingDir, txtExcelFile, txtInputDir, txtOutputReport, txtOutputDir, txtDeleteId;
+    private final JButton btnPost, btnDelete, btnRunPost, btnRunDelete;
+    private final JPanel postPanel, deletePanel;
+
+    public FileSelectorGUI(ECMcontroller mcontroller) {
+        this.mcontroller = mcontroller;
+        this.fileData = new FileSelectionData();
+
+        // Create frame
+        JFrame frame = new JFrame("ECM File Selector");
+        frame.setSize(500, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout());
+
+        // Main selection panel (Post/Delete)
+        JPanel selectionPanel = new JPanel();
+        btnPost = new JButton("Post");
+        btnDelete = new JButton("Delete");
+        selectionPanel.add(btnPost);
+        selectionPanel.add(btnDelete);
+
+        // Post Panel
+        postPanel = new JPanel();
+        postPanel.setLayout(new GridLayout(6, 2, 10, 10));
+        postPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        JButton btnWorkingDir = new JButton("Select Working Dir");
+        JButton btnExcelFile = new JButton("Select Excel File");
+        JButton btnInputDir = new JButton("Select Input Dir");
+        JButton btnOutputReport = new JButton("Select Report File");
+        JButton btnOutputDir = new JButton("Select Output Dir");
+        btnRunPost = new JButton("Run Post");
+
+        txtWorkingDir = createTextField();
+        txtExcelFile = createTextField();
+        txtInputDir = createTextField();
+        txtOutputReport = createTextField();
+        txtOutputDir = createTextField();
+
+        btnWorkingDir.addActionListener(e -> selectDirectory("Select Working Directory", txtWorkingDir));
+        btnExcelFile.addActionListener(e -> selectFile("Select Excel File", txtExcelFile));
+        btnInputDir.addActionListener(e -> selectDirectory("Select Input Directory", txtInputDir));
+        btnOutputReport.addActionListener(e -> selectFile("Select Output Report File", txtOutputReport));
+        btnOutputDir.addActionListener(e -> selectDirectory("Select Output Directory", txtOutputDir));
+        btnRunPost.addActionListener(e -> runProcessing());
+
+        postPanel.add(btnWorkingDir);
+        postPanel.add(txtWorkingDir);
+        postPanel.add(btnExcelFile);
+        postPanel.add(txtExcelFile);
+        postPanel.add(btnInputDir);
+        postPanel.add(txtInputDir);
+        postPanel.add(btnOutputReport);
+        postPanel.add(txtOutputReport);
+        postPanel.add(btnOutputDir);
+        postPanel.add(txtOutputDir);
+        postPanel.add(new JLabel()); // Empty cell
+        postPanel.add(btnRunPost);
+
+        // Delete Panel
+        deletePanel = new JPanel();
+        deletePanel.setLayout(new GridLayout(2, 2, 10, 10));
+        deletePanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        JLabel lblDeleteId = new JLabel("Enter ID to Delete:");
+        txtDeleteId = createTextField();
+        btnRunDelete = new JButton("Run Delete");
+        btnRunDelete.addActionListener(e -> runDelete());
+
+        deletePanel.add(lblDeleteId);
+        deletePanel.add(txtDeleteId);
+        deletePanel.add(new JLabel()); // Empty cell
+        deletePanel.add(btnRunDelete);
+
+        // Initially hide both panels
+        postPanel.setVisible(false);
+        deletePanel.setVisible(false);
+
+        // Button actions
+        btnPost.addActionListener(e -> {
+            postPanel.setVisible(true);
+            deletePanel.setVisible(false);
+        });
+
+        btnDelete.addActionListener(e -> {
+            deletePanel.setVisible(true);
+            postPanel.setVisible(false);
+        });
+
+        // Main layout
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.add(selectionPanel, BorderLayout.NORTH);
+        mainPanel.add(postPanel, BorderLayout.CENTER);
+        mainPanel.add(deletePanel, BorderLayout.CENTER);
+
+        frame.add(mainPanel);
+        frame.setVisible(true);
+    }
+
+    // Creates a text field for displaying selected file paths
+    private JTextField createTextField() {
+        JTextField textField = new JTextField();
+        textField.setEditable(false);
+        return textField;
+    }
+
+    private void selectFile(String title, JTextField textField) {
+        JFileChooser fileChooser = new JFileChooser(new File("C:\\")); // Default to C:\ drive
+        fileChooser.setDialogTitle(title);
+        int returnValue = fileChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            textField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+        }
+    }
+
+    private void selectDirectory(String title, JTextField textField) {
+        JFileChooser directoryChooser = new JFileChooser(new File("C:\\")); // Default to C:\ drive
+        directoryChooser.setDialogTitle(title);
+        directoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnValue = directoryChooser.showOpenDialog(null);
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            textField.setText(directoryChooser.getSelectedFile().getAbsolutePath());
+        }
+    }
+
+    private void runProcessing() {
+        fileData.setInputWorkingDir(txtWorkingDir.getText());
+        fileData.setInputExcelFile(txtExcelFile.getText());
+        fileData.setInputAllDir(txtInputDir.getText());
+        fileData.setOutputReportFile(txtOutputReport.getText());
+        fileData.setOutputDir(txtOutputDir.getText());
+
+        if (!fileData.areAllFieldsSet()) {
+            JOptionPane.showMessageDialog(null, "Error: Please select all required fields!", "Missing Inputs", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String result = mcontroller.processFiles(fileData.getInputExcelFile(), fileData.getInputAllDir(), fileData.getOutputDir());
+        JOptionPane.showMessageDialog(null, result, "Process Complete", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void runDelete() {
+        String deleteId = txtDeleteId.getText().trim();
+        if (deleteId.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Error: Please enter an ID!", "Missing ID", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String result = mcontroller.deleteFile(deleteId);
+        JOptionPane.showMessageDialog(null, result, "Delete Complete", JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+
+
+
+
 package com.ecm1.ECM1.ui;
 
 import com.ecm1.ECM1.controller.ECMcontroller;
