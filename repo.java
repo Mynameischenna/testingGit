@@ -1,4 +1,5 @@
-package com.example.firstt;
+
+spackage com.example.firstt;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
