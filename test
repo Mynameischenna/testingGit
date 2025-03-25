@@ -1,3 +1,49 @@
+REST method GET – gets a single image from the ECM And returns it 
+
+          3 possible url parameters
+
+          token – encrypted token generated from the docuemnt-list REST call
+
+          id – unique id of the onbase document... if Filenet then the filenet guid and the legacyStorageArea
+
+          legacyStorageArea – only used if attempting to get an image from Filenet and you have the legacyStorageArea(object_store) and id
+
+          versionNumber – if you know your documents have versions, currently only FileSharing docs do.....you can request a previous version of the document.  this is an optional field if not given the latest document will be returned.
+
+Retrieves a single document image from FileNet requires one of the following:
+
+The token obtained from the documents-list REST request
+the Id for OnBase or Id and ObjectStore for FileNet
+Example for FileNet using ID and ObjectStore
+
+/documents?id=EC400F00-EF98-41EE-BB82-6B0F77B2CCC0&legacyStorageArea=FASCORE_OS
+
+Example for OnBase
+
+/documents?id=76014794
+
+Example for OnBase and using a previous version
+
+/documents?id=76014794&versionNumber=3
+
+Example using the token
+
+/documents?token=123456abcdefg7890DEFG
+
+
+
+Example response:
+
+{
+    "document": {
+        "image": "JVBERi0xLjQKJeLjz9MKMiAwIG9iago8PC9MZW5ndGggNjA1L0ZpbHRlci9GbGF0ZURlY29kZT4+c3RyZWFtCnicjZTNctowFIX3fgot2wVUkiXZXhIG0jQdfow37c5ghbqDLSLbZOjT17ZYUClXDYwHzxx9Otx7dPUaPGRBKFCMBcqKAKMJ5ePbIgu2wev4UPStFx4DPOXoLYjjaYiiBCNG4ilDRCAtg90/YsQQxcmUWiJNov4XUg3KYx8KqAZl1IcCqkGp8KGAalCCfSigjqhIfG2CVINGvjZBqkGFr02QalDmaxOkGjT0tQlSDUq8bQLUEeWJr02QatDY1yZINajwtQlSDcp9bXLV7TC9BOH+SxBleEr6M5dQlFXBlyVBpH97CT6lu0f0lM7Q+nxWuu3qsr1+zn4PE35HJ3icXGGxT4W7lCbJOMf2WoyFmOPhs7yuL/vtbAnZCGyhd39t/VZLDZo6ZKaKAj10+iibBrJjDLZb5ZUE3RxwrupWl/uuLVWN0nX2FU3Q83q1mP9c/YDcaexx76q9p1oX3Uz6i4FxyiA3Yqf/OPNk6KyOGOaYTNIQ2F8kzgmpi/JSFl1+gn1cisZRHIURh2xiO+fZ4aC6uk3lsWxanQ8B+KJzN5grLa/oWdXyUP+BBkAIO/HdbgV6OIsJDRnvr98E2p7ZgWY6r5v8MJSTXc9wOQ647E4nyCW0U91oeSlV12y06qMq6+NcVee8fqcLNztnh3X7671zavyIne5Sq+oWmLcqB9zIuhlG63tXndGuqyBHbKd75+ifKRcNw5D2D2DFYzvkTH2gNBfrM6hKqYebGLISzulQH6rJBf8zXpzb+S6atqzyVhbjgXyROlWnk7pIPasGf9DZ2ajvL76t/gtnaE/5CmVuZHN0cmVhbQplbmRvYmoKNCAwIG9iago8PC9UeXBlL1BhZ2UvTWVkaWFCb3hbMCAwIDU5NSA4NDJdL1Jlc291cmNlczw8L0ZvbnQ8PC9GMSAxIDAgUj4+Pj4vQ29udGVudHMgMiAwIFIvUGFyZW50IDMgMCBSPj4KZW5kb2JqCjEgMCBvYmoKPDwvVHlwZS9Gb250L1N1YnR5cGUvVHlwZTEvQmFzZUZvbnQvSGVsdmV0aWNhL0VuY29kaW5nL1dpbkFuc2lFbmNvZGluZz4+CmVuZG9iagozIDAgb2JqCjw8L1R5cGUvUGFnZXMvQ291bnQgMS9LaWRzWzQgMCBSXT4+CmVuZG9iago1IDAgb2JqCjw8L1R5cGUvQ2F0YWxvZy9QYWdlcyAzIDAgUj4+CmVuZG9iago2IDAgb2JqCjw8L1Byb2R1Y2VyKGlUZXh0riA1LjUuMTMuMyCpMjAwMC0yMDIyIGlUZXh0IEdyb3VwIE5WIFwoQUdQTC12ZXJzaW9uXCkpL0NyZWF0aW9uRGF0ZShEOjIwMjIxMTIyMTEzMjAzLTA4JzAwJykvTW9kRGF0ZShEOjIwMjIxMTIyMTEzMjAzLTA4JzAwJyk+PgplbmRvYmoKeHJlZgowIDcKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwNzk5IDAwMDAwIG4gCjAwMDAwMDAwMTUgMDAwMDAgbiAKMDAwMDAwMDg4NyAwMDAwMCBuIAowMDAwMDAwNjg3IDAwMDAwIG4gCjAwMDAwMDA5MzggMDAwMDAgbiAKMDAwMDAwMDk4MyAwMDAwMCBuIAp0cmFpbGVyCjw8L1NpemUgNy9Sb290IDUgMCBSL0luZm8gNiAwIFIvSUQgWzwxMGM3ZWIyMGEwNTZiZGI3NGQzOTBlOTEwZGY4YjQxNT48MTBjN2ViMjBhMDU2YmRiNzRkMzkwZTkxMGRmOGI0MTU+XT4+CiVpVGV4dC01LjUuMTMuMwpzdGFydHhyZWYKMTE0MwolJUVPRgo=",
+        "fileName": "RK - Plan - 11/22/2022 - 932777-01 -  -  - JLSRTEST - CONTRACTS/AGREEMENTS/SIGNATURE PAGE -",
+        "mimeType": "application/pdf"
+    }
+
+
+
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
