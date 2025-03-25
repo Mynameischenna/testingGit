@@ -1,3 +1,39 @@
+Cannot invoke "com.ecm1.ECM1.service.Service1$Document.getImage()" because the return value of "com.ecm1.ECM1.service.Service1$OnBaseResponse.getDocument()" is null
+	at com.ecm1.ECM1.service.Service1.getOnBaseDocument(Service1.java:255)
+	at com.ecm1.ECM1.controller.ECMcontroller.getFile(ECMcontroller.java:40)
+	at com.ecm1.ECM1.Ecm1Application.run(Ecm1Application.java:25)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMethod.invoke(InitDestroyAnnotationBeanPostProcessor.java:457)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:401)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:219)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:422)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1798)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:600)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:522)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:335)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:200)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:975)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:971)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:625)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:456)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:335)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1363)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1352)
+	at com.ecm1.ECM1.Ecm1Application.main(Ecm1Application.java:19)
+2025-03-25T04:56:06.979-06:00  INFO 10248 --- [ECM1] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-03-25T04:56:06.995-06:00  INFO 10248 --- [ECM1] [           main] com.ecm1.ECM1.Ecm1Application            : Started Ecm1Application in 9.813 seconds (process running for 13.529)
+
+
+
+
+
+
+
 rg.springframework.web.client.HttpServerErrorException$InternalServerError: 500 : "{"error":{"code":"E-000","message":"Exception retrieveDocument token(null) id(2230789336) legacyStorageLocation(null) versionNumber(0) error(RETRIEVE_DOCUMENT_ERROR: Error retrieve document OnBase(2230789336):[class ErrorResponseErrorDetails {\n    field: retrieveDocument OnBase(2230789336)\n    issue: Onbase Document (2230789336) has been deleted and will be purged according to the purge schedule\n    location: body\n    hint: Please check the error details\n}])","details":[{"field":null,"issue":"Exception retrieveDocument token(null) id(2230789336) legacyStorageLocation(null) versionNumber(0) error(RETRIEVE_DOCUMENT_ERROR: Error retrieve document OnBase(2230789336):[class ErrorResponseErrorDetails {\n    field: retrieveDocument OnBase(2230789336)\n    issue: Onbase Document (2230789336) has been deleted and will be purged according to the purge schedule\n    location: body\n    hint: Please check the error details\n}])","location":null,"hint":null}],"link":null,"correlationId":"67e2886f30a35ee5436dcf7a4e420664"}}"
 	at org.springframework.web.client.HttpServerErrorException.create(HttpServerErrorException.java:102)
 	at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:186)
