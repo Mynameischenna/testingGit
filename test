@@ -1,3 +1,41 @@
+ public ResponseEntity<String> deleteOnBaseDocument(String documentId) throws Exception {
+        if (documentId == null || documentId.isEmpty()) {
+            throw new IllegalArgumentException("Document ID is required for deletion.");
+        }
+
+        String authorizationID = auth.getAuthorizationID();
+        System.out.println("Authorization ID: " + authorizationID);
+
+        // Base URL based on environment
+        String url = runType.equals("PROD")
+                ? "https://api.gwl.com/content-management/ecm-documents-api/documents"
+                : "https://api-dev.gwl.com/content-management/ecm-documents-api/documents";
+
+        // Append document ID to the URL
+        url += "?id=" + documentId;
+
+        // Set up headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "JWT " + authorizationID);
+
+        // Create the HTTP entity
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        // Use RestTemplate to make the DELETE request
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, String.class);
+
+        // Print response details
+        System.out.println("Response status: " + response.getStatusCode());
+        System.out.println("Response body: " + response.getBody());
+
+        return response;
+    }
+
+
+
+
 REST method GET – gets a single image from the ECM And returns it 
 
           3 possible url parameters
