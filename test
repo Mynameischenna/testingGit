@@ -1,4 +1,84 @@
- public ResponseEntity<String> deleteOnBaseDocument(String documentId) throws Exception {
+
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import java.util.Base64;
+
+@RestController
+@RequestMapping("/api/documents")
+public class OnBaseDocumentController {
+
+    private final RestTemplate restTemplate = new RestTemplate();
+    
+    @GetMapping("/{documentId}")
+    public ResponseEntity<Resource> getOnBaseDocument(@PathVariable String documentId) throws Exception {
+        if (documentId == null || documentId.isEmpty()) {
+            throw new IllegalArgumentException("Document ID is required.");
+        }
+
+        String authorizationID = auth.getAuthorizationID();
+        System.out.println("Authorization ID: " + authorizationID);
+
+        // Base URL based on environment
+        String url = runType.equals("PROD")
+                ? "https://api.gwl.com/content-management/ecm-documents-api/documents"
+                : "https://api-dev.gwl.com/content-management/ecm-documents-api/documents";
+
+        // Append document ID to the URL
+        url += "?id=" + documentId;
+
+        // Set up headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "JWT " + authorizationID);
+
+        // Create the HTTP entity
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        // Use RestTemplate to make the GET request
+        ResponseEntity<OnBaseResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, OnBaseResponse.class);
+
+        if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        OnBaseResponse onBaseResponse = response.getBody();
+
+        // Decode Base64 document
+        byte[] decodedBytes = Base64.getDecoder().decode(onBaseResponse.getDocument().getImage());
+        ByteArrayResource resource = new ByteArrayResource(decodedBytes);
+
+        // Return the file as a downloadable response
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(onBaseResponse.getDocument().getMimeType()))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + onBaseResponse.getDocument().getFileName() + "\"")
+                .body(resource);
+    }
+
+    // DTO class to map API response
+    public static class OnBaseResponse {
+        private Document document;
+        public Document getDocument() { return document; }
+    }
+
+    public static class Document {
+        private String image; // Base64 encoded content
+        private String fileName;
+        private String mimeType;
+
+        public String getImage() { return image; }
+        public String getFileName() { return fileName; }
+        public String getMimeType() { return mimeType; }
+    }
+}
+
+
+
+
+
+public ResponseEntity<String> deleteOnBaseDocument(String documentId) throws Exception {
         if (documentId == null || documentId.isEmpty()) {
             throw new IllegalArgumentException("Document ID is required for deletion.");
         }
