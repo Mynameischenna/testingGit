@@ -1,3 +1,97 @@
+package com.ecm1.ECM1.audit;
+
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
+@Service
+public class AuditTrailLogger {
+
+    private  final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private  final String LOG_FILE_PATH = "C:\\ECM\\PVR\\PVR\\audit-logs.log"; // Path to the log file
+    private  final String FileName = "";
+    // Flag to track if the headers are written
+    private  boolean headersWritten = false;
+
+    public void logAction(String actionType, String status, String message, String fileName, String filePath, String user) {
+
+        String timestamp = dateFormat.format(new Date());
+
+        // Format the log entry to be in a single line
+        String logEntry = String.format(
+                "%s | Action: %s | Status: %s | Message: %s | File Name: %s | File Path: %s | User: %s",
+                timestamp, actionType, status, message, fileName, filePath, user
+        );
+
+        // Write the log entry to the file
+        writeLogToFile(logEntry);
+        // Add a space (new line) after each log entry for better readability
+        writeLogToFile("\n");
+    }
+
+    public  void failureLog(String fileName, String status, String errorMessage) {
+        String logEntry = String.format("%s | File: %s | Status: %s | Error: %s",
+                LocalDateTime.now(), fileName, status, (errorMessage != null ? errorMessage : "None"));
+        writeLogToFile(logEntry);
+    }
+    // Writes the header only once at the beginning of the log file
+    public void writeHeaders(String fileName) {
+        String header = String.format(
+                """
+                        ==================================================
+                                         ECM1 Audit Log
+                                      Environment: Production
+                                    Input FileName : %s
+                                    Log Start Time: %s
+                        ==================================================
+
+                        """,fileName
+                ,dateFormat.format(new Date())
+        );
+
+        writeLogToFile(header);
+    }
+
+    // Writes the footer with success and failure counts
+    public  void writeFooter(int successCount , int failureCount) {
+        String footer = String.format(
+                """
+
+                        ==================================================
+                                   End of ECM1 Audit Log
+                                   Success Count: %d
+                                   Failure Count: %d
+                        ==================================================
+                        """,
+                successCount, failureCount
+        );
+
+        writeLogToFile(footer);
+    }
+
+    // Writes log entries to the specified log file
+    private void writeLogToFile(String logEntry) {
+        try {
+            Files.write(
+                    Paths.get(LOG_FILE_PATH),
+                    logEntry.getBytes(),
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND
+            );
+        } catch (IOException e) {
+            System.err.println("Error writing log to file: " + e.getMessage());
+        }
+    }
+
+}
+
+
+
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
