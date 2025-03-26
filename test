@@ -8,6 +8,93 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+@Service
+public class AuditTrailLogger {
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final String LOG_FILE_PATH = "C:\\ECM\\PVR\\PVR\\audit-logs.log"; // Path to the log file
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    // Flag to track if the headers are written
+    private boolean headersWritten = false;
+
+    public void logAction(String actionType, String status, String message, String fileName, String filePath, String user) {
+
+        String timestamp = dateFormat.format(new Date());
+
+        // Format the log entry to be in a single line
+        String logEntry = String.format(
+                "%s | Action: %s | Status: %s | Message: %s | File Name: %s | File Path: %s | User: %s",
+                timestamp, actionType, status, message, fileName, filePath, user
+        );
+
+        // Write the log entry to the file
+        writeLogToFile(logEntry);
+        writeLogToFile("\n"); // Add a new line for readability
+    }
+
+    public void failureLog(String fileName, String status, String errorMessage) {
+        String timestamp = LocalDateTime.now().format(dateTimeFormatter);
+        String logEntry = String.format("%s | File: %s | Status: %s | Error: %s",
+                timestamp, fileName, status, (errorMessage != null ? errorMessage : "None"));
+        writeLogToFile(logEntry);
+    }
+
+    // Writes the header only once at the beginning of the log file
+    public void writeHeaders(String fileName) {
+        String header =
+                "==================================================\n" +
+                "                 ECM1 Audit Log                   \n" +
+                "              Environment: Production             \n" +
+                "           Input FileName : " + fileName + "      \n" +
+                "           Log Start Time: " + dateFormat.format(new Date()) + "\n" +
+                "==================================================\n\n";
+
+        writeLogToFile(header);
+    }
+
+    // Writes the footer with success and failure counts
+    public void writeFooter(int successCount, int failureCount) {
+        String footer =
+                "\n==================================================\n" +
+                "            End of ECM1 Audit Log                 \n" +
+                "            Success Count: " + successCount + "   \n" +
+                "            Failure Count: " + failureCount + "   \n" +
+                "==================================================\n";
+
+        writeLogToFile(footer);
+    }
+
+    // Writes log entries to the specified log file
+    private void writeLogToFile(String logEntry) {
+        try {
+            Files.write(
+                    Paths.get(LOG_FILE_PATH),
+                    logEntry.getBytes(),
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND
+            );
+        } catch (IOException e) {
+            System.err.println("Error writing log to file: " + e.getMessage());
+        }
+    }
+}
+
+
+
+
+package com.ecm1.ECM1.audit;
+
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 @Service
 public class AuditTrailLogger {
