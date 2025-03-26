@@ -1,3 +1,35 @@
+C:\compliance1\ECM1\src\main\java\com\ecm1\ECM1\controller\ECMcontroller.java:6:52
+java: cannot access org.springframework.beans.factory.annotation.Autowired
+  bad class file: /C:/Users/service-ascscripting/.m2/repository/org/springframework/spring-beans/6.1.13/spring-beans-6.1.13.jar!/org/springframework/beans/factory/annotation/Autowired.class
+    class file has wrong version 61.0, should be 55.0
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+C:\compliance1\ECM1\src\main\java\com\ecm1\ECM1\controller\ECMcontroller.java:11:2
+java: cannot access org.springframework.web.bind.annotation.RestController
+  bad class file: /C:/Users/service-ascscripting/.m2/repository/org/springframework/spring-web/6.1.13/spring-web-6.1.13.jar!/org/springframework/web/bind/annotation/RestController.class
+    class file has wrong version 61.0, should be 55.0
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+C:\compliance1\ECM1\src\main\java\com\ecm1\ECM1\controller\ECMcontroller.java:14:6
+java: cannot find symbol
+  symbol:   class Autowired
+  location: class com.ecm1.ECM1.controller.ECMcontroller
+C:\compliance1\ECM1\src\main\java\com\ecm1\ECM1\controller\ECMcontroller.java:17:6
+java: cannot access org.springframework.web.bind.annotation.PostMapping
+  bad class file: /C:/Users/service-ascscripting/.m2/repository/org/springframework/spring-web/6.1.13/spring-web-6.1.13.jar!/org/springframework/web/bind/annotation/PostMapping.class
+    class file has wrong version 61.0, should be 55.0
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+C:\compliance1\ECM1\src\main\java\com\ecm1\ECM1\controller\ECMcontroller.java:27:6
+java: cannot access org.springframework.web.bind.annotation.DeleteMapping
+  bad class file: /C:/Users/service-ascscripting/.m2/repository/org/springframework/spring-web/6.1.13/spring-web-6.1.13.jar!/org/springframework/web/bind/annotation/DeleteMapping.class
+    class file has wrong version 61.0, should be 55.0
+    Please remove or make sure it appears in the correct subdirectory of the classpath.
+C:\compliance1\ECM1\src\main\java\com\ecm1\ECM1\controller\ECMcontroller.java:37:6
+java: cannot find symbol
+  symbol:   class DeleteMapping
+  location: class com.ecm1.ECM1.controller.ECMcontroller
+
+
+
+
 package com.ecm1.ECM1.audit;
 
 import org.springframework.stereotype.Service;
