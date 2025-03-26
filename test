@@ -1,3 +1,263 @@
+package com.ecm1.ECM1.service;
+
+import com.ecm1.ECM1.entity.ModelMain;
+import com.ecm1.ECM1.audit.AuditTrailLogger;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.*;
+import java.nio.file.Files;
+import java.util.*;
+
+
+@Service
+public class Service1 {
+    @Autowired
+    private CreateJsonForFiles createJson;
+    @Autowired
+    private GetPdfFile getPdf;
+    @Autowired
+    private AuthID auth;
+
+    private final String runType = "PROD";
+    private  HashMap<String, Integer> fileCount = new HashMap<>();
+    private String currentUser = "chenna";
+    @Autowired
+    private AuditTrailLogger logger;
+    @Autowired
+    private GetPdfFile getPdfFile;
+
+    public void processFilesAndCreateJson(String excelFilePath, String sourceDirPath, String destinationDirPath) throws Exception {
+
+        int successCount = 0; // Counter for successful actions
+        int failureCount = 0; // Counter for failed actions
+        logger.writeHeaders(excelFilePath);
+        try (InputStream inputStream = new FileInputStream(excelFilePath)) {
+            // Read and parse the Excel file
+            List<ModelMain> rows = parseExcelFile(inputStream);
+
+            for (ModelMain row : rows) {
+                // Get the file based on plan number from the Excel metadata
+                File pdfFile = getPdf.getFile(row.getPlanNumber(), sourceDirPath, fileCount);
+                if (pdfFile != null) {
+                    /** **/
+                    // if corresponding pdf files found for row then post this combined data(json and pdf into OnBase)
+                    ResponseEntity<String> response = sendPostScanSheets(row, pdfFile);
+                    logger.logAction("POST REQUEST",response.getStatusCode() +"",response.getStatusCode().is2xxSuccessful() ? "success" : "Failure" +"storing data into database", pdfFile.getName(), pdfFile.getAbsolutePath(), currentUser) ;
+                    successCount++;
+                    // Log file retrieval success
+                    logger.logAction("File Retrieval", "Success", "File found for plan: " + row.getPlanNumber(),
+                            pdfFile.getName(), pdfFile.getAbsolutePath(), currentUser);
+
+                    // Copy the file to the destination directory
+                    boolean fileCopied = getPdf.copyFile(pdfFile, destinationDirPath);
+                    if (fileCopied) {
+                        // Log successful file copy
+                        logger.logAction("File Copy", "Success", "File copied successfully.",
+                                pdfFile.getName(), pdfFile.getAbsolutePath(), currentUser);
+
+
+                        // Create JSON for the copied file
+                        boolean jsonCreated = createJson.createJsonForFile(pdfFile, row, destinationDirPath);
+                        if (jsonCreated) {
+                            // Log successful JSON creation
+                            logger.logAction("JSON Creation", "Success", "JSON created successfully.",
+                                    pdfFile.getName(), pdfFile.getAbsolutePath(), currentUser);
+
+                        } else {
+                            // Log failed JSON creation
+                            logger.logAction("JSON Creation", "Failure", "Failed to create JSON.",
+                                    pdfFile.getName(), pdfFile.getAbsolutePath(), currentUser);
+                        }
+                    } else {
+                        // Log failure in file copy
+                        logger.logAction("File Copy", "Failure", "Failed to copy file.",
+                                pdfFile.getName(), pdfFile.getAbsolutePath(), currentUser);
+
+                    }
+                } else {
+                    // Log failure in file retrieval
+                    logger.logAction("File Retrieval", "Failure", "File not found for plan: " + row.getPlanNumber(),
+                            row.getPlanNumber(), sourceDirPath, currentUser);
+                    failureCount++; // Increment failure counter
+                }
+            }
+            // call footer at the end
+            logger.writeFooter(successCount, failureCount);
+        }catch (Exception e){
+            logger.failureLog(excelFilePath,"Failure", e.getMessage());
+            System.out.println("error in processing file");
+        }
+
+    }
+    // Parse the Excel file and extract rows of metadata
+    private List<ModelMain> parseExcelFile(InputStream inputStream) throws Exception {
+        List<ModelMain> excelRows = new ArrayList<>();
+        try (Workbook workbook = new XSSFWorkbook(inputStream)) {
+            Sheet sheet = workbook.getSheetAt(0);  // Assume the first sheet contains data
+            for (int i = 1; i <= 1; i++) {
+                Row row = sheet.getRow(i);
+                if (row == null) {  // Skip row if it's empty
+                    continue;
+                }
+                // Extract data from each cell
+                String plan_name = row.getCell(4).getStringCellValue();
+                String plan_number = row.getCell(5).getStringCellValue();
+                String ssn = row.getCell(9) + "";
+                String individualId = row.getCell(8) + "";
+                String database = row.getCell(3).getStringCellValue();
+                String certificateIssueDate = row.getCell(7)+"";
+                String participantName = row.getCell(13).getStringCellValue();
+
+                // Create a ModelMain object and add it to the list
+                ModelMain ecm = new ModelMain(plan_number, plan_name, ssn, individualId, database, certificateIssueDate, participantName);
+                excelRows.add(ecm);
+            }
+        }
+        return excelRows;
+    }
+
+    boolean status;
+    public ResponseEntity<String> sendPostScanSheets(ModelMain currCell, File file) throws Exception {
+        status = true;
+
+        if (file == null || !file.exists()) {
+            throw new Exception("File not found for plan number: " + currCell.getPlanNumber());
+        }
+        String authorizationID = auth.getAuthorizationID();
+        System.out.println("Auth id is "+authorizationID);
+        String url = "";
+        if (runType.equals(("PROD"))) {
+            url = "https://api.gwl.com/content-management/ecm-documents-api/documents";
+        } else if (runType.equals(("DEV"))) {
+            url = "https://api-dev.gwl.com/content-management/ecm-documents-api/documents";
+        }
+
+
+        // Read file content into a byte array
+        byte[] fileContent = Files.readAllBytes(file.toPath());
+
+        // Prepare document metadata
+        String docuData = createJson.buildJsonFromMeta(currCell);
+        System.out.println("Json Structure\n" +docuData);
+
+        // Use ByteArrayResource for file content
+        ByteArrayResource resource = new ByteArrayResource(fileContent) {
+            @Override
+            public String getFilename() {
+                return file.getName(); // Set the file name
+            }
+        };
+
+        // Set up the request body
+        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", resource); // Add PDF file content
+        body.add("typeOfDocument", "participant"); // type of document
+        body.add("mimeType", "application/pdf");
+        body.add("documentProperties", docuData); // Add metadata as JSON
+
+        // Set up headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        headers.add("Authorization", "JWT " + authorizationID);
+
+        // Create the HTTP entity
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+
+        // Use RestTemplate to make the POST request
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+
+        // Print response details
+        System.out.println("Response status: " + response.getStatusCode());
+        System.out.println("Response body: " + response.getBody());
+
+        return response;
+    }
+    public ResponseEntity<String> deleteOnBaseDocument(String documentId) throws Exception {
+        if (documentId == null || documentId.isEmpty()) {
+            throw new IllegalArgumentException("Document ID is required for deletion.");
+        }
+
+        String authorizationID = auth.getAuthorizationID();
+        System.out.println("Authorization ID: " + authorizationID);
+
+        // Base URL based on environment
+        String url = runType.equals("PROD")
+                ? "https://api.gwl.com/content-management/ecm-documents-api/documents"
+                : "https://api-dev.gwl.com/content-management/ecm-documents-api/documents";
+
+        // Append document ID to the URL
+        url += "?id=" + documentId;
+
+        // Set up headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "JWT " + authorizationID);
+
+        // Create the HTTP entity
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        // Use RestTemplate to make the DELETE request
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.DELETE, requestEntity, String.class);
+
+        // Print response details
+        System.out.println("Response status: " + response.getStatusCode());
+        System.out.println("Response body: " + response.getBody());
+
+        return response;
+    }
+
+
+    public ResponseEntity<String> getOnBaseDocument(String documentId) throws Exception {
+        if (documentId == null || documentId.isEmpty()) {
+            throw new IllegalArgumentException("Document ID is required for deletion.");
+        }
+
+        String authorizationID = auth.getAuthorizationID();
+        System.out.println("Authorization ID: " + authorizationID);
+
+        // Base URL based on environment
+        String url = runType.equals("PROD")
+                ? "https://api.gwl.com/content-management/ecm-documents-api/documents"
+                : "https://api-dev.gwl.com/content-management/ecm-documents-api/documents";
+
+        // Append document ID to the URL
+        url += "?id=" + documentId;
+
+        // Set up headers
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.add("Authorization", "JWT " + authorizationID);
+
+        // Create the HTTP entity
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+
+        // Use RestTemplate to make the GET request
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+
+        // Print response details
+        System.out.println("Response status: " + response.getStatusCode());
+        System.out.println("Response body: " + response.getBody());
+
+        return response;
+    }
+
+}
+
+
+
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     
