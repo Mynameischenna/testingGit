@@ -1,3 +1,24 @@
+{
+  "logs": {
+    "windows_events": [
+      {
+        "event_name": "Application",
+        "event_levels": ["ERROR", "WARNING"],
+        "log_group_name": "EventViewer-Application",
+        "log_stream_name": "{instance_id}"
+      },
+      {
+        "event_name": "System",
+        "event_levels": ["ERROR", "WARNING"],
+        "log_group_name": "EventViewer-System",
+        "log_stream_name": "{instance_id}"
+      }
+    ]
+  }
+}
+
+
+
 C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json
 
 
