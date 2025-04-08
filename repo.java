@@ -1,3 +1,6 @@
+C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json
+
+
 cd "C:\Temp\CWAgent"
 .\install.ps1
 
