@@ -1,3 +1,7 @@
+cd "C:\Temp\CWAgent"
+.\install.ps1
+
+
 Expand-Archive -Path "C:\Temp\AmazonCloudWatchAgent.zip" -DestinationPath "C:\Temp\CWAgent"
 
 
