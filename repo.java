@@ -1,3 +1,95 @@
+📄 CloudWatch Logs + SNS Email Notification Setup for Windows Task Scheduler Errors
+🔧 1. CloudWatch Agent Installation (Windows EC2)
+Download and Install Agent:
+powershell
+CopyEdit
+Invoke-WebRequest https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/AmazonCloudWatchAgent.zip -OutFile "C:\Temp\AmazonCloudWatchAgent.zip"
+Expand-Archive -Path "C:\Temp\AmazonCloudWatchAgent.zip" -DestinationPath "C:\Program Files\Amazon\AmazonCloudWatchAgent"
+Install the agent:
+powershell
+CopyEdit
+cd "C:\Program Files\Amazon\AmazonCloudWatchAgent"
+.\install.ps1
+
+🔐 2. IAM Role Permissions
+Attach the following policies to the EC2 instance role:
+CloudWatchAgentServerPolicy
+AmazonSSMManagedInstanceCore (optional for Systems Manager control)
+AmazonSNSFullAccess (for SNS testing)
+You added it manually via the IAM console.
+
+🛠️ 3. Create config.json for CloudWatch Agent
+Path: C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json
+json
+CopyEdit
+{
+  "logs": {
+    "logs_collected": {
+      "windows_events": {
+        "collect_list": [
+          {
+            "event_name": "Microsoft-Windows-TaskScheduler/Operational",
+            "levels": ["ERROR", "WARNING"]
+          }
+        ]
+      }
+    },
+    "log_stream_name": "task-scheduler-errors",
+    "log_group_name": "task-scheduler-events"
+  }
+}
+⚠️ You had to create this as a regular user due to limited admin rights.
+
+🚀 4. Start the Agent with Config
+powershell
+CopyEdit
+cd "C:\Program Files\Amazon\AmazonCloudWatchAgent"
+.\amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:"C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json" -s
+✅ You verified the config is valid and agent started successfully.
+
+📈 5. Create Metric Filter for Error/Warning Events
+Go to CloudWatch → Log groups → task-scheduler-events
+Select → “Create Metric Filter”
+Pattern: ruby CopyEdit   ?ERROR ?Warning
+  
+Metric name: ErrorWarningEvents
+Namespace: TaskScheduler
+Metric value: 1
+
+🚨 6. Create CloudWatch Alarm
+Go to CloudWatch → Alarms → Create Alarm
+Choose:
+Metric Namespace: TaskScheduler
+Metric: ErrorWarningEvents
+Condition: Whenever value ≥ 1
+Select SNS topic (created in next step)
+
+📬 7. Create SNS Topic and Email Subscription
+Create SNS Topic:
+Go to SNS → Topics → Create topic
+Name: task-scheduler-alerts
+Type: Standard
+Create Subscription:
+Go to the created topic
+Create Subscription
+Protocol: Email
+Endpoint: your email
+✅ Confirm the subscription from your email inbox.
+
+🧪 8. Testing Setup
+Go to Task Scheduler → Create Task → name it FailingTaskTest
+Set action as: text CopyEdit   Start a program → C:\DoesNotExist\fail.exe
+  
+Run it manually. It will log an Error.
+CloudWatch Agent sends the log.
+Metric filter → triggers alarm → SNS sends email ✅
+
+Let me know if you want this exported to a .md or .pdf, or want to continue with enhancements (like multiple log sources or Slack alerting).
+
+
+
+
+
 
 Message
 
