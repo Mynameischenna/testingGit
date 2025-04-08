@@ -1,3 +1,23 @@
+
+ cd "C:\Program Files\Amazon\AmazonCloudWatchAgent"
+>> .\amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:"C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json" -s
+>> C:\Program Files\Amazon\AmazonCloudWatchAgent>
+****** processing amazon-cloudwatch-agent ******
+I! Trying to detect region from ec2
+D! [EC2] Found active network interface
+I! imds retry client will retry 1 timesSuccessfully fetched the config and saved in C:\ProgramData\Amazon\AmazonCloudWatchAgent\Configs\file_config.json.tmp
+Start configuration validation...
+2025/04/08 05:28:39 Reading json config file path: C:\ProgramData\Amazon\AmazonCloudWatchAgent\Configs\file_config.json.tmp ...
+2025/04/08 05:28:39 E! Invalid Json input schema.
+2025/04/08 05:28:39 E! Invalid Json input schema.
+2025/04/08 05:28:39 Under path : /logs | Error : Must validate at least one schema (anyOf)
+2025/04/08 05:28:39 Under path : /logs | Error : logs_collected is required
+2025/04/08 05:28:39 Under path : /logs | Error : Additional property windows_events is not allowed
+2025/04/08 05:28:39 Configuration validation first phase failed. Agent version: 1.0. Verify the JSON input is only using features supported by this version.
+PS C:\Program Files\Amazon\Amazon
+
+
+
 >>
 ****** processing amazon-cloudwatch-agent ******
 I! Trying to detect region from ec2
