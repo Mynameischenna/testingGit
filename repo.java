@@ -1,3 +1,6 @@
+Invoke-WebRequest https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/AmazonCloudWatchAgent.zip -OutFile "C:\Temp\AmazonCloudWatchAgent.zip"
+
+
 import com.ecm1.ECM1.controller.ECMcontroller;
 import javax.swing.*;
 import java.awt.*;
