@@ -1,3 +1,20 @@
+****** processing amazon-cloudwatch-agent ******
+I! Trying to detect region from ec2
+D! [EC2] Found active network interface
+I! imds retry client will retry 1 timesSuccessfully fetched the config and saved in C:\ProgramData\Amazon\AmazonCloudWatchAgent\Configs\file_config.json.tmp
+Start configuration validation...
+2025/04/08 05:31:36 Reading json config file path: C:\ProgramData\Amazon\AmazonCloudWatchAgent\Configs\file_config.json.tmp ...
+2025/04/08 05:31:36 I! Valid Json input schema.
+I! Trying to detect region from ec2
+D! [EC2] Found active network interface
+I! imds retry client will retry 1 times2025/04/08 05:31:36 Configuration validation first phase succeeded
+Configuration validation second phase succeeded
+Configuration validation succeeded
+AmazonCloudWatchAgent has been stopped
+AmazonCloudWatchAgent has been started
+PS C:\Program Files\Amazon\AmazonCloudWa
+
+
 {
   "logs": {
     "logs_collected": {
