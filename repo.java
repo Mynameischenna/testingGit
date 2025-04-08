@@ -1,3 +1,13 @@
+>>
+****** processing amazon-cloudwatch-agent ******
+I! Trying to detect region from ec2
+D! [EC2] Found active network interface
+I! imds retry client will retry 1 times2025/04/08 05:19:44 E! Fail to fetch/remove json config: open C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json: The system cannot find the file specified.
+E! Fail to fetch/remove json config: open C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json: The system cannot find the file specified.
+Fail to fetch the config!
+PS C:\Program Files\Amazon\AmazonCloudWatchAgent>
+
+
 cd "C:\Program Files\Amazon\AmazonCloudWatchAgent"
 .\amazon-cloudwatch-agent-ctl.ps1 -a fetch-config -m ec2 -c file:"C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json" -s
 
