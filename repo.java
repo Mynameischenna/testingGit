@@ -1,3 +1,34 @@
+{
+  "logs": {
+    "logs_collected": {
+      "windows_events": {
+        "collect_list": [
+          {
+            "event_name": "Application",
+            "event_levels": ["ERROR", "WARNING"],
+            "log_group_name": "EventViewer-Application",
+            "log_stream_name": "{instance_id}"
+          },
+          {
+            "event_name": "System",
+            "event_levels": ["ERROR", "WARNING"],
+            "log_group_name": "EventViewer-System",
+            "log_stream_name": "{instance_id}"
+          },
+          {
+            "event_name": "Microsoft-Windows-TaskScheduler/Operational",
+            "event_levels": ["ERROR", "WARNING"],
+            "log_group_name": "TaskScheduler-Logs",
+            "log_stream_name": "{instance_id}"
+          }
+        ]
+      }
+    }
+  }
+}
+
+
+
 ****** processing amazon-cloudwatch-agent ******
 I! Trying to detect region from ec2
 D! [EC2] Found active network interface
