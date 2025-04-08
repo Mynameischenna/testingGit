@@ -1,3 +1,6 @@
+Expand-Archive -Path "C:\Temp\AmazonCloudWatchAgent.zip" -DestinationPath "C:\Temp\CWAgent"
+
+
 Invoke-WebRequest https://s3.amazonaws.com/amazoncloudwatch-agent/windows/amd64/latest/AmazonCloudWatchAgent.zip -OutFile "C:\Temp\AmazonCloudWatchAgent.zip"
 
 
