@@ -1,3 +1,45 @@
+import boto3
+import xml.etree.ElementTree as ET
+
+sns = boto3.client('sns')
+SNS_TOPIC_ARN = "arn:aws:sns:<your-region>:<your-account-id>:<your-topic-name>"
+
+def lambda_handler(event, context):
+    log_events = event['Records'][0]['Sns']['Message']
+
+    try:
+        root = ET.fromstring(log_events)
+
+        task_name = root.find(".//EventData/Data[@Name='TaskName']").text
+        user = root.find(".//EventData/Data[@Name='UserContext']").text
+        error_code = root.find(".//EventData/Data[@Name='ResultCode']").text
+        time = root.find(".//System/TimeCreated").attrib['SystemTime']
+        computer = root.find(".//System/Computer").text
+
+        readable_msg = (
+            f"❗ Scheduled Task Failure Alert\n\n"
+            f"🖥️ Instance: {computer}\n"
+            f"📌 Task Name: {task_name}\n"
+            f"👤 User: {user}\n"
+            f"⏰ Time: {time}\n"
+            f"💥 Error Code: {error_code}\n"
+        )
+
+        sns.publish(
+            TopicArn=SNS_TOPIC_ARN,
+            Subject="❗ Scheduled Task Failure Detected",
+            Message=readable_msg
+        )
+
+        return {"status": "success", "message": "Notification sent"}
+
+    except Exception as e:
+        print(f"Error parsing log: {e}")
+        return {"status": "error", "message": str(e)}
+
+
+
+
 <Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-TaskScheduler' Guid='{de7b24ea-73c8-4a09-985d-5bdadcfa9017}'/><EventID>101</EventID><Version>0</Version><Level>2</Level><Task>101</Task><Opcode>101</Opcode><Keywords>0x8000000000000001</Keywords><TimeCreated SystemTime='2025-04-10T14:46:45.5079966Z'/><EventRecordID>2347090</EventRecordID><Correlation/><Execution ProcessID='1496' ThreadID='13956'/><Channel>Microsoft-Windows-TaskScheduler/Operational</Channel><Computer>appcompl04d.its.corp.gwl.com</Computer><Security UserID='S-1-5-18'/></System><EventData Name='TaskStartFailedEvent'><Data Name='TaskName'>\FailingTask</Data><Data Name='UserContext'>IND\chnksv</Data><Data Name='ResultCode'>2147942402</Data></EventData><RenderingInfo Culture='en-US'><Message>Task Scheduler failed to start "\FailingTask" task for user "IND\chnksv". Additional Data: Error Value: 2147942402.</Message><Level>Error</Level><Task>Task Start Failed</Task><Opcode>Launch Failure</Opcode><Channel>Operational</Channel><Provider>Microsoft-Windows-TaskScheduler</Provider><Keywords></Keywords></RenderingInfo></Event>
 
 
