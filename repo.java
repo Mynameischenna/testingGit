@@ -1,3 +1,34 @@
+import json
+import boto3
+
+def lambda_handler(event, context):
+    sns_message = event['Records'][0]['Sns']['Message']
+    alarm = json.loads(sns_message)
+
+    alarm_name = alarm['AlarmName']
+    reason = alarm['NewStateReason']
+    time = alarm['StateChangeTime']
+    instance = alarm['Trigger']['Dimensions'][0]['value']
+
+    subject = f"[ALERT] {alarm_name} on {instance}"
+    message = f"Alarm triggered: {alarm_name}\nReason: {reason}\nTime: {time}\nInstance: {instance}"
+
+    # Send this message to another SNS or SES
+    sns = boto3.client('sns')
+    sns.publish(
+        TopicArn='arn:aws:sns:your-region:your-topic-id:CustomAlertTopic',
+        Subject=subject,
+        Message=message
+    )
+    return {
+        'statusCode': 200,
+        'body': 'Custom message sent.'
+    }
+
+
+
+
+
 📄 CloudWatch Logs + SNS Email Notification Setup for Windows Task Scheduler Errors
 🔧 1. CloudWatch Agent Installation (Windows EC2)
 Download and Install Agent:
