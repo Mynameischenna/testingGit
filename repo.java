@@ -1,3 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::prodiadstack-subsystemsn-idemergedatabucketd489dd-19on3kcseark9/*"
+    }
+  ]
+}
+
+
+
+
 This XML file does not appear to have any style information associated with it. The document tree is shown below.
 <Error>
 <Code>NoSuchBucket</Code>
