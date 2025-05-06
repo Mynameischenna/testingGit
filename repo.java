@@ -1,3 +1,35 @@
+INIT_START Runtime Version: python:3.13.v38	Runtime Version ARN: arn:aws:lambda:us-east-1::runtime:9ed40a0a2fed561b26d389cb8d6a2a08d410f14e05f43421f926764076202a5a
+START RequestId: c2149f38-0fcb-4171-9029-b3a995556ce2 Version: $LATEST
+full event received form sns: 
+{
+"Records": [
+{
+"EventSource": "aws:sns",
+"EventVersion": "1.0",
+"EventSubscriptionArn": "arn:aws:sns:us-east-1:563003501456:taskMonitorOld:425decea-cb47-4982-b2c8-fddaa3e3d8ed",
+"Sns": {
+"Type": "Notification",
+"MessageId": "7a024caf-d04b-57a9-b1f6-2c3c39b87597",
+"TopicArn": "arn:aws:sns:us-east-1:563003501456:taskMonitorOld",
+"Subject": "ALARM: \"task-monitor-chena\" in US East (N. Virginia)",
+"Message": "{\"AlarmName\":\"task-monitor-chena\",\"AlarmDescription\":null,\"AWSAccountId\":\"563003501456\",\"AlarmConfigurationUpdatedTimestamp\":\"2025-05-06T10:01:16.502+0000\",\"NewStateValue\":\"ALARM\",\"NewStateReason\":\"Threshold Crossed: 1 out of the last 1 datapoints [1.0 (06/05/25 10:41:00)] was greater than or equal to the threshold (1.0) (minimum 1 datapoint for OK -> ALARM transition).\",\"StateChangeTime\":\"2025-05-06T10:42:58.978+0000\",\"Region\":\"US East (N. Virginia)\",\"AlarmArn\":\"arn:aws:cloudwatch:us-east-1:563003501456:alarm:task-monitor-chena\",\"OldStateValue\":\"INSUFFICIENT_DATA\",\"OKActions\":[],\"AlarmActions\":[\"arn:aws:sns:us-east-1:563003501456:taskMonitorOld\"],\"InsufficientDataActions\":[],\"Trigger\":{\"MetricName\":\"TaskScheduleErrors\",\"Namespace\":\"TaskMonitor\",\"StatisticType\":\"Statistic\",\"Statistic\":\"AVERAGE\",\"Unit\":null,\"Dimensions\":[],\"Period\":60,\"EvaluationPeriods\":1,\"DatapointsToAlarm\":1,\"ComparisonOperator\":\"GreaterThanOrEqualToThreshold\",\"Threshold\":1.0,\"TreatMissingData\":\"missing\",\"EvaluateLowSampleCountPercentile\":\"\"}}",
+"Timestamp": "2025-05-06T10:42:59.013Z",
+"SignatureVersion": "1",
+"Signature": "K5naviqHqmNUnVKL0sYYjmyzkmF4ygYsR4DH1xNcXETURbdjWV+ZX2NWhZG5+Ia4AR3uZDFsYFatDYW3wVEU2whONWOqb4q6zbeuso+Gw9ZuUorEBTLQB313c/82e8i6IkYbWYLhSrc6+/UVNSskUbEQXevOB9XsEDn4DQJH8GIJhLQ6xslpvhvJZcZEVhnwO/ggh7iJ5FY3KWxRgJNL9McAd0h2U7aYXFOn+GUgswKMXiuVYUwqjppcbYTIyTLEmtU6cR0f+yHLDvlvhFy+XKIYq2BGHzAMXEJxLd1J8yR8t6/nqYKtF6Mb0S5sTcYab1WYumyi32zFRdBSV5oK5g==",
+"SigningCertUrl": "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-9c6465fa7f48f5cacd23014631ec1136.pem",
+"UnsubscribeUrl": "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:563003501456:taskMonitorOld:425decea-cb47-4982-b2c8-fddaa3e3d8ed",
+"MessageAttributes": 
+{}
+
+}
+}
+]
+}
+END RequestId: c2149f38-0fcb-4171-9029-b3a995556ce2
+REPORT RequestId: c2149f38-0fcb-4171-9029-b3a995556ce2	Duration: 2.17 ms	Billed Duration: 3 ms	Memory Size: 128 MB	Max Memory Used: 33 MB	Init Duration: 90.99 ms	
+
+
+
 [ERROR] IndexError: list index out of range
 Traceback (most recent call last):
   File "/var/task/lambda_function.py", line 11, in lambda_handler
