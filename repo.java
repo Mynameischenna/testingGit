@@ -1,3 +1,40 @@
+To run and debug code, download your function code and AWS SAM template and use the SAM CLI in a local IDE. For more information, see Introduction to testing with sam local invoke. You can also export your code to Infrastructure Composer to design a serverless application using your function. For more information, see Using AWS Lambda with AWS Infrastructure Composer.
+
+
+Download code and SAM template
+
+Export to Infrastructure Composer
+
+  import json
+import boto3
+
+def lambda_handler(event, context):
+    sns_message = event['Records'][0]['Sns']['Message']
+    alarm = json.loads(sns_message)
+
+    alarm_name = alarm['AlarmName']
+    reason = alarm['NewStateReason']
+    time = alarm['StateChangeTime']
+    instance = alarm['Trigger']['Dimensions'][0]['value']
+
+    subject = f"[ALERT] {alarm_name} on {instance}"
+    message = f"Alarm triggered: {alarm_name}\nReason: {reason}\nTime: {time}\nInstance: {instance}"
+
+    # Send this message to another SNS or SES
+    sns = boto3.client('sns')
+    sns.publish(
+        TopicArn='ARN
+arn:aws:sns:us-east-1:563003501456:taskMonitorNew',
+        Subject=subject,
+        Message=message
+    )
+    return {
+        'statusCode': 200,
+        'body': 'Custom message sent .'
+    }
+
+
+
 {
   "Version": "2012-10-17",
   "Statement": [
