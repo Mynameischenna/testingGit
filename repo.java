@@ -1,3 +1,15 @@
+{
+  "Records": [
+    {
+      "Sns": {
+        "Message": "{\"AlarmName\":\"HighCPU\",\"NewStateReason\":\"Threshold Crossed\",\"StateChangeTime\":\"2023-05-06T12:00:00Z\",\"Trigger\":{\"Dimensions\":[{\"value\":\"i-0abcd1234efgh5678\"}]}}"
+      }
+    }
+  ]
+}
+
+
+
 Status: Failed
 Test Event Name: testEvent1
 
