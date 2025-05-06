@@ -1,3 +1,48 @@
+import json
+
+def lambda_handler(event, context):
+    try:
+        # Log the incoming SNS event
+        print("🔔 Full event received from SNS:")
+        print(json.dumps(event, indent=2))
+
+        # Extract the SNS message (it's a JSON string inside the "Message" field)
+        sns_message = event['Records'][0]['Sns']['Message']
+        alarm = json.loads(sns_message)  # Parse JSON string to dict
+
+        # Extract required fields with defaults
+        alarm_name = alarm.get('AlarmName', 'Unknown Alarm')
+        reason = alarm.get('NewStateReason', 'No reason provided')
+        time = alarm.get('StateChangeTime', 'Unknown time')
+
+        # Safely extract the instance ID from Dimensions if present
+        dimensions = alarm.get('Trigger', {}).get('Dimensions', [])
+        if dimensions and 'value' in dimensions[0]:
+            instance_id = dimensions[0]['value']
+        else:
+            instance_id = 'No instance ID provided'
+
+        # Print output as required
+        print(f"Alarm triggered: {alarm_name}")
+        print(f"Time: {time}")
+        print(f"Reason: {reason}")
+        print(f"Instance ID: {instance_id}")
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps('Alarm processed successfully.')
+        }
+
+    except Exception as e:
+        print(f"❌ Error occurred: {str(e)}")
+        return {
+            'statusCode': 500,
+            'body': json.dumps('Error processing the alarm.')
+        }
+
+
+
+
 INIT_START Runtime Version: python:3.13.v38	Runtime Version ARN: arn:aws:lambda:us-east-1::runtime:9ed40a0a2fed561b26d389cb8d6a2a08d410f14e05f43421f926764076202a5a
 START RequestId: c2149f38-0fcb-4171-9029-b3a995556ce2 Version: $LATEST
 full event received form sns: 
