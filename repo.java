@@ -1,3 +1,31 @@
+Status: Failed
+Test Event Name: testEvent1
+
+Response:
+{
+  "errorMessage": "'Records'",
+  "errorType": "KeyError",
+  "requestId": "63067ff8-8233-495d-a47d-cf54a54d9d14",
+  "stackTrace": [
+    "  File \"/var/task/lambda_function.py\", line 5, in lambda_handler\n    sns_message = event['Records'][0]['Sns']['Message']\n"
+  ]
+}
+
+Function Logs:
+START RequestId: 63067ff8-8233-495d-a47d-cf54a54d9d14 Version: $LATEST
+[WARNING]	2025-05-06T09:51:40.165Z	63067ff8-8233-495d-a47d-cf54a54d9d14	LAMBDA_WARNING: Unhandled exception. The most likely cause is an issue in the function code. However, in rare cases, a Lambda runtime update can cause unexpected function behavior. For functions using managed runtimes, runtime updates can be triggered by a function change, or can be applied automatically. To determine if the runtime has been updated, check the runtime version in the INIT_START log entry. If this error correlates with a change in the runtime version, you may be able to mitigate this error by temporarily rolling back to the previous runtime version. For more information, see https://docs.aws.amazon.com/lambda/latest/dg/runtimes-update.html
+[ERROR] KeyError: 'Records'
+Traceback (most recent call last):
+  File "/var/task/lambda_function.py", line 5, in lambda_handler
+    sns_message = event['Records'][0]['Sns']['Message']
+END RequestId: 63067ff8-8233-495d-a47d-cf54a54d9d14
+REPORT RequestId: 63067ff8-8233-495d-a47d-cf54a54d9d14	Duration: 7.37 ms	Billed Duration: 8 ms	Memory Size: 128 MB	Max Memory Used: 62 MB	Init Duration: 362.08 ms
+
+Request ID: 63067ff8-8233-495d-a47d-cf54a54d9d14
+
+
+
+
 import json
 import boto3
 
