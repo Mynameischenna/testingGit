@@ -1,4 +1,52 @@
 import json
+import boto3
+
+sns = boto3.client('sns')
+
+# Replace this with your actual topic ARN
+NEW_SNS_TOPIC_ARN = 'arn:aws:sns:us-east-1:563003501456:taskMonitorNew'
+
+def lambda_handler(event, context):
+    try:
+        sns_message = event['Records'][0]['Sns']['Message']
+        alarm = json.loads(sns_message)
+
+        alarm_name = alarm.get('AlarmName', 'Unknown Alarm')
+        reason = alarm.get('NewStateReason', 'No reason provided')
+        time = alarm.get('StateChangeTime', 'Unknown time')
+
+        dimensions = alarm.get('Trigger', {}).get('Dimensions', [])
+        instance_id = dimensions[0]['value'] if dimensions else 'No instance ID provided'
+
+        message = {
+            "Alarm": alarm_name,
+            "Time": time,
+            "Reason": reason,
+            "InstanceId": instance_id
+        }
+
+        # Publish to the second SNS topic
+        sns.publish(
+            TopicArn=NEW_SNS_TOPIC_ARN,
+            Message=json.dumps(message),
+            Subject=f"Forwarded Alarm: {alarm_name}"
+        )
+
+        return {
+            'statusCode': 200,
+            'body': json.dumps('Forwarded to taskMonitorNew SNS')
+        }
+
+    except Exception as e:
+        print(f"❌ Error: {str(e)}")
+        return {
+            'statusCode': 500,
+            'body': json.dumps('Failed to process and forward alarm')
+        }
+
+
+
+import json
 
 def lambda_handler(event, context):
     try:
