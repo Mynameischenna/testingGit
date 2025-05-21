@@ -1,3 +1,10 @@
+aws cloudwatch put-metric-data \
+  --namespace "TaskMonitor" \
+  --metric-name TaskScheduleErrors \
+  --value 0
+
+
+
 Graph
 3h
 1d
