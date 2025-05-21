@@ -1,3 +1,12 @@
+aws lambda add-permission \
+  --function-name EC2Rebbot-c \
+  --statement-id AllowCWInvoke \
+  --action "lambda:InvokeFunction" \
+  --principal cloudwatch.amazonaws.com \
+  --source-arn arn:aws:cloudwatch:us-east-1:563003501456:alarm/RestartInstanceAlarm
+
+
+
 Failed to execute action arn:aws:lambda:us-east-1:563003501456:function:EC2Rebbot-c. Received error: "CloudWatch Alarms is not authorized to perform: lambda:InvokeFunction on the resource because no resource-based policy allows the lambda:InvokeFunction action"
 
 
