@@ -1,3 +1,6 @@
+Failed to execute action arn:aws:lambda:us-east-1:563003501456:function:EC2Rebbot-c. Received error: "CloudWatch Alarms is not authorized to perform: lambda:InvokeFunction on the resource because no resource-based policy allows the lambda:InvokeFunction action"
+
+
 Skip to Main Content
 
 Search
