@@ -1,3 +1,9 @@
+{
+  "errorType": "Sandbox.Timedout",
+  "errorMessage": "RequestId: 2e18e14f-e8ea-4ac2-a5b4-8cb17f29a9b1 Error: Task timed out after 3.00 seconds"
+}
+
+
 import boto3
 import os
 
