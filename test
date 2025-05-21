@@ -1,4 +1,94 @@
-aws lambda add-permission \
+Graph
+3h
+1d
+1w
+
+
+Local timezone
+In alarm
+TaskScheduleErrors
+TaskScheduleErrors >= 1 for 1 datapoints within 1 minute
+0
+1
+2
+19:30
+20:00
+20:30
+21:00
+21:30
+22:00
+05-21 20:30
+0.027
+TaskScheduleErrors
+19:12
+20:12
+21:12
+22:12
+No unit
+Click timeline to see the state change at the selected time.
+
+19:30
+20:00
+20:30
+21:00
+21:30
+22:00
+19:30
+20:00
+20:30
+21:00
+21:30
+22:00
+In alarm
+OK
+Insufficient data
+Disabled actions
+
+Details
+
+Tags
+
+Actions
+
+History
+
+Parent alarms
+Details
+Name
+task-monitor-chena
+Type
+Metric alarm
+Description
+No description
+
+State
+In alarm
+Threshold
+TaskScheduleErrors >= 1 for 1 datapoints within 1 minute
+Last state update
+2025-05-21 21:59:25 (Local)
+Actions
+Actions enabled
+Namespace
+TaskMonitor
+Metric name
+TaskScheduleErrors
+Statistic
+Average
+Period
+1 minute
+Datapoints to alarm
+1 out of 1
+Missing data treatment
+Treat missing data as missing
+Percentiles with low samples
+evaluate
+ARN
+arn:aws:cloudwatch:us-east-1:563003501456:alarm:task-monitor-chena
+View EventBridge rulea
+
+
+ws lambda add-permission \
   --function-name EC2Rebbot-c \
   --statement-id AllowCWInvoke \
   --action "lambda:InvokeFunction" \
