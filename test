@@ -1,3 +1,64 @@
+Skip to Main Content
+
+Search
+[Alt+S]
+
+
+
+
+United States (N. Virginia)
+
+CorpAppsNonProd-FullStackTeam/chenna.kesavareddyputha@empower...
+
+Lambda
+Functions
+EC2Rebbot-c
+Add permissions
+Lambda
+Functions
+EC2Rebbot-c
+Add permissions
+
+
+Add permissions
+Edit policy statement
+AWS account
+Grant permissions to another AWS account, user, or role.
+AWS service
+Grant permissions to another AWS service.
+Function URL
+Grant permissions to invoke your function through the function URL.
+Service
+The AWS service to grant permissions to.
+
+CloudWatch Logs
+Statement ID
+Enter a unique statement ID to differentiate this statement within the policy.
+customeid-chenna
+Principal
+The service principal for this AWS service. Learn more 
+logs.amazonaws.com
+Source ARN
+The ARN for a resource. Find the ARN in the related service console.
+Action
+Choose an action to allow.
+
+Select an action
+Cancel
+Save
+
+CloudShell
+Feedback
+© 2025, Amazon Web Services, Inc. or its affiliates.
+Privacy
+Terms
+Cookie preferences
+
+
+
+
+
+
 {
   "errorType": "Sandbox.Timedout",
   "errorMessage": "RequestId: 2e18e14f-e8ea-4ac2-a5b4-8cb17f29a9b1 Error: Task timed out after 3.00 seconds"
