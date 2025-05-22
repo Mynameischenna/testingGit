@@ -1,3 +1,37 @@
+INIT_START Runtime Version: python:3.13.v40	Runtime Version ARN: arn:aws:lambda:us-east-1::runtime:67df0ac22722a9d5069c1cdb0b24c86bfdf11f9738985ac6f79319e3e026ffa8
+[INFO]	2025-05-22T04:09:12.495Z		Found credentials in environment variables.
+START RequestId: a33e0295-cb47-416f-a343-2d29ca67e795 Version: $LATEST
+[INFO]	2025-05-22T04:09:12.625Z	a33e0295-cb47-416f-a343-2d29ca67e795	🔍 Decoded CloudWatch Logs payload:
+[INFO]	2025-05-22T04:09:12.625Z	a33e0295-cb47-416f-a343-2d29ca67e795	
+{
+    "messageType": "DATA_MESSAGE",
+    "owner": "563003501456",
+    "logGroup": "TaskScheduler-Logs",
+    "logStream": "i-0488b8da2a2809c51",
+    "subscriptionFilters": [
+        "test-failure1"
+    ],
+    "logEvents": [
+        {
+            "id": "38979181417691824764507633101782137785140412743359725568",
+            "timestamp": 1747886945960,
+            "message": "<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-TaskScheduler' Guid='{de7b24ea-73c8-4a09-985d-5bdadcfa9017}'/><EventID>203</EventID><Version>0</Version><Level>2</Level><Task>203</Task><Opcode>101</Opcode><Keywords>0x8000000000000000</Keywords><TimeCreated SystemTime='2025-05-22T04:09:05.9603972Z'/><EventRecordID>2464761</EventRecordID><Correlation ActivityID='{c7954932-675f-4d62-90a7-9b41c9f429ef}'/><Execution ProcessID='1432' ThreadID='8052'/><Channel>Microsoft-Windows-TaskScheduler/Operational</Channel><Computer>appcompl04d.its.corp.gwl.com</Computer><Security UserID='S-1-5-18'/></System><EventData Name='ActionLaunchFailure'><Data Name='TaskName'>\\FailingTask</Data><Data Name='TaskInstanceId'>{c7954932-675f-4d62-90a7-9b41c9f429ef}</Data><Data Name='ActionName'>c:\\DoestNotExist\\fail.exe</Data><Data Name='ResultCode'>2147942402</Data></EventData><RenderingInfo Culture='en-US'><Message>Task Scheduler failed to launch action \"c:\\DoestNotExist\\fail.exe\" in instance \"{c7954932-675f-4d62-90a7-9b41c9f429ef}\" of task \"\\FailingTask\". Additional Data: Error Value: 2147942402.</Message><Level>Error</Level><Task>Action failed to start</Task><Opcode>Launch Failure</Opcode><Channel>Operational</Channel><Provider>Microsoft-Windows-TaskScheduler</Provider><Keywords></Keywords></RenderingInfo></Event>"
+        },
+        {
+            "id": "38979181417691824764507633101782137785140412743359725569",
+            "timestamp": 1747886945960,
+            "message": "<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-TaskScheduler' Guid='{de7b24ea-73c8-4a09-985d-5bdadcfa9017}'/><EventID>101</EventID><Version>0</Version><Level>2</Level><Task>101</Task><Opcode>101</Opcode><Keywords>0x8000000000000001</Keywords><TimeCreated SystemTime='2025-05-22T04:09:05.9606484Z'/><EventRecordID>2464762</EventRecordID><Correlation/><Execution ProcessID='1432' ThreadID='8052'/><Channel>Microsoft-Windows-TaskScheduler/Operational</Channel><Computer>appcompl04d.its.corp.gwl.com</Computer><Security UserID='S-1-5-18'/></System><EventData Name='TaskStartFailedEvent'><Data Name='TaskName'>\\FailingTask</Data><Data Name='UserContext'>IND\\chnksv</Data><Data Name='ResultCode'>2147942402</Data></EventData><RenderingInfo Culture='en-US'><Message>Task Scheduler failed to start \"\\FailingTask\" task for user \"IND\\chnksv\". Additional Data: Error Value: 2147942402.</Message><Level>Error</Level><Task>Task Start Failed</Task><Opcode>Launch Failure</Opcode><Channel>Operational</Channel><Provider>Microsoft-Windows-TaskScheduler</Provider><Keywords></Keywords></RenderingInfo></Event>"
+        }
+    ]
+}
+
+[INFO]	2025-05-22T04:09:12.625Z	a33e0295-cb47-416f-a343-2d29ca67e795	📦 Extracted XML:
+[INFO]	2025-05-22T04:09:12.625Z	a33e0295-cb47-416f-a343-2d29ca67e795	<Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-TaskScheduler' Guid='{de7b24ea-73c8-4a09-985d-5bdadcfa9017}'/><EventID>203</EventID><Version>0</Version><Level>2</Level><Task>203</Task><Opcode>101</Opcode><Keywords>0x8000000000000000</Keywords><TimeCreated SystemTime='2025-05-22T04:09:05.9603972Z'/><EventRecordID>2464761</EventRecordID><Correlation ActivityID='{c7954932-675f-4d62-90a7-9b41c9f429ef}'/><Execution ProcessID='1432' ThreadID='8052'/><Channel>Microsoft-Windows-TaskScheduler/Operational</Channel><Computer>appcompl04d.its.corp.gwl.com</Computer><Security UserID='S-1-5-18'/></System><EventData Name='ActionLaunchFailure'><Data Name='TaskName'>\\FailingTask</Data><Data Name='TaskInstanceId'>{c7954932-675f-4d62-90a7-9b41c9f429ef}</Data><Data Name='ActionName'>c:\\DoestNotExist\\fail.exe</Data><Data Name='ResultCode'>2147942402</Data></EventData><RenderingInfo Culture='en-US'><Message>Task Scheduler failed to launch action \"c:\\DoestNotExist\\fail.exe\" in instance \"{c7954932-675f-4d62-90a7-9b41c9f429ef}\" of task \"\\FailingTask\". Additional Data: Error Value: 2147942402.</Message><Level>Error</Level><Task>Action failed to start</Task><Opcode>Launch Failure</Opcode><Channel>Operational</Channel><Provider>Microsoft-Windows-TaskScheduler</Provider><Keywords></Keywords></RenderingInfo></Event>
+[ERROR]	2025-05-22T04:09:12.625Z	a33e0295-cb47-416f-a343-2d29ca67e795	❌ Lambda execution failed: 'NoneType' object has no attribute 'attrib'
+END RequestId: a33e0295-cb47-416f-a343-2d29ca67e795
+REPORT RequestId: a33e0295-cb47-416f-a343-2d29ca67e795	Duration: 10.04 ms	Billed Duration: 11 ms	Memory Size: 128 MB	Max Memory Used: 80 MB	Init Duration: 441.72 ms	
+
+
 import json
 import boto3
 import logging
