@@ -1,3 +1,60 @@
+import json
+import boto3
+import logging
+import xml.etree.ElementTree as ET
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+def get_text_or_default(root, path, default="N/A"):
+    element = root.find(path)
+    return element.text if element is not None else default
+
+def lambda_handler(event, context):
+    try:
+        log_event = event['awslogs']['data']
+        import base64, gzip
+        decoded = base64.b64decode(log_event)
+        uncompressed = gzip.decompress(decoded).decode('utf-8')
+
+        # Look for the first message line (should be XML)
+        import re
+        xml_data = re.search(r"<Event[\s\S]*?</Event>", uncompressed)
+        if not xml_data:
+            logger.error("❌ Could not find valid XML Event in logs.")
+            return
+
+        xml_str = xml_data.group()
+        root = ET.fromstring(xml_str)
+
+        task_name = get_text_or_default(root, ".//Data[@Name='TaskName']")
+        user_context = get_text_or_default(root, ".//Data[@Name='UserContext']")
+        result_code = get_text_or_default(root, ".//Data[@Name='ResultCode']")
+        machine_name = get_text_or_default(root, ".//Computer")
+        event_time = root.find(".//TimeCreated").attrib.get("SystemTime", "N/A")
+        message = get_text_or_default(root, ".//RenderingInfo/Message")
+
+        log_summary = f"""
+✅ Parsed Log Summary:
+
+🖥️ Machine Name : {machine_name}
+📆 Event Time    : {event_time}
+👤 User Context  : {user_context}
+📝 Task Name     : {task_name}
+❌ Result Code   : {result_code}
+
+📄 Error Message :
+{message}
+"""
+        logger.info(log_summary)
+        # If required, call SNS or any other service here
+
+    except Exception as e:
+        logger.error(f"❌ Lambda execution failed: {str(e)}")
+
+
+
+
 INIT_START Runtime Version: python:3.13.v40	Runtime Version ARN: arn:aws:lambda:us-east-1::runtime:67df0ac22722a9d5069c1cdb0b24c86bfdf11f9738985ac6f79319e3e026ffa8
 [INFO]	2025-05-22T03:59:45.471Z		Found credentials in environment variables.
 START RequestId: a2d57110-b27e-4887-ad00-703b4870fb25 Version: $LATEST
