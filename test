@@ -1,3 +1,30 @@
+<Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
+  <System>
+    <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{..." />
+    <EventID>201</EventID>
+    <Version>0</Version>
+    <Level>4</Level>
+    <Task>102</Task>
+    <Opcode>101</Opcode>
+    <Keywords>0x80000000000000</Keywords>
+    <TimeCreated SystemTime="2023-05-16T12:28:16.3921433Z" />
+    <EventRecordID>240170</EventRecordID>
+    <Correlation />
+    <Execution ProcessID="776" ThreadID="996" />
+    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>
+    <Computer>PC-004cfa74c3</Computer>
+  </System>
+  <EventData>
+    <Data Name="TaskName">\Microsoft\Windows\Defrag\ScheduledDefrag</Data>
+    <Data Name="ResultCode">0</Data>
+    <Data Name="UserContext">S-1-5-18</Data>
+    <Data Name="OperationalCode">201</Data>
+  </EventData>
+</Event>
+
+
+
+
 import base64
 import gzip
 import json
