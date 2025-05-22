@@ -1,3 +1,69 @@
+import boto3
+import xml.etree.ElementTree as ET
+import logging
+import gzip
+import base64
+import json
+
+# Set up logging
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+sns_client = boto3.client('sns')
+
+def lambda_handler(event, context):
+    try:
+        # Decode CloudWatch Logs payload
+        cw_data = gzip.decompress(base64.b64decode(event['awslogs']['data']))
+        cw_json = json.loads(cw_data)
+
+        for log_event in cw_json['logEvents']:
+            raw_message = log_event['message']
+            if '<Event' not in raw_message:
+                continue  # Skip non-XML events
+
+            root = ET.fromstring(raw_message)
+            ns = {'ns': 'http://schemas.microsoft.com/win/2004/08/events/event'}
+
+            # Extract relevant data
+            machine_name = root.find('.//ns:Computer', ns).text
+            event_time = root.find('.//ns:TimeCreated', ns).attrib.get('SystemTime')
+            task_name = root.find(".//ns:EventData/ns:Data[@Name='TaskName']", ns).text
+            user_context = root.find(".//ns:EventData/ns:Data[@Name='UserContext']", ns).text
+            error_code = root.find(".//ns:EventData/ns:Data[@Name='ResultCode']", ns).text
+            event_id = root.find('.//ns:EventID', ns).text
+            event_record_id = root.find('.//ns:EventRecordID', ns).text
+            message = root.find('.//ns:RenderingInfo/ns:Message', ns).text
+
+            # Prepare the message
+            formatted_msg = f"""
+🚨 Task Execution Failed
+
+🖥️ Machine: {machine_name}
+📅 Time (UTC): {event_time}
+📝 Task: {task_name}
+👤 User: {user_context}
+🔢 Error Code: {error_code}
+📩 Message: {message}
+🧠 Event ID: {event_id}, Record ID: {event_record_id}
+"""
+
+            # Publish to SNS
+            sns_client.publish(
+                TopicArn='YOUR_SNS_TOPIC_ARN',
+                Subject='Task Failure Alert',
+                Message=formatted_msg
+            )
+
+            logger.info("✔️ SNS notification sent successfully.")
+
+    except Exception as e:
+        logger.error(f"❌ Lambda execution failed: {str(e)}")
+
+
+
+
+
 <Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-TaskScheduler' Guid='{de7b24ea-73c8-4a09-985d-5bdadcfa9017}'/><EventID>101</EventID><Version>0</Version><Level>2</Level><Task>101</Task><Opcode>101</Opcode><Keywords>0x8000000000000001</Keywords><TimeCreated SystemTime='2025-05-22T03:44:22.3184203Z'/><EventRecordID>2464682</EventRecordID><Correlation/><Execution ProcessID='1432' ThreadID='10112'/><Channel>Microsoft-Windows-TaskScheduler/Operational</Channel><Computer>appcompl04d.its.corp.gwl.com</Computer><Security UserID='S-1-5-18'/></System><EventData Name='TaskStartFailedEvent'><Data Name='TaskName'>\FailingTask</Data><Data Name='UserContext'>IND\chnksv</Data><Data Name='ResultCode'>2147942402</Data></EventData><RenderingInfo Culture='en-US'><Message>Task Scheduler failed to start "\FailingTask" task for user "IND\chnksv". Additional Data: Error Value: 2147942402.</Message><Level>Error</Level><Task>Task Start Failed</Task><Opcode>Launch Failure</Opcode><Channel>Operational</Channel><Provider>Microsoft-Windows-TaskScheduler</Provider><Keywords></Keywords></RenderingInfo></Event>
 
 
