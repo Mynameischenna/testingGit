@@ -1,3 +1,78 @@
+import base64
+import gzip
+import json
+import xml.etree.ElementTree as ET
+import boto3
+import os
+
+sns_client = boto3.client('sns')
+SNS_TOPIC_ARN = os.environ['SNS_TOPIC_ARN']  # Ensure this env variable is set in your Lambda
+
+def lambda_handler(event, context):
+    try:
+        # Step 1: Decode and decompress CloudWatch Logs payload
+        compressed_data = base64.b64decode(event['awslogs']['data'])
+        log_data_str = gzip.decompress(compressed_data).decode('utf-8')
+        log_json = json.loads(log_data_str)
+
+        ns = {'ns': 'http://schemas.microsoft.com/win/2004/08/events/event'}
+        messages_to_send = []
+
+        for log_event in log_json.get('logEvents', []):
+            xml_str = log_event.get('message', '')
+            if not xml_str:
+                continue
+
+            try:
+                root = ET.fromstring(xml_str)
+
+                task_name = root.find(".//ns:Data[@Name='TaskName']", ns)
+                user_context = root.find(".//ns:Data[@Name='UserContext']", ns)
+                result_code = root.find(".//ns:Data[@Name='ResultCode']", ns)
+                message_node = root.find(".//ns:Message", ns)
+                time_node = root.find(".//ns:TimeCreated", ns)
+
+                task_name_text = task_name.text if task_name is not None else "N/A"
+                user_context_text = user_context.text if user_context is not None else "N/A"
+                result_code_text = result_code.text if result_code is not None else "N/A"
+                message_text = message_node.text if message_node is not None else "N/A"
+                event_time = time_node.attrib.get("SystemTime") if time_node is not None else "N/A"
+
+                # Format your message for SNS
+                formatted = (
+                    f"TaskName: {task_name_text}\n"
+                    f"UserContext: {user_context_text}\n"
+                    f"ResultCode: {result_code_text}\n"
+                    f"Message: {message_text}\n"
+                    f"EventTime: {event_time}"
+                )
+
+                messages_to_send.append(formatted)
+
+            except ET.ParseError:
+                continue
+
+        # Step 2: Send to SNS
+        if messages_to_send:
+            sns_client.publish(
+                TopicArn=SNS_TOPIC_ARN,
+                Subject='Task Scheduler Failure Notification',
+                Message="\n---\n".join(messages_to_send)
+            )
+
+        return {
+            'statusCode': 200,
+            'body': 'SNS message sent successfully'
+        }
+
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': f"Error processing logs: {str(e)}"
+        }
+
+
+
 <Event xmlns='http://schemas.microsoft.com/win/2004/08/events/event'><System><Provider Name='Microsoft-Windows-TaskScheduler' Guid='{de7b24ea-73c8-4a09-985d-5bdadcfa9017}'/><EventID>101</EventID><Version>0</Version><Level>2</Level><Task>101</Task><Opcode>101</Opcode><Keywords>0x8000000000000001</Keywords><TimeCreated SystemTime='2025-05-22T04:48:58.6879224Z'/><EventRecordID>2465375</EventRecordID><Correlation/><Execution ProcessID='1376' ThreadID='7152'/><Channel>Microsoft-Windows-TaskScheduler/Operational</Channel><Computer>appcompl04d.its.corp.gwl.com</Computer><Security UserID='S-1-5-18'/></System><EventData Name='TaskStartFailedEvent'><Data Name='TaskName'>\FailingTask</Data><Data Name='UserContext'>IND\chnksv</Data><Data Name='ResultCode'>2147942402</Data></EventData><RenderingInfo Culture='en-US'><Message>Task Scheduler failed to start "\FailingTask" task for user "IND\chnksv". Additional Data: Error Value: 2147942402.</Message><Level>Error</Level><Task>Task Start Failed</Task><Opcode>Launch Failure</Opcode><Channel>Operational</Channel><Provider>Microsoft-Windows-TaskScheduler</Provider><Keywords></Keywords></RenderingInfo></Event>
 
 
