@@ -6,6 +6,100 @@ import boto3
 import os
 
 sns_client = boto3.client('sns')
+SNS_TOPIC_ARN = os.environ['SNS_TOPIC_ARN']  # Define in Lambda environment variables
+
+def lambda_handler(event, context):
+    try:
+        # Step 1: Decode and decompress CloudWatch log data
+        compressed_data = base64.b64decode(event['awslogs']['data'])
+        uncompressed_data = gzip.decompress(compressed_data).decode('utf-8')
+        logs_json = json.loads(uncompressed_data)
+
+        ns = {'ns': 'http://schemas.microsoft.com/win/2004/08/events/event'}
+
+        messages_to_send = []
+
+        for log_event in logs_json.get('logEvents', []):
+            xml_str = log_event.get('message', '')
+            if not xml_str:
+                continue
+
+            try:
+                root = ET.fromstring(xml_str)
+
+                # Extract values using XML namespaces
+                task_name = root.find(".//ns:Data[@Name='TaskName']", ns)
+                user_context = root.find(".//ns:Data[@Name='UserContext']", ns)
+                result_code = root.find(".//ns:Data[@Name='ResultCode']", ns)
+                computer = root.find(".//ns:Computer", ns)
+                time_created = root.find(".//ns:TimeCreated", ns)
+                rendering_info = root.find(".//ns:Message", ns)
+
+                # RenderingInfo is under different namespace; manually find it
+                message_text = ""
+                if "</RenderingInfo>" in xml_str:
+                    try:
+                        # crude way to extract human-readable message
+                        start = xml_str.index("<Message>") + len("<Message>")
+                        end = xml_str.index("</Message>")
+                        message_text = xml_str[start:end].strip()
+                    except Exception:
+                        pass
+
+                # Fallback if rendering info failed
+                if not message_text:
+                    message_text = "N/A"
+
+                formatted = (
+                    f"TaskName: {task_name.text if task_name is not None else 'N/A'}\n"
+                    f"UserContext: {user_context.text if user_context is not None else 'N/A'}\n"
+                    f"ResultCode: {result_code.text if result_code is not None else 'N/A'}\n"
+                    f"Computer: {computer.text if computer is not None else 'N/A'}\n"
+                    f"EventTime: {time_created.attrib.get('SystemTime') if time_created is not None else 'N/A'}\n"
+                    f"Message: {message_text}\n"
+                )
+
+                messages_to_send.append(formatted)
+
+            except ET.ParseError:
+                continue
+            except Exception:
+                continue
+
+        # Deduplicate and send to SNS
+        if messages_to_send:
+            unique_messages = list(set(messages_to_send))  # avoid duplicates
+            final_message = "\n---\n".join(unique_messages)
+
+            sns_client.publish(
+                TopicArn=SNS_TOPIC_ARN,
+                Subject='Task Scheduler Failure Notification',
+                Message=final_message
+            )
+
+        return {
+            'statusCode': 200,
+            'body': 'Notification sent via SNS'
+        }
+
+    except Exception as e:
+        # You can log it here if needed
+        return {
+            'statusCode': 500,
+            'body': f'Error processing log: {str(e)}'
+        }
+
+
+
+
+import base64
+import gzip
+import json
+import xml.etree.ElementTree as ET
+import boto3
+import os
+
+sns_client = boto3.client('sns')
 SNS_TOPIC_ARN = os.environ['SNS_TOPIC_ARN']  # Ensure this env variable is set in your Lambda
 
 def lambda_handler(event, context):
