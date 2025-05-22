@@ -2,6 +2,81 @@ import json
 import boto3
 import logging
 import xml.etree.ElementTree as ET
+import base64
+import gzip
+import re
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+
+SNS_TOPIC_ARN = "arn:aws:sns:us-east-1:123456789012:YourTopicName"  # ✅ Replace this
+sns_client = boto3.client('sns')
+
+def get_text_or_default(root, path, default="N/A"):
+    element = root.find(path)
+    return element.text if element is not None else default
+
+def lambda_handler(event, context):
+    try:
+        log_event = event['awslogs']['data']
+        decoded = base64.b64decode(log_event)
+        uncompressed = gzip.decompress(decoded).decode('utf-8')
+
+        logger.info("🔍 Decoded CloudWatch Logs payload:")
+        logger.info(uncompressed)
+
+        xml_data = re.search(r"<Event[\s\S]*?</Event>", uncompressed)
+        if not xml_data:
+            logger.error("❌ Could not find valid XML Event in logs.")
+            return
+
+        xml_str = xml_data.group()
+        logger.info("📦 Extracted XML:")
+        logger.info(xml_str)
+
+        root = ET.fromstring(xml_str)
+
+        task_name = get_text_or_default(root, ".//Data[@Name='TaskName']")
+        user_context = get_text_or_default(root, ".//Data[@Name='UserContext']")
+        result_code = get_text_or_default(root, ".//Data[@Name='ResultCode']")
+        machine_name = get_text_or_default(root, ".//Computer")
+        event_time = root.find(".//TimeCreated").attrib.get("SystemTime", "N/A")
+        message = get_text_or_default(root, ".//RenderingInfo/Message")
+
+        log_summary = f"""
+🔔 *Windows Task Failure Detected*
+
+🖥️ Machine Name : {machine_name}
+📆 Event Time    : {event_time}
+👤 User Context  : {user_context}
+📝 Task Name     : {task_name}
+❌ Result Code   : {result_code}
+
+📄 Message:
+{message}
+        """.strip()
+
+        logger.info("📤 Prepared message for SNS:")
+        logger.info(log_summary)
+
+        # Send to SNS
+        response = sns_client.publish(
+            TopicArn=SNS_TOPIC_ARN,
+            Subject=f"Task Scheduler Failure: {task_name}",
+            Message=log_summary
+        )
+        logger.info(f"✅ SNS Publish Response: {response}")
+
+    except Exception as e:
+        logger.error(f"❌ Lambda execution failed: {str(e)}")
+
+
+
+
+import json
+import boto3
+import logging
+import xml.etree.ElementTree as ET
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
