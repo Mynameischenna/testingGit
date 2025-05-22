@@ -1,3 +1,21 @@
+
+{
+  "messageType": "DATA_MESSAGE",
+  "owner": "123456789012",
+  "logGroup": "YourLogGroup",
+  "logStream": "YourLogStream",
+  "subscriptionFilters": ["YourFilter"],
+  "logEvents": [
+    {
+      "id": "some-id",
+      "timestamp": 1684246096392,
+      "message": "<Event xmlns=\"http://schemas.microsoft.com/win/2004/08/events/event\">\n  <System>\n    <Provider Name=\"Microsoft-Windows-TaskScheduler\" Guid=\"{...}\" />\n    <EventID>201</EventID>\n    <Version>0</Version>\n    <Level>4</Level>\n    <Task>102</Task>\n    <Opcode>101</Opcode>\n    <Keywords>0x80000000000000</Keywords>\n    <TimeCreated SystemTime=\"2023-05-16T12:28:16.3921433Z\" />\n    <EventRecordID>240170</EventRecordID>\n    <Correlation />\n    <Execution ProcessID=\"776\" ThreadID=\"996\" />\n    <Channel>Microsoft-Windows-TaskScheduler/Operational</Channel>\n    <Computer>PC-004cfa74c3</Computer>\n  </System>\n  <EventData>\n    <Data Name=\"TaskName\">\\Microsoft\\Windows\\Defrag\\ScheduledDefrag</Data>\n    <Data Name=\"ResultCode\">0</Data>\n    <Data Name=\"UserContext\">S-1-5-18</Data>\n    <Data Name=\"OperationalCode\">201</Data>\n  </EventData>\n</Event>"
+    }
+  ]
+}
+
+
+
 <Event xmlns="http://schemas.microsoft.com/win/2004/08/events/event">
   <System>
     <Provider Name="Microsoft-Windows-TaskScheduler" Guid="{..." />
