@@ -1,3 +1,93 @@
+import base64
+import gzip
+import json
+import xml.etree.ElementTree as ET
+import boto3
+import os
+
+sns_client = boto3.client('sns')
+SNS_TOPIC_ARN = os.environ['SNS_TOPIC_ARN']
+
+# Map known Windows Task Scheduler error codes to readable messages
+ERROR_CODE_MAP = {
+    "0": "The operation completed successfully.",
+    "2147942402": "ERROR_FILE_NOT_FOUND - The system cannot find the file specified.",
+    "2147942405": "ERROR_ACCESS_DENIED - Access is denied.",
+    "2147943645": "ERROR_PRIVILEGE_NOT_HELD - A required privilege is not held by the client.",
+    # Add more codes if needed
+}
+
+def lambda_handler(event, context):
+    try:
+        # Decode and decompress the CloudWatch Logs payload
+        cw_data = event['awslogs']['data']
+        compressed_payload = base64.b64decode(cw_data)
+        uncompressed_payload = gzip.decompress(compressed_payload).decode('utf-8')
+
+        logs_json = json.loads(uncompressed_payload)
+        ns = {'ns': 'http://schemas.microsoft.com/win/2004/08/events/event'}
+
+        messages_to_send = []
+
+        for log_event in logs_json.get('logEvents', []):
+            xml_str = log_event.get('message', '')
+            if not xml_str:
+                continue
+
+            try:
+                root = ET.fromstring(xml_str)
+
+                task_name = root.find(".//ns:Data[@Name='TaskName']", ns)
+                task_name_text = task_name.text if task_name is not None else "N/A"
+
+                user_context = root.find(".//ns:Data[@Name='UserContext']", ns)
+                user_context_text = user_context.text if user_context is not None else "N/A"
+
+                result_code = root.find(".//ns:Data[@Name='ResultCode']", ns)
+                result_code_text = result_code.text if result_code is not None else "N/A"
+                error_meaning = ERROR_CODE_MAP.get(result_code_text, "Unknown error code")
+
+                computer = root.find(".//ns:Computer", ns)
+                computer_text = computer.text if computer is not None else "N/A"
+
+                time_created = root.find(".//ns:TimeCreated", ns)
+                event_time = time_created.attrib.get("SystemTime") if time_created is not None else "N/A"
+
+                # Format the message for SNS
+                message = (
+                    f"TaskName: {task_name_text}\n"
+                    f"UserContext: {user_context_text}\n"
+                    f"ResultCode: {result_code_text} - {error_meaning}\n"
+                    f"Computer: {computer_text}\n"
+                    f"EventTime: {event_time}\n"
+                )
+                messages_to_send.append(message)
+
+            except ET.ParseError:
+                continue
+            except Exception:
+                continue
+
+        if messages_to_send:
+            full_message = "\n---\n".join(messages_to_send)
+            sns_client.publish(
+                TopicArn=SNS_TOPIC_ARN,
+                Subject='CloudWatch TaskScheduler Event Notification',
+                Message=full_message
+            )
+
+        return {
+            'statusCode': 200,
+            'body': 'SNS notification sent'
+        }
+
+    except Exception as e:
+        # Internal errors are no longer sent to SNS
+        raise e
+
+
+
+
 CAUTION: External email 
 Do not click links or open attachments unless you recognize the sender and know the content is safe. 
     Report Suspicious    ‌ 
