@@ -1,3 +1,11 @@
+INIT_START Runtime Version: python:3.13.v40	Runtime Version ARN: arn:aws:lambda:us-east-1::runtime:67df0ac22722a9d5069c1cdb0b24c86bfdf11f9738985ac6f79319e3e026ffa8
+START RequestId: cf15e156-31df-4777-8047-eeaa266b9e8c Version: $LATEST
+Error: 'Records'
+END RequestId: cf15e156-31df-4777-8047-eeaa266b9e8c
+REPORT RequestId: cf15e156-31df-4777-8047-eeaa266b9e8c	Duration: 2.07 ms	Billed Duration: 3 ms	Memory Size: 128 MB	Max Memory Used: 80 MB	Init Duration: 439.94 ms	
+
+
+
 ~ $ aws lambda add-permission \
 >   --function-name task-monitor\
 >   --region us-east-1 \
