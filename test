@@ -1,3 +1,15 @@
+aws lambda add-permission \
+  --function-name YOUR_LAMBDA_FUNCTION_NAME \
+  --region us-east-1 \
+  --statement-id "CWLogsInvokePermission" \
+  --action "lambda:InvokeFunction" \
+  --principal logs.us-east-1.amazonaws.com \
+  --source-arn arn:aws:logs:us-east-1:YOUR_AWS_ACCOUNT_ID:log-group:YOUR_LOG_GROUP_NAME:* \
+  --source-account YOUR_AWS_ACCOUNT_ID
+
+
+
+
 aws cloudwatch put-metric-data \
   --namespace "TaskMonitor" \
   --metric-name TaskScheduleErrors \
