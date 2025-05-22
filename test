@@ -1,3 +1,86 @@
+import base64
+import gzip
+import json
+import xml.etree.ElementTree as ET
+import boto3
+import os
+
+sns_client = boto3.client('sns')
+SNS_TOPIC_ARN = os.environ['SNS_TOPIC_ARN']  # Pass your SNS Topic ARN via Lambda environment variables
+
+def lambda_handler(event, context):
+    try:
+        # Decode & decompress the CloudWatch Logs payload
+        cw_data = event['awslogs']['data']
+        compressed_payload = base64.b64decode(cw_data)
+        uncompressed_payload = gzip.decompress(compressed_payload).decode('utf-8')
+
+        logs_json = json.loads(uncompressed_payload)
+        ns = {'ns': 'http://schemas.microsoft.com/win/2004/08/events/event'}
+
+        messages_to_send = []
+
+        for log_event in logs_json.get('logEvents', []):
+            xml_str = log_event.get('message', '')
+            if not xml_str:
+                continue
+
+            try:
+                root = ET.fromstring(xml_str)
+
+                task_name = root.find(".//ns:Data[@Name='TaskName']", ns)
+                task_name_text = task_name.text if task_name is not None else "N/A"
+
+                user_context = root.find(".//ns:Data[@Name='UserContext']", ns)
+                user_context_text = user_context.text if user_context is not None else "N/A"
+
+                result_code = root.find(".//ns:Data[@Name='ResultCode']", ns)
+                result_code_text = result_code.text if result_code is not None else "N/A"
+
+                computer = root.find(".//ns:Computer", ns)
+                computer_text = computer.text if computer is not None else "N/A"
+
+                time_created = root.find(".//ns:TimeCreated", ns)
+                event_time = time_created.attrib.get("SystemTime") if time_created is not None else "N/A"
+
+                # Format the message to send via SNS
+                message = (
+                    f"TaskName: {task_name_text}\n"
+                    f"UserContext: {user_context_text}\n"
+                    f"ResultCode: {result_code_text}\n"
+                    f"Computer: {computer_text}\n"
+                    f"EventTime: {event_time}\n"
+                )
+                messages_to_send.append(message)
+
+            except ET.ParseError as e:
+                # Optionally, you could send error info to SNS or just ignore
+                pass
+            except Exception:
+                pass
+
+        # Publish messages to SNS if any
+        if messages_to_send:
+            full_message = "\n---\n".join(messages_to_send)
+            sns_client.publish(
+                TopicArn=SNS_TOPIC_ARN,
+                Subject='CloudWatch TaskScheduler Event Notification',
+                Message=full_message
+            )
+
+        return {
+            'statusCode': 200,
+            'body': 'SNS notification sent'
+        }
+
+    except Exception as e:
+        # Optional: you can send this error info to SNS or handle as you prefer
+        raise e
+
+
+
+
+
 INIT_START Runtime Version: python:3.13.v40	Runtime Version ARN: arn:aws:lambda:us-east-1::runtime:67df0ac22722a9d5069c1cdb0b24c86bfdf11f9738985ac6f79319e3e026ffa8
 [INFO]	2025-05-22T04:09:12.495Z		Found credentials in environment variables.
 START RequestId: a33e0295-cb47-416f-a343-2d29ca67e795 Version: $LATEST
