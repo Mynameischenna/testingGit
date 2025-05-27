@@ -1,3 +1,274 @@
+Compliance HRLC Tasks 
+
+March 31, 2025 
+
+ 
+
+Table Of Contents 
+
+​​ 
+
+​ 
+
+​ 
+
+​ 
+
+​​ 
+
+ 
+
+ 
+
+ 
+
+Introduction 
+
+This document details the jobs running on the Compliance Timing machines. 
+
+Note: For all these jobs, the timing machine must be up and running. And the service-ascscripting account must be logged in. 
+
+ 
+
+Timing 2 
+
+Runs the PlanExpress Seismic job 
+
+Check the Task Scheduler for batch jobs 
+
+File Monitor 
+
+Runs Mike Llewellyn’s file monitoring job which checks that files are being processed 
+
+To modify the email list, go to C:\compliance\FileMonitor. Edit the FileInfo.ini and modify “emailto=” parameter. 
+
+Looks in V:\auto\PlanExpress\Files to see if files are not being processed 
+
+Sends out an email if files are not being processed 
+
+Subject: Files needing attention 
+
+For Seismic - \\its\fss\GrpShare\GrpShare10\data\auto\PlanExpress\Files 
+
+Image1 
+
+Runs "C:\Program Files (x86)\Microsoft Office\Office16\MSACCESS.EXE  v:\auto\Image1.mdb /user "Admin" /pwd " 
+
+Don’t worry about this program for now 
+
+PE 
+
+Runs the PlanExpress Seismic job 
+
+C:\PlanExpressWin7-2\PELocal.bat 
+
+"C:\Program Files (x86)\Microsoft Office\Office16\MSACCESS.EXE   "C:\PlanExpressWin7-2\pipeline_followup-secondary.mdb /user "Admin" /pwd " 
+
+Processes XML files in V:\auto\PlanExpress\Files for the PlanExpress Seismic job 
+
+Moves them to V:\auto\PlanExpress\Files\Done\ExcelConverted for processing by T3. 
+
+Systems Health Check 
+
+Verify that the PE – Seismic job is running 
+
+Go to Task Scheduler 
+
+Click on PE 
+
+Go to History 
+
+Check logs 
+
+Verify running on schedule – every 10 minutes 
+
+Look for errors or warnings 
+
+If in an error or locked state, try to correct. 
+
+If not able to correct, reboot 
+
+ 
+
+Timing 3 
+
+Runs the PlanExpress Contract Generator and completes the Seismic job 
+
+Check the Task Scheduler for batch jobs 
+
+File Monitor 
+
+Runs Mike Llewellyn’s file monitoring job which checks that files are being processed 
+
+To modify the email list, go to C:\compliance\FileMonitor. Edit the FileInfo.ini and modify “emailto=” parameter. 
+
+Looks in V:\auto\PlanExpress\Files to see if files are not being processed 
+
+Sends out an email if files are not being processed 
+
+Subject: Files needing attention 
+
+For continued Seismic processing – looks in  \\its\fss\GrpShare\GrpShare10\data\auto\PlanExpress\Files\Done 
+
+AutoPEXML to XML 
+
+Runs "C:\PlanExpressWin7-2\AutoPEXML1.bat" 
+
+The Seismic app on T2 moves XML files into V:\auto\PlanExpress\Files\Done 
+
+This Excel app processes and moves XML files from V:\auto\PlanExpress\Files\Done to V:\auto\PlanExpress\Files\Done\ExcelConverted 
+
+Then some other job, I am not sure from where. Probably Plan Express, moves the files out of there. 
+
+If the files in Done are not being processed, it may be due to Excel not being able to start. This is a system problem. If you cannot start Excel, then reboot until Excel starts. 
+
+ContactSynch 
+
+Runs "C:\Program Files (x86)\Microsoft Office\Office16\MSACCESS.EXE C:\compliance\output\ContactSynch.mdb" 
+
+Does something with plan contacts. 
+
+Don’t worry about it. 
+
+PERename 
+
+Runs V:\auto\PlanExpress\PERename.bat 
+
+Runs "C:\Program Files (x86)\Microsoft Office\Office16\MSACCESS.EXE  V:\auto\planexpress\PERename.mdb" /user "Admin" /pwd " 
+
+Does something with PlanExpress 
+
+Moves files that are created by PlanExpress from the R: drive (\\its\fss\UNIX\psc_usersghome\9\9994\401k\outbound) to the V:\auto\PlanExpress\Files and V:\auto\PlanExpress\AMF\Files directories. 
+
+SecureFoundations 
+
+Runs the PlanExpress Contract Generator job 
+
+Mike Llewellyn is the main HRLC contact for this 
+
+Runs C:\PlanExpressWin7-2\SWpipeline_followupWin7.mdb 
+
+Processes Contract Generator jobs in P_COMP 
+
+To create a Contract Generator job, load URL https:\\pps\sf2 into your browser 
+
+Enter plan number “123456-01” 
+
+Check All 
+
+Next 
+
+For “Email Packet To:” enter your email address 
+
+For Institution dropdown on bottom of page, select “Corporate 401(k)...” 
+
+Go to bottom of page and hit Next 
+
+View Queue – look for your job 
+
+The job is stored in a table in P_COMP 
+
+The SWpipeline_followupWin7.mdb reads the job from P_COMP and selects the documents for the plan and populates them with data stored in P_COMP. 
+
+Systems Health Check 
+
+Verify that the PE – Seismic job is running 
+
+Go to Task Scheduler 
+
+Click on PE 
+
+Go to History 
+
+Check logs 
+
+Verify running on schedule – every 10 minutes 
+
+Look for errors or warnings 
+
+If in an error or locked state, try to correct. 
+
+If not able to correct, reboot 
+
+ 
+
+ 
+
+Timing 4 
+
+Runs the PlanExpress American Funds Snart Submission job 
+
+Check the Task Scheduler for batch jobs 
+
+File Monitor 
+
+Runs Mike Llewellyn’s file monitoring job which checks that files are being processed 
+
+To modify the email list, go to C:\compliance\FileMonitor. Edit the FileInfo.ini and modify “emailto=” parameter. 
+
+Looks in V:\auto\PlanExpress\Files to see if files are not being processed 
+
+Sends out an email if files are not being processed 
+
+Subject: Files needing attention 
+
+For continued Seismic processing – looks in  \\its\fss\GrpShare\GrpShare10\data\auto\PlanExpress\Files\Done 
+
+Imp_Inst_QuarterlyBilling 
+
+Creates a quarterly billing report 
+
+C:\Program Files (x86)\Microsoft Office\Office16\MSACCESS.EXE V:\auto\Imp_InstReports.mdb 
+
+Check to make sure there are no errors with this program, either restart or reboot if needed 
+
+PE 
+
+Runs the PlanExpress SmartSubmission job 
+
+C:\PlanExpressWin7-2\AMFpipeline_followup.mdb 
+
+Processes XML files in V:\auto\PlanExpress\AMF\Files for the PlanExpress job 
+
+Check to make sure there are no errors with this program, either restart or reboot if needed 
+
+Sometimes, when all else fails 
+
+Open Access app in Developer mode (Shit-Open) 
+
+Go to File 
+
+Execute a Compact & Repair 
+
+This is one of our important jobs 
+
+PERename 
+
+Runs V:\auto\PlanExpress\PERename.bat 
+
+Runs "C:\Program Files (x86)\Microsoft Office\Office16\MSACCESS.EXE  V:\auto\planexpress\PERename.mdb" /user "Admin" /pwd " 
+
+Does something with PlanExpress 
+
+Moves files that are created by PlanExpress from the R: drive (\\its\fss\UNIX\psc_usersghome\9\9994\401k\outbound) to the V:\auto\PlanExpress\Files and V:\auto\PlanExpress\AMF\Files directories. 
+
+Make sure is running correctly, reboot if needed. 
+
+ 
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
 import base64
 import gzip
 import json
