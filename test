@@ -1,3 +1,50 @@
+
+PROBLEM STATEMENT (Before Automation)
+
+We have EC2 instances running important scheduled tasks or applications.
+
+No automatic alerting system is currently set up.
+
+If something fails (like a job or service), we don’t know until someone manually checks.
+
+We have to log in to every machine manually to check logs or task status.
+
+
+ Time-consuming
+
+ Error-prone
+
+ Not scalable — imagine doing this for 1000 machines!
+
+
+
+💡 GOAL
+We want to automatically detect failures, send alerts, and self-heal (restart the machine or task) without needing to manually check each instance.
+
+
+(Start)
+   |
+   v
+CloudWatch agent logs to clodwatch group
+ |
+v
+
+[CloudWatch Logs receive]
+   |
+   v
+[Subscription Filter: Detect "Error"]
+   |
+   v
+[Trigger Lambda 1: Parse error + Send SNS alert]
+   |
+   v
+[sns tigger lambda 2]
+    |
+
+    v
+
+Rebbot the instance
+
 1) Monitor servers and applications
  
 2) If a server is down, send a notification and reboot
