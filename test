@@ -1,3 +1,27 @@
+List all implementation steps here like​
+
+Environment setup​
+
+Scripting​
+
+Integration with existing infra​
+
+How you plan to test it​
+
+Production release plan
+
+
+
+
+
+
+
+
+
+
+
+
+
 | Metric                     | Manual Process | Automated Process | Improvement (Savings)    |
 | -------------------------- | -------------- | ----------------- | ------------------------ |
 | **Effort (hours/week)**    | 20             | 5                 | 75% reduction            |
