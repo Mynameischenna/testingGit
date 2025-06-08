@@ -1,3 +1,18 @@
+| Metric                     | Manual Process | Automated Process | Improvement (Savings)    |
+| -------------------------- | -------------- | ----------------- | ------------------------ |
+| **Effort (hours/week)**    | 20             | 5                 | 75% reduction            |
+| **FTEs required**          | 3              | 1                 | 66% fewer people         |
+| **Downtime (hours/month)** | 4              | 1                 | 75% less downtime        |
+| **Alert Response Time**    | 30 mins        | 5 mins            | 83% faster response      |
+| **Errors Missed**          | 5 per month    | 0                 | 100% reduction in misses |
+| **Time Saved on RCA**      | 10 hours/month | 2 hours/month     | 80% reduction            |
+
+
+
+
+
+
+
 Create some metrics for comparing between Manual vs automated. May be a simple graph to visualize savings.  ​
 
 effort ​
