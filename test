@@ -1,3 +1,29 @@
+Create some metrics for comparing between Manual vs automated. May be a simple graph to visualize savings.  ​
+
+effort ​
+
+FTEs​
+
+Downtime​
+
+alert response time​
+
+errors missed​
+
+time saved on root cause analysis 
+
+
+
+
+
+
+
+
+
+
+
+
+
 Tools / Tech Stack
 AWS QuickSight for data visualization and dashboards
 
