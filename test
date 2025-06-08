@@ -1,3 +1,34 @@
+Tools / Tech Stack
+AWS QuickSight for data visualization and dashboards
+
+CloudWatch for log monitoring and alerting
+
+AWS Lambda for automation and event-driven tasks
+
+SNS for notifications and alerts
+
+Automation Features
+Real-time monitoring of system health
+
+Automatic alerting on threshold breaches
+
+Scheduled reports generation for performance insights
+
+Self-healing scripts to fix common issues automatically
+
+Integration with Existing System
+Uses CloudWatch Agent to monitor system metrics and logs
+
+Direct log streaming to AWS CloudWatch without APIs
+
+Non-intrusive setup with minimal impact on current system
+
+Works seamlessly alongside existing infrastructure
+
+
+
+
+
 Tools/Tech stack(AWS quick sight, etc..)​
 
 Automation features(Real time  monitoring, auto alerting, scheduled reports, self healing processes, etc..)​
