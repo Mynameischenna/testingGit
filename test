@@ -1,3 +1,13 @@
+Login into server​
+
+Check for task failures​
+
+If you any task is failed to run​
+
+Try to restart that task​
+
+If the task did not recover try to reboot server​
+
 Tools / Tech Stack:​
 
 AWS Quick Sight for data visualization and dashboards​
