@@ -1,3 +1,24 @@
+
+
+PS C:\Windows\system32> sc config AmazonCloudWatchAgent start= auto
+Set-Content : A positional parameter cannot be found that accepts argument 'start='.
+At line:1 char:1
++ sc config AmazonCloudWatchAgent start= auto
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidArgument: (:) [Set-Content], ParameterBindingException
+    + FullyQualifiedErrorId : PositionalParameterNotFound,Microsoft.PowerShell.Commands.SetContentCommand
+
+PS C:\Windows\system32> sc query AmazonCloudWatchAgent
+>>
+PS C:\Windows\system32> sc query AmazonCloudWatchAgent
+>>
+PS C:\Windows\system32> sc start AmazonCloudWatchAgent
+PS C:\Windows\system32>
+
+
+
+
+
 S C:\Windows\system32> & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" `
 >>   -a fetch-config `
 >>   -m ec2 `
