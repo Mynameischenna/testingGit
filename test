@@ -1,3 +1,34 @@
+Manual checks performed:​
+
+We manually monitor system logs, dashboards, and alerts to track service health and issues.​
+
+Frequency of checks:​
+
+Checks are done hourly and on a shift basis (every 12 hours) to ensure continuous coverage.​
+
+Resource dependency:​
+
+At least one person involved per shift and it will come around 2 FTEs per week.​
+
+Pain points :​
+
+Time-consuming: Manual checking takes 2–3 hours per shift.​
+
+​
+
+Human errors: Missed alerts, incorrect log interpretations, or inconsistent reporting.​
+
+​
+
+No centralized automation: High dependency on individuals rather than systems.​
+
+​
+
+Delayed reporting: Decision-making is slower due to manual validation of metrics and logs.​
+
+
+
+
 🔧 1. Environment Setup
 Provision required AWS services (EC2, CloudWatch, IAM, etc.)
 
