@@ -1,3 +1,37 @@
+S C:\Windows\system32> & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" `
+>>   -a fetch-config `
+>>   -m ec2 `
+>>   -c file:"C:\Program Files\Amazon\AmazonCloudWatchAgent\config.json" `
+>>   -s
+****** processing amazon-cloudwatch-agent ******
+I! Trying to detect region from ec2
+D! [EC2] Found active network interface
+I! imds retry client will retry 1 timesSuccessfully fetched the config and saved in C:\ProgramData\Amazon\AmazonCloudWatchAgent\Configs\file_config.json.tmp
+Start configuration validation...
+2025/06/11 08:37:54 Reading json config file path: C:\ProgramData\Amazon\AmazonCloudWatchAgent\Configs\file_config.json.tmp ...
+2025/06/11 08:37:54 unable to scan config dir C:\ProgramData\Amazon\AmazonCloudWatchAgent\Configs with error: unable to parse json, error: invalid character '\r' in string literal
+2025/06/11 08:37:54 No json config files found, use the default one
+2025/06/11 08:37:54 I! Valid Json input schema.
+I! Trying to detect region from ec2
+D! [EC2] Found active network interface
+I! imds retry client will retry 1 times2025/06/11 08:37:55 D! ec2tagger processor required because append_dimensions is set
+2025/06/11 08:37:55 Configuration validation first phase succeeded
+Configuration validation second phase succeeded
+Configuration validation succeeded
+AmazonCloudWatchAgent has been stopped
+Start-Service : Service 'Amazon CloudWatch Agent (AmazonCloudWatchAgent)' cannot be started due to the following
+error: Cannot start service AmazonCloudWatchAgent on computer '.'.
+At C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1:133 char:12
++     $svc | Start-Service
++            ~~~~~~~~~~~~~
+    + CategoryInfo          : OpenError: (System.ServiceProcess.ServiceController:ServiceController) [Start-Service],
+   ServiceCommandException
+    + FullyQualifiedErrorId : CouldNotStartService,Microsoft.PowerShell.Commands.StartServiceCommand
+
+PS C:\Windows\system32>
+
+
+
 & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" `
   -a fetch-config `
   -m ec2 `
