@@ -1,3 +1,60 @@
+first slide:
+
+"Our system monitoring is currently a fully manual process. Engineers are required to continuously track 
+system health by reviewing logs, dashboards, and alert notifications across shifts. 
+This approach, is resource-intensive — requiring at least two full-time staff to cover 24/7 operations. 
+Each shift involves 2–3 hours of manual validation, leading to time inefficiencies 
+and the risk of human errors such as missed alerts or misinterpreted logs. 
+Additionally, the lack of automation means the monitoring process is reactive, slow to escalate issues, 
+and heavily reliant on individual effort, making it difficult to ensure consistency and timely reporting."
+
+whats we do in a day:
+
+"Every two hours, our team logs into the servers to perform health checks.
+ We primarily look for any system or scheduled task failures. If we detect a failed task, we attempt to 
+restart it manually. In case restarting the task doesn’t work, the next step is to reboot the server to 
+restore functionality. This process is repeated across multiple servers and is done consistently 
+throughout the day to ensure systems stay operational."
+
+proposed :
+We replaced manual health checks with an automated system using AWS services like CloudWatch, Lambda, SNS, and QuickSight. This setup allows us to:
+Monitor system health in real-time
+Trigger automatic alerts and notifications on failures
+Run self-healing actions like task retries, restarts, and reboots
+Generate scheduled performance reports
+Seamlessly integrate with existing infrastructure using CloudWatch Agent
+This automation significantly reduces manual effort, speeds up response time, and minimizes human errors—resulting in a more resilient and efficient system.
+
+
+proposed workflow:
+"Earlier, we used to manually log in to servers, check logs and dashboards every few hours, and fix any issues 
+ourselves. It was time-consuming, needed at least two people per shift, and sometimes errors were missed.
+Now, we’ve automated this whole process using AWS tools like CloudWatch, Lambda, SNS, and QuickSight. 
+The system monitors everything in real-time, sends us alerts if something goes wrong, and even tries to 
+fix common issues automatically—like restarting a failed task or rebooting a server if needed.
+We also get scheduled reports and dashboards to see performance trends. 
+And the best part is—it works smoothly with our current setup, no big changes needed
+Overall, this has saved us a lot of time, reduced manual work, and made the system much more reliable."
+
+key benefits:
+"Since we moved from a manual process to an automated one, the improvements have been massive.
+We used to spend around 20 hours a week just monitoring things manually. Now, it's down to just 5 hours—a 75% cut in
+ effort. 
+Where we earlier needed two people on shift, we now manage with just one.
+System downtime has also improved—we went from about 4 hours of downtime a month to just 1 hour. 
+That’s a 75% drop, which really helps in maintaining service reliability.
+Alert response time has become much faster. What took us 30 minutes to notice and act on, now takes only about 5 minutes thanks to automatic alerts—that's over 80% faster.
+We also had around 5 missed errors each month before. With automation, that’s now down to zero, eliminating manual oversight.
+And even for root cause analysis (RCA), we used to spend about 10 hours every month. Now, it's just 2 hours—an 80% time saving.
+In short, automation hasn’t just made things quicker—it’s made everything more reliable, efficient, and less dependent on manual effort."
+
+
+
+
+
+
+
+
 "Since we moved from a manual process to an automated one, the improvements have been massive.
 
 We used to spend around 20 hours a week just monitoring things manually. Now, it's down to just 5 hours—a 75% cut in effort. Where we earlier needed two people on shift, we now manage with just one.
