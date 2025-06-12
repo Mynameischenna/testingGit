@@ -1,3 +1,33 @@
+Manual checks performed:​
+
+We manually monitor system logs, dashboards, and alerts to track service health and issues.​
+
+​
+
+Frequency of checks:​
+
+Checks are done hourly and on a shift basis (every 8 hours) to ensure continuous coverage.​
+
+​
+
+Resource dependency:​
+
+At least one person involved per shift and it will need 2 FTEs to monitor.​
+
+​
+
+Pain points:​
+
+Time-consuming: Manual checking takes 2–3 hours per shift.​
+
+Human errors: Missed alerts, incorrect log interpretations, or inconsistent reporting.​
+
+No centralized automation: High dependency on individuals rather than systems.​
+
+Delayed reporting: Decision-making is slower due to manual validation of metrics and logs.​
+
+
+
 PS C:\Windows\system32>
 >>
 >> & "C:\Program Files\Amazon\AmazonCloudWatchAgent\amazon-cloudwatch-agent-ctl.ps1" `
