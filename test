@@ -1,3 +1,17 @@
+CloudWatch Agent continuously monitor tasks​
+
+On detecting task failures, Agent send info to cloudwatch​
+
+Filters continuously monitor CloudWatch as soon we got message into queue it will tigger lambda​
+
+Lambda-1 : it attempts to restart the failed task without manual intervation​
+
+If restarts fails, Lambda-2 initiates an automated server reboot as a recovery action​
+
+SNS notifications are sent to support team for visibility​
+
+
+
 We replaced manual health checks with an automated system using AWS services like CloudWatch, Lambda, SNS, and QuickSight. This setup allows us to:
 
 Monitor system health in real-time
