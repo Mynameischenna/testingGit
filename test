@@ -1,3 +1,14 @@
+Login into servers​
+
+Check for system and  task failures​
+
+If you any task is failed to run​
+
+Try to restart that task​
+
+If the task did not recover try to reboot server​
+
+Do this for every 2 hours​
 
 "Our system monitoring is currently a fully manual process. Engineers are required to continuously track system health by reviewing logs, dashboards, and alert notifications across shifts. This approach, while thorough, is resource-intensive — requiring at least two full-time staff to cover 24/7 operations. Each shift involves 2–3 hours of manual validation, leading to time inefficiencies and the risk of human errors such as missed alerts or misinterpreted logs. Additionally, the lack of automation means the monitoring process is reactive, slow to escalate issues, and heavily reliant on individual effort, making it difficult to ensure consistency and timely reporting."
 
