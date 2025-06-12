@@ -1,3 +1,7 @@
+
+"Our system monitoring is currently a fully manual process. Engineers are required to continuously track system health by reviewing logs, dashboards, and alert notifications across shifts. This approach, while thorough, is resource-intensive — requiring at least two full-time staff to cover 24/7 operations. Each shift involves 2–3 hours of manual validation, leading to time inefficiencies and the risk of human errors such as missed alerts or misinterpreted logs. Additionally, the lack of automation means the monitoring process is reactive, slow to escalate issues, and heavily reliant on individual effort, making it difficult to ensure consistency and timely reporting."
+
+
 Manual checks performed:​
 
 We manually monitor system logs, dashboards, and alerts to track service health and issues.​
