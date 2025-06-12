@@ -1,3 +1,19 @@
+We replaced manual health checks with an automated system using AWS services like CloudWatch, Lambda, SNS, and QuickSight. This setup allows us to:
+
+Monitor system health in real-time
+
+Trigger automatic alerts and notifications on failures
+
+Run self-healing actions like task retries, restarts, and reboots
+
+Generate scheduled performance reports
+
+Seamlessly integrate with existing infrastructure using CloudWatch Agent
+
+This automation significantly reduces manual effort, speeds up response time, and minimizes human errors—resulting in a more resilient and efficient system.
+
+
+
 Tools / Tech Stack:​
 
 ​
