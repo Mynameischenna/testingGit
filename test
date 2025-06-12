@@ -1,3 +1,48 @@
+Tools / Tech Stack:​
+
+​
+
+AWS Quick Sight for data visualization and dashboards.​
+
+CloudWatch for log monitoring and alerting.​
+
+AWS Lambda for automation and event-driven tasks.​
+
+SNS for notifications and alerts.​
+
+​
+
+Automation Features:​
+
+​
+
+Real-time monitoring of system health.​
+
+Automatic alerting on threshold breaches and failures.​
+
+Scheduled reports generation for performance insights.​
+
+Self-healing scripts to fix common issues automatically.​
+
+Detect : Health check, log, anomaly, metric alerts.​
+
+Act : Retry, Restart, failover, Reboot.​
+
+​
+
+  Integration with Existing System:​
+
+​
+
+Uses CloudWatch Agent to monitor system metrics and logs.​
+
+Non-intrusive setup with minimal impact on current system.​
+
+Works seamlessly alongside existing infrastructure.​
+
+​
+
+
 
 "Every two hours, our team logs into the servers to perform health checks. We primarily look for any system or scheduled task failures. If we detect a failed task, we attempt to restart it manually. In case restarting the task doesn’t work, the next step is to reboot the server to restore functionality. This process is repeated across multiple servers and is done consistently throughout the day to ensure systems stay operational."
 
