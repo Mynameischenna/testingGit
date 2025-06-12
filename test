@@ -1,3 +1,14 @@
+"Earlier, we used to manually log in to servers, check logs and dashboards every few hours, and fix any issues ourselves. It was time-consuming, needed at least two people per shift, and sometimes errors were missed.
+
+Now, we’ve automated this whole process using AWS tools like CloudWatch, Lambda, SNS, and QuickSight. The system monitors everything in real-time, sends us alerts if something goes wrong, and even tries to fix common issues automatically—like restarting a failed task or rebooting a server if needed.
+
+We also get scheduled reports and dashboards to see performance trends. And the best part is—it works smoothly with our current setup, no big changes needed.
+
+Overall, this has saved us a lot of time, reduced manual work, and made the system much more reliable."
+
+
+
+
 CloudWatch Agent continuously monitor tasks​
 
 On detecting task failures, Agent send info to cloudwatch​
