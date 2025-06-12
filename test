@@ -1,3 +1,64 @@
+
+
+Metric​
+
+Manual Process​
+
+Automated Process​
+
+Improvement(Savings)​
+
+Effort (hours/week)​
+
+20​
+
+5​
+
+75% reduction​
+
+FTEs required​
+
+2​
+
+1​
+
+50% fewer people​
+
+Downtime (hours/month)​
+
+4​
+
+1​
+
+75% less downtime  ​
+
+Alert Response Time​
+
+30 mins     ​
+
+5 mins​
+
+83% faster response  ​
+
+Errors Missed​
+
+5 per month ​
+
+0​
+
+100% reduction in misses​
+
+Time Saved on RCA​
+
+10 hours/month​
+
+2 hours/month ​
+
+80% reduction ​
+
+
+
+
 "Earlier, we used to manually log in to servers, check logs and dashboards every few hours, and fix any issues ourselves. It was time-consuming, needed at least two people per shift, and sometimes errors were missed.
 
 Now, we’ve automated this whole process using AWS tools like CloudWatch, Lambda, SNS, and QuickSight. The system monitors everything in real-time, sends us alerts if something goes wrong, and even tries to fix common issues automatically—like restarting a failed task or rebooting a server if needed.
