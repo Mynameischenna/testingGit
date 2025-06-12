@@ -1,3 +1,8 @@
+
+"Every two hours, our team logs into the servers to perform health checks. We primarily look for any system or scheduled task failures. If we detect a failed task, we attempt to restart it manually. In case restarting the task doesn’t work, the next step is to reboot the server to restore functionality. This process is repeated across multiple servers and is done consistently throughout the day to ensure systems stay operational."
+
+
+
 "Every two hours, our team logs into the servers to perform health checks. We primarily look for any system or scheduled task failures. If we detect a failed task, we attempt to restart it manually. In case restarting the task doesn’t work, the next step is to reboot the server to restore functionality. This process is repeated across multiple servers and is done consistently throughout the day to ensure systems stay operational."
 
 
