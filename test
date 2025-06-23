@@ -1,3 +1,18 @@
+1) Monitor servers and applications
+ 
+2) If a server is down, send a notification and reboot
+ 
+2a) Reboot if environment flag is set to yes
+ 
+3) Monitor applications and send a notification if broken
+ 
+3a) If still broke after 2-n hours escalate notification
+ 
+3b) If app is stopped, look into process table. Get process ID for MS Access jobs. Look into killing the locked process. Then Task Scheduler will restart it.
+ 
+3c) Last resort, reboot machine
+ 
+
 first slide:
 
 "Our system monitoring is currently a fully manual process. Engineers are required to continuously track 
