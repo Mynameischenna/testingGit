@@ -1,3 +1,182 @@
+Perfect — I got your full demo explanation. You’ve built an automated Task Monitoring System that detects failed jobs in Windows EC2 instances, restarts them automatically, and escalates only when needed. Let’s turn your spoken walkthrough into a professional, structured, clear presentation script you can use word-for-word in your demo or slides.
+
+🎯 Task Monitoring Process – Demo Presentation
+
+🟦 1. Introduction
+You can say:
+Good morning everyone.
+Today I’m going to give a demo on the Task Monitoring Process, which is an updated version of the application I showed earlier.
+Previously, we had a semi-manual setup — today’s version is smarter and more automated. I’ll walk you through what problem we’re solving, how the new solution works, and what improvements we’ve made.
+
+🟦 2. Problem Statement
+You can say:
+So, as you know, we have multiple EC2 instances, and inside each EC2 instance, there are several scheduled tasks or jobs running regularly.
+The main issue we faced is that sometimes these jobs fail to run properly.
+To detect this, we had to manually log into each EC2 instance and check the Task Scheduler.
+This was:
+
+
+Time-consuming,
+
+
+Labor-intensive, and
+
+
+Prone to human error.
+
+
+So overall, a lot of manual effort was going into simply checking whether jobs were running or not.
+
+🟦 3. Objective
+You can say:
+The goal was to automate the entire monitoring and recovery process —
+to automatically detect failed tasks, attempt recovery, and notify the right people —
+without needing to manually log in every time.
+
+🟦 4. Proposed Solution
+You can say:
+To solve this, I implemented an automated Task Monitoring System.
+Here’s how it works step-by-step:
+
+
+On each EC2 instance, I installed a small Amazon “Robot Checker” agent.
+
+
+This component continuously checks the Windows Task Scheduler to monitor job statuses.
+
+
+
+
+When a job fails, the robot checker sends log data to AWS CloudWatch.
+
+
+CloudWatch detects this failure and triggers an AWS Lambda function automatically.
+
+
+The Lambda function then takes control — it:
+
+
+Checks the instance ID and task name as a unique key.
+
+
+Looks up this key in a separation table (a tracking table to prevent redundant restarts).
+
+
+If not found in the table, it tries to restart the failed task once.
+
+
+If the restart fails, it waits for a minute and retries again.
+
+
+After multiple failed attempts, it adds that instance-task pair to the separation table to avoid infinite retry loops.
+
+
+
+
+The separation table entry also has a time limit — after that duration expires, the system will recheck that task again.
+
+
+
+🟦 5. Notification & Escalation
+You can say:
+If the Lambda fails to restart the job after multiple tries, it sends an email alert.
+This alert includes:
+
+
+The instance name,
+
+
+The task name,
+
+
+And the error details.
+
+
+The alert goes directly to the team responsible for that particular machine,
+so only the relevant person needs to take action — this saves a lot of time.
+
+🟦 6. Dashboard and Metrics
+You can say:
+I’ve also added a monitoring dashboard that provides visibility into what’s happening.
+The dashboard shows:
+
+
+For each task:
+
+
+How many times the Lambda successfully restarted it,
+
+
+How many times it failed,
+
+
+And how many times it triggered alerts.
+
+
+
+
+This helps us identify unstable tasks and problematic instances easily.
+
+🟦 7. Benefits
+You can say:
+This solution provides several benefits:
+
+
+Reduces manual monitoring effort drastically.
+
+
+Detects and resolves failures automatically.
+
+
+Escalates only when necessary.
+
+
+Improves reliability and uptime of scheduled jobs.
+
+
+Gives a centralized view through the dashboard.
+
+
+Overall, this system saves time, improves efficiency, and reduces human dependency.
+
+🟦 8. Future Improvements
+You can say:
+There’s still room for improvement.
+Some upcoming updates I’m planning:
+
+
+Adding multi-region instance support.
+
+
+Integrating Slack or Teams notifications for faster alerts.
+
+
+Building an auto-healing decision layer using environment flags (e.g., rebooting in UAT only).
+
+
+Improving dashboard visualization with more filters and history trends.
+
+
+
+🟦 9. Conclusion
+You can say:
+So, in summary:
+
+
+We started with a manual, time-consuming process.
+
+
+We built an automated, CloudWatch-driven, Lambda-based system.
+
+
+Now, the system monitors, restarts, logs, and alerts — all automatically.
+
+
+This significantly reduces human effort and improves reliability.
+Thank you — that’s the overview and demo of the updated Task Monitoring Process.
+
+Would you like me to make this into a PowerPoint-style slide deck (with bullet points and short text) or a speaker script version (with talking flow for each slide)?
+
 Continue to build your rewarding career helping others achieve their financial dream at an organization that values your own long-term success. With your unique talents, you have what it takes to be bold and brilliant in everything you do and reach new heights for a company dedicated to diversity and inclusion, community and you. 
 
 This role is a job level of G Professional/Technical.
@@ -279,4 +458,5 @@ public class PlanInfo {
     // Constructors, getters, setters...
     
 }
+
 
