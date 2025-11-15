@@ -1,3 +1,71 @@
+MassMutual And Prudential Documents into OnBase 
+
+ 
+
+I started working on this in November month.  
+
+Project location : C:\Compliance\ECM1  
+
+String filePath = "C:\ECM\PVR\REPORT_2362_01DEC2023.xlsx"; EXCEL FILE location.  
+
+// Define the directory path String directoryPath = "C:\ECM\PVR\All_20231218_1552MST\";//pdf file location  
+
+Basically my java program goes into excel filePath and read each record store these in a object and I try get the corresponding pdf file from directoryPath based on id and name . then I combine these meta data and pdf and I send these into onbase api by post request.  
+
+Problem Statement: Currently we are storing Mass Mutual and Prudential documents in NAS drives. We are going to use the OnBase APIs to move files from the NAS drives to the OnBase database.  
+
+Acceptance Criteria: The outcome of this project is to successfully store documents and corresponding meta-data into the OnBase database. After moving documents into OnBase then we can delete the files on the NAS drives and free up that space.   
+
+Technical details:  
+
+step 1:  
+
+         I. Build a GUI  
+
+         ii. Locate and select parent directory, excel ss, and All… directory  
+
+        iii. Read excel ss and process plans row by row 
+
+  iv. For each row, process while plan number is the same, increment participant counter, select appropriate file  
+
+         v. Copy file to a Temp directory  
+
+step 2:   
+
+           I. For each file, extract meta-data for OnBase from excel ss  
+
+           ii. Build the JSON for meta-data  
+
+          iii. Write this JSON to the Temp directory with the file using the file name and file type of ". Json"  
+
+           iv Create an audit trail file noting success and failure  
+
+step 3:  
+
+     .     I. QC and ensure we have correct file and Json.   
+  
+
+  ii. Write document and JSON meta-data to OnBase database.  
+
+  iii. QC document and meta-data in OnBase database.  
+
+  iv. Remove files from NAS share.  
+
+Feb - 12 
+
+Completed so far:  
+
+As you can see the workflow of the project, we have completed 2 steps.  
+
+Completed GUI 
+
+Ongoing: 
+
+Need to mount this GUI on exisiting code. 
+
+
+
+
 1) Monitor servers and applications
  
 2) If a server is down, send a notification and reboot
