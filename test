@@ -1,3 +1,201 @@
+Project: XML File Mover 
+
+Overview 
+
+The XML File Mover is a lightweight, resilient Java application designed to move XML files from a queue folder to a destination folder on a shared drive. The system is tailored for environments using Windows EC2 instances with mapped network drives (e.g., V:). It is production-ready, designed to run continuously, and includes fault tolerance for network drive disconnections and logging failures. 
+
+Shape 
+
+Objectives 
+
+Monitor a source directory for new XML files. 
+
+Move the oldest XML file to a destination folder if the destination is clear. 
+
+Log every move operation and error event. 
+
+Exit gracefully and notify task scheduler to restart the process if critical directories are unavailable. 
+
+Prevent silent failures and provide fallback logging. 
+
+Shape 
+
+Key Features 
+
+1. Drive-Safe Path Initialization 
+
+All Path objects (e.g., source, destination, and log paths) are defined inside the moveNextFileIfReady() method. 
+
+Prevents premature failure at class-load time if a network drive like V: is disconnected. 
+
+2. Directory Availability Check 
+
+If DESTINATION_DIR is not available, the program logs an error and calls System.exit(1). 
+
+Ensures Task Scheduler can restart the job when the drive is restored. 
+
+3. Fallback Logging System 
+
+Primary logs are written to: V:\auto\PlanExpress\AMF\Files\xml-file-log.txt 
+
+If primary logging fails (e.g., due to a disconnected V: drive), the system logs to: 
+
+C:\temp\fallback-log.txt 
+
+Ensures logs are never lost, even in degraded environments. 
+
+4. Resilient File Move Logic 
+
+Skips file move if the destination folder already contains an .xml file. 
+
+Moves the oldest .xml file from the source folder. 
+
+Uses StandardCopyOption.REPLACE_EXISTING to ensure overwrites are handled safely (in rare edge cases). 
+
+5. Clean Application Shutdown 
+
+Uses System.exit(1) when critical issues occur (e.g., missing directory). 
+
+Designed to work with Windows Task Scheduler or any external job manager that retries failed jobs. 
+
+Shape 
+
+Logging Strategy 
+
+Scenario 
+
+Log File Location 
+
+Output 
+
+Normal operation 
+
+xml-file-log.txt (on V:) 
+
+File move entries, info logs 
+
+V: drive missing 
+
+C:\temp\fallback-log.txt 
+
+Error and fallback logs 
+
+Fallback log also fails 
+
+Console (stderr) 
+
+Emergency message 
+
+Shape 
+
+Best Practices Followed 
+
+No static path evaluation: Prevents class-loading failures due to disconnected drives. 
+
+Graceful degradation: Allows the program to recover and restart through automation. 
+
+Single-responsibility methods: Code is modular and maintainable. 
+
+Separation of concerns: Business logic and logging are handled independently. 
+
+Environment-controlled behavior: System expects paths to be pre-provisioned. 
+
+ 
+
+ 
+
+Shape 
+
+Expected Directory Structure 
+
+Project directory: C:\Compliance\XmlFileMover 
+
+V:\auto\PlanExpress\AMF\Files\Queue        --> Source folder 
+V:\auto\PlanExpress\AMF\Files               --> Destination folder 
+V:\auto\PlanExpress\AMF\Files\xml-file-log.txt  --> Primary log file 
+C:\temp\fallback-log.txt                    --> Fallback log file 
+
+ 
+
+// updated directories: 
+
+Source and destination folder are the same. 
+
+Log file and lock file are in: C:\XMLFileMover just in case if v drive fails. 
+
+ 
+
+Shape 
+
+ 
+
+Error Handling Summary 
+
+Error 
+
+Response 
+
+Destination folder missing 
+
+Log error + exit program 
+
+V: drive disconnected 
+
+Log to fallback + exit 
+
+Log file creation fails 
+
+Log to fallback 
+
+Fallback log fails 
+
+Print to console (stderr) 
+
+File move fails (IO error) 
+
+Logged, app continues safely 
+
+Shape 
+
+Deployment Recommendations 
+
+Use Windows Task Scheduler to launch this app at system boot or on schedule. 
+
+Set Task Scheduler to restart the program on exit or failure. 
+
+Ensure V: is correctly mapped at session start. 
+
+Ensure C:\temp exists or allow the application to create it. 
+
+Shape 
+
+Optional Enhancements 
+
+Centralized monitoring and alerts (SNS, email, webhook). 
+
+File move audit trail in a database. 
+
+Configurable retry logic instead of immediate exit. 
+
+Environment-driven config (via .properties or JSON). 
+
+Shape 
+
+Maintainers 
+
+Owner: Raab Paul, Chenna Kesava Reddy Putha 
+
+Dependencies: Java 8+, SLF4J with Log back or Log4j 
+
+Shape 
+
+Version 
+
+Initial release: v1.0 
+
+Last updated: [2025-07-16] 
+
+
 MassMutual And Prudential Documents into OnBase 
 
  
